@@ -260,7 +260,7 @@
     height: 351px;
     overflow: hidden;
     flex-shrink: 0;
-    background-image: url('Depth 6, Frame 0.png');
+   /* background-image: url('Depth 6, Frame 0.png');*/
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;

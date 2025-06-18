@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './VisaAssistance.module.css';
+import styles from './Visaassistance.module.css';
 
 
 const VisaAssistance:FunctionComponent = () => {

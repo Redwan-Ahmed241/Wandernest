@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
-import styles from './Flights.module.css';
+import styles from './flight.module.css';
 
 
 const Flights:FunctionComponent = () => {
