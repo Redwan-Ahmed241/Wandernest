@@ -24,7 +24,7 @@ const Destinations:FunctionComponent = () => {
           					<div className={styles.navbar}>
             						<div className={styles.depth3Frame0}>
               							<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-              							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+              							<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
                 								<b className={styles.wandernest}>WanderNest</b>
               							</div>
             						</div>
