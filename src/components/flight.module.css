@@ -1,0 +1,631 @@
+.depth4Frame0 {
+    width: 13.8px;
+    height: 13.8px;
+}
+.wandernest {
+    align-self: stretch;
+    position: relative;
+    line-height: 19.82px;
+}
+.depth4Frame1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.depth3Frame0 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 13.8px;
+}
+.destinations {
+    align-self: stretch;
+    position: relative;
+    line-height: 18.09px;
+    font-weight: 500;
+}
+.flights1 {
+    align-self: stretch;
+    position: relative;
+    line-height: 18.09px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.depth5Frame2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth4Frame01 {
+    height: 34.5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 31px;
+}
+.signUp {
+    align-self: stretch;
+    position: relative;
+    line-height: 18.09px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth6Frame0 {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth5Frame01 {
+    width: 72.4px;
+    border-radius: 10.34px;
+    background-color: #abb79a;
+    height: 34.5px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 13.8px;
+    box-sizing: border-box;
+    min-width: 72.38px;
+    max-width: 413.6px;
+    cursor: pointer;
+}
+.depth5Frame11 {
+    width: 72.4px;
+    border-radius: 10.34px;
+    background-color: #e8f2f2;
+    height: 34.5px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 13.8px;
+    box-sizing: border-box;
+    min-width: 72.38px;
+    max-width: 413.6px;
+}
+.depth5Frame21 {
+    width: 34.5px;
+    border-radius: 10.34px;
+    height: 34.5px;
+    overflow: hidden;
+    flex-shrink: 0;
+    max-width: 413.6px;
+}
+.depth4Frame11 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6.9px;
+    text-align: center;
+}
+.depth3Frame1 {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 27.6px;
+    font-size: 12.06px;
+}
+.navbar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-bottom: 0.9px solid #e5e8eb;
+    box-sizing: border-box;
+    width: 1230.5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10.3px 34.5px;
+    gap: 0px;
+}
+.navbarWrapper {
+    width: 1230.5px;
+    position: relative;
+    height: 56px;
+    font-size: 15.51px;
+}
+.depth7Frame0 {
+    width: 34.5px;
+    position: relative;
+    border-radius: 17.23px;
+    height: 34.5px;
+    overflow: hidden;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+.depth8Frame0 {
+    width: 140.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.exploreTheWorld {
+    align-self: stretch;
+    position: relative;
+    line-height: 18.09px;
+}
+.depth8Frame1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 12.06px;
+    color: #a1824a;
+}
+.depth6Frame02 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10.3px;
+}
+.depth8Frame01 {
+    width: 20.7px;
+    height: 20.7px;
+}
+.depth7Frame01 {
+    width: 212.8px;
+    border-radius: 17.23px;
+    background-color: #f5f0e5;
+    height: 58.6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6.9px 10.3px;
+    box-sizing: border-box;
+    gap: 10.3px;
+}
+.depth7Frame11 {
+    align-self: stretch;
+    height: 41.4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6.9px 10.3px;
+    box-sizing: border-box;
+    gap: 10.3px;
+    cursor: pointer;
+}
+.depth7Frame2 {
+    width: 212.8px;
+    height: 53.4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6.9px 10.3px;
+    box-sizing: border-box;
+    gap: 10.3px;
+    cursor: pointer;
+}
+.depth6Frame1 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6.9px;
+    font-size: 12.06px;
+}
+.depth5Frame02 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 13.8px;
+}
+.depth4Frame02 {
+    width: 251.6px;
+    background-color: #fff;
+    height: 741px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 13.8px;
+    box-sizing: border-box;
+    min-height: 603.17px;
+}
+.depth3Frame01 {
+    width: 275.7px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.discoverYourNext {
+    align-self: stretch;
+    position: relative;
+    letter-spacing: -0.86px;
+    line-height: 38.77px;
+    font-weight: 800;
+}
+.searchAndBook {
+    align-self: stretch;
+    position: relative;
+    line-height: 20.68px;
+}
+.depth6Frame11 {
+    width: 353.3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 13.79px;
+    color: #a1824a;
+}
+.depth5Frame03 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10.3px;
+    min-width: 248.16px;
+}
+.depth4Frame03 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 13.8px;
+    font-size: 31.02px;
+}
+.searchFlights {
+    align-self: stretch;
+    position: relative;
+    line-height: 20.68px;
+    font-weight: 500;
+}
+.depth6Frame04 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0px 0px 6.9px;
+}
+.enterCityOr {
+    width: 163.7px;
+    position: relative;
+    line-height: 20.68px;
+    white-space: pre-wrap;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.depth6Frame12 {
+    align-self: stretch;
+    border-radius: 10.34px;
+    background-color: #fff;
+    border: 0.9px solid #e8decf;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12.9px;
+    color: #a1824a;
+}
+.depth5Frame04 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 137.87px;
+}
+.depth4Frame12 {
+    width: 413.6px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    padding: 10.3px 13.8px;
+    box-sizing: border-box;
+    max-width: 413.6px;
+}
+.searchFlights1 {
+    align-self: stretch;
+    position: relative;
+    line-height: 20.68px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth5Frame05 {
+    width: 413.6px;
+    border-radius: 20.68px;
+    background-color: #abb79a;
+    height: 41.4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 17.2px;
+    box-sizing: border-box;
+    min-width: 72.38px;
+    max-width: 413.6px;
+}
+.depth4Frame2 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10.3px 13.8px;
+    text-align: center;
+    color: #fff;
+}
+.realTimeWeatherForecast {
+    align-self: stretch;
+    position: relative;
+    line-height: 30.16px;
+}
+.depth4Frame3 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 17.2px 13.8px 10.3px;
+    font-size: 24.13px;
+}
+.image1Icon {
+    width: 785.8px;
+    position: relative;
+    max-height: 100%;
+    object-fit: cover;
+}
+.depth4Frame4 {
+    width: 813.4px;
+    height: 455px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10.3px 13.8px;
+    box-sizing: border-box;
+}
+.depth6Frame06 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.todaysExchangeRates {
+    align-self: stretch;
+    position: relative;
+    line-height: 34.47px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth6Frame13 {
+    align-self: stretch;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 27.57px;
+}
+.depth7Frame12 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: #009963;
+}
+.depth6Frame2 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3.4px;
+    color: #a1824a;
+}
+.depth7Frame03 {
+    align-self: stretch;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    height: 127.5px;
+    flex-shrink: 0;
+}
+.usd {
+    align-self: stretch;
+    position: relative;
+    line-height: 17.23px;
+}
+.depth7Frame13 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0px;
+}
+.depth6Frame3 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 13.8px 0px;
+    box-sizing: border-box;
+    gap: 27.6px;
+    min-height: 155.1px;
+    font-size: 11.2px;
+    color: #a1824a;
+}
+.depth5Frame06 {
+    flex: 1;
+    border-radius: 10.34px;
+    border: 0.9px solid #e8decf;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 20.7px;
+    gap: 6.9px;
+    min-width: 248.16px;
+}
+.depth4Frame6 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 20.7px 13.8px;
+}
+.depth3Frame11 {
+    width: 827.2px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 827.2px;
+}
+.depth2Frame1 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 17.2px 20.7px;
+    gap: 3.4px;
+    color: #1c170d;
+}
+.depth6Frame07 {
+    width: 137.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 137.87px;
+    cursor: pointer;
+}
+.depth6Frame14 {
+    width: 137.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 137.87px;
+}
+.depth5Frame07 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 24px 0px;
+}
+.depth5Frame12 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 16px 13.8px;
+}
+.depth5Frame22 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth4Frame04 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 34.5px 17.2px;
+    gap: 20.7px;
+}
+.depth3Frame02 {
+    width: 827.2px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 827.2px;
+}
+.footer {
+    width: 1230.5px;
+    background-color: #1c170d;
+    height: 172.3px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+.depth1Frame0 {
+    width: 1230.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.flights {
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 689.33px;
+    text-align: left;
+    font-size: 13.79px;
+    color: #0d1c1c;
+    font-family: 'Plus Jakarta Sans';
+}
+
+

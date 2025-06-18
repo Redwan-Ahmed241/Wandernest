@@ -1,0 +1,320 @@
+.vector0 {
+  	position: absolute;
+  	top: 15px;
+  	left: 57px;
+  	width: 16px;
+  	height: 16px;
+}
+.wandernest {
+  	position: absolute;
+  	top: 12px;
+  	left: 84px;
+  	line-height: 23px;
+}
+.depth1Frame0 {
+  	position: absolute;
+  	top: 12px;
+  	left: calc(50% - 714px);
+  	width: 234px;
+  	height: 47px;
+  	text-align: left;
+  	font-size: 18px;
+}
+.aboutUs {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+}
+.depth6Frame0 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	cursor: pointer;
+}
+.depth6Frame1 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+}
+.depth5Frame0 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: center;
+  	gap: 24px 0px;
+}
+.depth6Frame01 {
+  	width: 24px;
+  	height: 24px;
+}
+.depth5Frame1 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 16px;
+}
+.depth5Frame2 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth4Frame0 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 40px 20px;
+  	gap: 24px;
+}
+.depth3Frame0 {
+  	width: 960px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.footer {
+  	position: absolute;
+  	top: 1270px;
+  	left: 0px;
+  	background-color: #1c170d;
+  	width: 1428px;
+  	height: 200px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	color: #e8f2f2;
+}
+.wandernest1 {
+  	position: absolute;
+  	top: 0px;
+  	left: calc(50% - 203.5px);
+  	font-size: 64px;
+  	line-height: 24px;
+  	display: inline-block;
+  	color: #000;
+  	width: 390px;
+  	height: 32px;
+}
+.groupChild {
+  	position: absolute;
+  	top: 108px;
+  	left: 7px;
+  	background-color: #fff;
+  	width: 448px;
+  	height: 66px;
+}
+.emailAddress {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	line-height: 24px;
+  	font-weight: 500;
+}
+.depth6Frame02 {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	width: 448px;
+  	height: 32px;
+}
+.enterYourEmail {
+  	position: absolute;
+  	top: 16px;
+  	left: 16px;
+  	line-height: 24px;
+  	white-space: pre-wrap;
+}
+.depth6Frame12 {
+  	position: absolute;
+  	top: 32px;
+  	left: calc(50% - 224px);
+  	border-radius: 12px;
+  	background-color: #fff;
+  	border: 1px solid #e8decf;
+  	box-sizing: border-box;
+  	width: 448px;
+  	height: 56px;
+  	overflow: hidden;
+  	color: #a1824a;
+}
+.depth5Frame01 {
+  	position: absolute;
+  	top: 86px;
+  	left: 0px;
+  	width: 448px;
+  	height: 88px;
+  	min-width: 160px;
+  	text-align: left;
+}
+.depth7Frame0 {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 12px 0px 0px 12px;
+  	background-color: #fff;
+  	border-top: 1px solid #e8decf;
+  	border-bottom: 1px solid #e8decf;
+  	border-left: 1px solid #e8decf;
+  	box-sizing: border-box;
+  	width: 408px;
+  	height: 56px;
+  	overflow: hidden;
+}
+.depth7Frame1 {
+  	position: absolute;
+  	top: 0px;
+  	left: 408px;
+  	border-radius: 0px 12px 12px 0px;
+  	width: 40px;
+  	height: 56px;
+}
+.depth6Frame13 {
+  	position: absolute;
+  	top: 32px;
+  	left: 0px;
+  	border-radius: 12px;
+  	width: 448px;
+  	height: 56px;
+  	color: #a1824a;
+}
+.depth5Frame02 {
+  	position: absolute;
+  	top: 202px;
+  	left: 0px;
+  	width: 448px;
+  	height: 88px;
+  	min-width: 160px;
+  	text-align: left;
+}
+.depth6Frame04 {
+  	position: absolute;
+  	top: 12px;
+  	left: 224px;
+  	width: 47px;
+  	height: 24px;
+  	overflow: hidden;
+}
+.depth5Frame03 {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 24px;
+  	background-color: #abb79a;
+  	width: 406px;
+  	height: 48px;
+  	overflow: hidden;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.logIn {
+  	position: absolute;
+  	top: calc(50% - 12px);
+  	left: calc(50% - 24px);
+  	line-height: 24px;
+}
+.depth5Frame0Parent {
+  	position: absolute;
+  	top: 328px;
+  	left: 24px;
+  	width: 406px;
+  	height: 48px;
+  	color: #fff;
+}
+.dontHaveAn {
+  	position: absolute;
+  	top: 414px;
+  	left: 162px;
+  	font-size: 14px;
+  	line-height: 21px;
+  	color: #a1824a;
+}
+.depth6Frame05 {
+  	position: absolute;
+  	top: 12px;
+  	left: 218px;
+  	width: 60px;
+  	height: 24px;
+  	overflow: hidden;
+}
+.depth5Frame04 {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 24px;
+  	background-color: #f5f0e5;
+  	width: 406px;
+  	height: 48px;
+  	overflow: hidden;
+}
+.signUp {
+  	position: absolute;
+  	top: calc(50% - 12px);
+  	left: calc(50% - 41px);
+  	line-height: 24px;
+  	display: inline-block;
+  	width: 82px;
+}
+.depth5Frame0Group {
+  	position: absolute;
+  	top: 453px;
+  	left: 24px;
+  	width: 406px;
+  	height: 48px;
+}
+.wandernestParent {
+  	position: absolute;
+  	top: 359px;
+  	left: calc(50% - 231px);
+  	width: 455px;
+  	height: 501px;
+}
+.depth0Frame0 {
+  	align-self: stretch;
+  	position: relative;
+  	background-color: #fff;
+  	height: 1470px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+}
+.loginPage1 {
+  	width: 1428px;
+  	height: 1470px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.loginPage {
+  	position: relative;
+  	width: 100%;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	text-align: center;
+  	font-size: 16px;
+  	color: #1c170d;
+  	font-family: 'Plus Jakarta Sans';
+}
+

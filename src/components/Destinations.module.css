@@ -1,0 +1,556 @@
+.depth4Frame0 {
+  	width: 16px;
+  	height: 16px;
+}
+.wandernest {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 23px;
+}
+.depth4Frame1 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	cursor: pointer;
+}
+.depth3Frame0 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 16px;
+}
+.hotels {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+}
+.flights {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+  	cursor: pointer;
+}
+.depth5Frame2 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame01 {
+  	height: 40px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 36px;
+}
+.signUp {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
+.depth6Frame0 {
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+	cursor: pointer;
+}
+.depth5Frame01 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #abb79a;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame11 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #e8f2f2;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame21 {
+  	width: 40px;
+  	border-radius: 12px;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	max-width: 480px;
+}
+.depth4Frame11 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 8px;
+  	text-align: center;
+}
+.depth3Frame1 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-end;
+  	gap: 32px;
+  	font-size: 14px;
+}
+.navbarWrapper {
+   position: sticky;
+   top: 0;
+   z-index: 100;
+   background: white;
+   width: 100%;
+   border-bottom: 1px solid #e5e8eb;
+}
+
+.navbar {
+   width: 100%;
+   max-width: 1428px; /* Better than fixed width */
+   margin: 0 auto; /* Center the navbar */
+   padding: 12px 0px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.discoverTopDestinations {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 50.42px;
+}
+.depth7Frame0 {
+  	position: absolute;
+  	top: 504.16px;
+  	left: 253.52px;
+  	width: 1279.1px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 23px;
+  	box-sizing: border-box;
+}
+.travelFarTravel {
+  	position: absolute;
+  	top: 176.91px;
+  	left: 227.48px;
+  	line-height: 50.42px;
+  	display: inline-block;
+  	width: 443px;
+  	height: 42px;
+}
+.depth6Frame02 {
+  	align-self: stretch;
+  	position: relative;
+  	border-radius: 17.29px;
+  	height: 460.9px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+   background-image: url('../../public/Figma_photoes/background.jpg');
+  	background-size: cover;
+  	background-repeat: no-repeat;
+  	background-position: top;
+  	min-height: 460.94px;
+}
+.depth5Frame02 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 17.3px 23px;
+}
+.depth4Frame02 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 40.33px;
+}
+.exploreDestinations {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 40.33px;
+}
+.depth4Frame12 {
+  	align-self: stretch;
+  	height: 86.4px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 28.8px 23px 17.3px;
+  	box-sizing: border-box;
+  	font-size: 31.69px;
+  	color: #1c170d;
+}
+.depth7Frame01 {
+  	align-self: stretch;
+  	position: relative;
+  	border-radius: 17.29px;
+  	max-width: 100%;
+  	overflow: hidden;
+  	height: 136.8px;
+  	flex-shrink: 0;
+  	object-fit: cover;
+  	cursor: pointer;
+}
+.coxsBazar {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 34.57px;
+  	font-weight: 500;
+	cursor: pointer;
+}
+.worldsLongestSea {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 30.25px;
+}
+.depth8Frame1 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 20.17px;
+  	color: #a1824a;
+}
+.depth6Frame03 {
+  	width: 242px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 0px 0px 17.3px;
+  	box-sizing: border-box;
+  	gap: 17.3px;
+}
+.depth7Frame02 {
+  	align-self: stretch;
+  	position: relative;
+  	border-radius: 17.29px;
+  	max-width: 100%;
+  	overflow: hidden;
+  	height: 136.8px;
+  	flex-shrink: 0;
+  	object-fit: cover;
+}
+.depth6Frame2 {
+  	width: 242px;
+  	height: 266.5px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 0px 0px 17.3px;
+  	box-sizing: border-box;
+  	gap: 17.3px;
+}
+.depth6Frame3 {
+  	width: 242px;
+  	height: 266.5px;
+}
+.depth5Frame03 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 17.3px;
+}
+.depth5Frame12 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame2 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 23px;
+  	gap: 17.3px;
+  	color: #1c170d;
+}
+.explorePackages {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 34.57px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
+.depth9Frame0 {
+  	border-radius: 34.57px;
+  	background-color: #abb79a;
+  	height: 69.1px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 28.8px;
+  	box-sizing: border-box;
+  	min-width: 121px;
+  	max-width: 691.41px;
+  	cursor: pointer;
+}
+.depth9Frame1 {
+  	border-radius: 34.57px;
+  	background-color: #f5f0e5;
+  	height: 69.1px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 28.8px;
+  	box-sizing: border-box;
+  	min-width: 121px;
+  	max-width: 691.41px;
+  	color: #1c170d;
+}
+.depth8Frame06 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 12px 17.3px;
+  	max-width: 691.41px;
+}
+.depth7Frame06 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+}
+.depth6Frame11 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: center;
+}
+.depth5Frame04 {
+  	align-self: stretch;
+  	height: 410.5px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-end;
+  	padding: 115.2px 57.6px;
+  	box-sizing: border-box;
+}
+.depth4Frame3 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	text-align: center;
+}
+.depth3Frame01 {
+  	flex: 1;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 1382.83px;
+}
+.depth4Frame03 {
+  	width: 57.6px;
+  	height: 749px;
+}
+.depth3Frame11 {
+  	height: 1557.1px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth2Frame1 {
+  	align-self: stretch;
+  	height: 1614.7px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	padding: 28.8px 240.5px;
+  	box-sizing: border-box;
+  	font-size: 23.05px;
+  	color: #fff;
+}
+.depth1Frame0 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth0Frame0 {
+  	position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  	background-color: #fff;
+  width: 100%;
+max-width: 1440px;
+  	overflow: visible;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 1152.35px;
+     padding-left: 40px;
+}
+.aboutUs {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+}
+.depth6Frame05 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	cursor: pointer;
+    padding-left: 20px;
+}
+.depth6Frame12 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+	cursor: pointer;
+}
+.depth5Frame05 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: center;
+  	gap: 24px 0px;
+}
+.depth6Frame06 {
+  	width: 24px;
+  	height: 24px;
+	cursor: pointer;
+}
+.depth5Frame13 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 16px;
+}
+.depth5Frame22 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth4Frame04 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 40px 20px;
+  	gap: 24px;
+}
+.depth3Frame02 {
+  	width: 960px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.depth2Frame4 {
+  background-color: #1c170d;
+  width: 100%;
+  max-width: 1550px;
+  margin: 0 auto;
+  height: auto;
+  min-height: 200px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  color: #e8f2f2;
+  position: relative; /* ✅ Removes disconnection from layout */
+
+  box-sizing: border-box;
+}
+
+.destinations {
+  	
+  	position: relative;
+  	background-color: #fff;
+   min-height: 100vh;
+  height: auto;
+  width: 100%;
+  	text-align: left;
+  	font-size: 18px;
+  	color: #0d1c1c;
+  	font-family: 'Plus Jakarta Sans';
+     padding-left: 1px;
+}
+

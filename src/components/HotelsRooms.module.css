@@ -1,0 +1,906 @@
+.depth4Frame0 {
+  	width: 16px;
+  	height: 16px;
+}
+.wandernest {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 23px;
+}
+.depth4Frame1 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	cursor: pointer;
+}
+.depth3Frame0 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 16px;
+}
+.destinations {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+}
+.flights {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+  	cursor: pointer;
+}
+.depth5Frame2 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame01 {
+  	height: 40px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 36px;
+}
+.signUp {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
+.depth6Frame0 {
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	cursor: pointer;
+}
+.depth5Frame01 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #abb79a;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame11 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #e8f2f2;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame21 {
+  	width: 40px;
+  	border-radius: 12px;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	max-width: 480px;
+}
+.depth4Frame11 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 8px;
+  	text-align: center;
+}
+.depth3Frame1 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-end;
+  	gap: 32px;
+  	font-size: 14px;
+}
+.navbarWrapper {
+   position: sticky;
+   top: 0;
+   z-index: 100;
+   background: white;
+   width: 100%;
+   border-bottom: 1px solid #e5e8eb;
+}
+
+.navbar {
+   width: 100%;
+   max-width: 1428px; /* Better than fixed width */
+   margin: 0 auto; /* Center the navbar */
+   padding: 12px 40px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.depth7Frame0 {
+  	align-self: stretch;
+  	width: 40px;
+  	border-radius: 12px 0px 0px 12px;
+  	max-height: 100%;
+}
+.searchHotelsRooms {
+  	position: relative;
+  	line-height: 24px;
+  	white-space: pre-wrap;
+}
+.depth7Frame1 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 0px 12px 12px 0px;
+  	background-color: #f5f0e5;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	padding: 8px 16px 8px 8px;
+}
+.depth6Frame02 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 12px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth5Frame02 {
+  	align-self: stretch;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-width: 160px;
+}
+.depth4Frame02 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 12px 16px;
+  	text-align: left;
+  	color: #a1824a;
+}
+.depth6Frame03 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth6Frame1 {
+  	width: 20px;
+  	height: 20px;
+}
+.depth5Frame03 {
+  	border-radius: 16px;
+  	background-color: #f5f0e5;
+  	height: 32px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 8px 0px 16px;
+  	box-sizing: border-box;
+  	gap: 8px;
+}
+.depth4Frame12 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	padding: 12px 16px 12px 12px;
+  	gap: 12px;
+  	font-size: 14px;
+}
+.depth7Frame01 {
+  	width: 40px;
+  	height: 40px;
+}
+.depth7Frame11 {
+  	flex: 1;
+  	height: 20px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	padding: 0px 40px 0px 0px;
+  	box-sizing: border-box;
+}
+.depth6Frame08 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	padding: 4px;
+  	gap: 0px;
+}
+.s {
+  	position: relative;
+  	line-height: 20px;
+}
+.depth8Frame0 {
+  	width: 41px;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 0px 2px;
+  	box-sizing: border-box;
+}
+.depth7Frame02 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	text-align: left;
+  	font-size: 13px;
+}
+.div {
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+}
+.depth9Frame0 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 24px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+}
+.depth8Frame01 {
+  	width: 41px;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth9Frame04 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 24px;
+  	background-color: #abb79a;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+}
+.depth8Frame41 {
+  	width: 41px;
+  	border-radius: 9999px 0px 0px 9999px;
+  	background-color: #f5f0e5;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	color: #fff;
+}
+.depth8Frame51 {
+  	width: 41px;
+  	background-color: #f5f0e5;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth7Frame12 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth6Frame15 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+}
+.depth5Frame04 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 2px;
+  	min-width: 288px;
+  	max-width: 336px;
+}
+.depth7Frame03 {
+  	flex: 1;
+  	height: 20px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	padding: 0px 0px 0px 40px;
+  	box-sizing: border-box;
+}
+.depth8Frame66 {
+  	width: 41px;
+  	border-radius: 0px 9999px 9999px 0px;
+  	background-color: #f5f0e5;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	color: #fff;
+}
+.depth7Frame14 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame2 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: center;
+  	padding: 16px;
+  	gap: 24px;
+}
+.depth3Frame01 {
+  	width: 320px;
+  	height: 1349px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.exploreHotelsAnd {
+  	align-self: stretch;
+  	position: relative;
+  	letter-spacing: -1px;
+  	line-height: 45px;
+  	font-weight: 800;
+}
+.findThePerfect {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+}
+.depth6Frame17 {
+  	width: 429px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 16px;
+  	color: #a1824a;
+}
+.depth5Frame05 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 12px;
+  	min-width: 288px;
+}
+.depth5Frame14 {
+  	border-radius: 20px;
+  	background-color: #f5f0e5;
+  	height: 40px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	text-align: center;
+  	font-size: 14px;
+}
+.depth4Frame03 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	padding: 16px;
+  	gap: 12px 0px;
+  	font-size: 36px;
+}
+.depth7Frame05 {
+  	align-self: stretch;
+  	position: relative;
+  	border-radius: 12px;
+  	max-width: 100%;
+  	overflow: hidden;
+  	height: 112px;
+  	flex-shrink: 0;
+  	object-fit: cover;
+}
+.luxuryHotel {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+  	font-weight: 500;
+}
+.starLuxuryExperience {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+}
+.depth8Frame112 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.depth6Frame012 {
+  	align-self: stretch;
+  	width: 199px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 0px 0px 12px;
+  	box-sizing: border-box;
+  	gap: 12px;
+    	cursor: pointer;
+}
+.depth5Frame06 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 12px;
+}
+.depth4Frame13 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 12px;
+}
+.localAmenitiesAnd {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 28px;
+}
+.depth4Frame21 {
+  	align-self: stretch;
+  	height: 60px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 20px 16px 12px;
+  	box-sizing: border-box;
+  	font-size: 22px;
+}
+.depth7Frame011 {
+  	align-self: stretch;
+  	max-width: 100%;
+  	overflow: hidden;
+  	height: 24px;
+  	flex-shrink: 0;
+}
+.localRestaurants {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 20px;
+}
+.depth8Frame018 {
+  	align-self: stretch;
+  	height: 20px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame111 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 4px;
+}
+.depth6Frame014 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 8px;
+  	background-color: #fff;
+  	border: 1px solid #e8decf;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 12px;
+  	cursor: pointer;
+}
+.depth6Frame110 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 8px;
+  	background-color: #fff;
+  	border: 1px solid #e8decf;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 12px;
+    cursor: pointer;
+}
+.depth4Frame3 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+}
+.depth7Frame115 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth6Frame015 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth6Frame111 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 2px;
+}
+.depth7Frame016 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 8px;
+}
+.depth7Frame117 {
+  	width: 20px;
+  	height: 24px;
+}
+.depth6Frame32 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 36px;
+  	text-align: center;
+  	color: #a1824a;
+}
+.depth5Frame08 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 12px;
+}
+.depth4Frame5 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 32px;
+}
+.depth3Frame11 {
+  	width: 960px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+  	text-align: left;
+}
+.depth4Frame04 {
+  	width: 40px;
+  	height: 520px;
+}
+.depth3Frame2 {
+  	height: 1349px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth2Frame1 {
+  	align-self: stretch;
+  	height: 1389px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	padding: 20px 24px;
+  	box-sizing: border-box;
+  	gap: 4px;
+  	text-align: center;
+  	font-size: 16px;
+  	color: #1c170d;
+}
+.depth1Frame0 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth6Frame018 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	cursor: pointer;
+}
+.depth6Frame114 {
+  width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	cursor: pointer;
+}
+.depth5Frame09 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: center;
+  	gap: 24px 0px;
+}
+.depth6Frame019 {
+  	width: 24px;
+  	height: 24px;
+}
+.depth5Frame17 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 16px;
+}
+.depth5Frame24 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth4Frame05 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 40px 20px;
+  	gap: 24px;
+}
+.depth3Frame02 {
+  	width: 960px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.depth2Frame3 {
+  	align-self: stretch;
+  	background-color: #1c170d;
+  	height: 200px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	text-align: center;
+  	font-size: 16px;
+  	color: #e8f2f2;
+}
+.depth0Frame0 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	overflow: visible;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 800px;
+}
+.hotelsRooms {
+  	width: 100%;
+  	position: relative;
+  	background-color: #fff;
+  	height: 1470px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	text-align: left;
+  	font-size: 18px;
+  	color: #0d1c1c;
+  	font-family: 'Plus Jakarta Sans';
+}
+
+.searchContainer {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #e8decf;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #1c170d;
+  background-color: #f5f0e5;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #a1824a;
+}
+
+.searchButton {
+  padding: 12px 24px;
+  background-color: #abb79a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.searchButton:hover {
+  background-color: #8a9a7a;
+}
+
+/* Filter Dropdown Styles */
+.filterOptions {
+  position: absolute;
+  background: white;
+  border: 1px solid #e8decf;
+  border-radius: 12px;
+  padding: 8px;
+  margin-top: 8px;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 200px;
+}
+
+.filterOption {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1c170d;
+}
+
+.filterOption:hover {
+  background-color: #f5f0e5;
+}
+
+/* Active Filter Button Style */
+.depth5Frame03.active {
+  background-color: #d1d9c5;
+}
+
+/* Adjust existing filter button styles */
+.depth5Frame03 {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.depth5Frame03:hover {
+  background-color: #e8e8d8;
+}
+
+/* Make sure the depth4Frame12 can contain the dropdowns */
+.depth4Frame12 {
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .searchContainer {
+    flex-direction: column;
+  }
+  
+  .searchButton {
+    width: 100%;
+  }
+  
+  .filterOptions {
+    width: 100%;
+  }
+}
