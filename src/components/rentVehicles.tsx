@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './RentVehicles.module.css';
+import styles from './rentVehicles.module.css';
 
 
 const RentVehicles:FunctionComponent = () => {
