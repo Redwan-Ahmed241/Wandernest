@@ -24,7 +24,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ThingsToDo />} /> {/* Default page */}
+        <Route path="/" element={<HomePage />} /> {/* Default page */}
         <Route path="/things-to-do" element={<ThingsToDo />} />
         <Route path="/hotels-rooms" element={<HotelsRooms />} />
         <Route path="/plan-a-trip" element={<PlanATrip />} />

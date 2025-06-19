@@ -496,13 +496,16 @@
   	max-width: 960px;
 }
 .depth2Frame3 {
-  	width: 1428px;
+align-self: stretch;
   	background-color: #1c170d;
   	height: 200px;
   	display: flex;
   	flex-direction: row;
   	align-items: flex-start;
   	justify-content: center;
+  	text-align: center;
+  	font-size: 16px;
+  	color: #e8f2f2;
 }
 .depth1Frame0 {
   	width: 1428px;
