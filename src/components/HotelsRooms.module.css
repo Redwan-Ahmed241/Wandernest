@@ -124,6 +124,7 @@
   	font-size: 14px;
 }
 .navbarWrapper {
+   position: -webkit-sticky;
    position: sticky;
    top: 0;
    z-index: 100;
@@ -771,6 +772,7 @@
   	max-width: 960px;
 }
 .depth2Frame3 {
+	 width: 100%;
   	align-self: stretch;
   	background-color: #1c170d;
   	height: 200px;
@@ -793,18 +795,16 @@
   	min-height: 800px;
 }
 .hotelsRooms {
-  	width: 100%;
-  	position: relative;
+	position: relative;
   	background-color: #fff;
-  	height: 1470px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
+   min-height: 100vh;
+  height: auto;
+  width: 100%;
   	text-align: left;
   	font-size: 18px;
   	color: #0d1c1c;
   	font-family: 'Plus Jakarta Sans';
+     padding-left: 1px;
 }
 
 .searchContainer {
