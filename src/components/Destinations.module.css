@@ -124,6 +124,7 @@
   	font-size: 14px;
 }
 .navbarWrapper {
+   position: -webkit-sticky;
    position: sticky;
    top: 0;
    z-index: 100;
