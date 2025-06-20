@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './Homepage.module.css';
-
+import Layout from './Layout';
 const HomePage:FunctionComponent = () => {
   	const navigate = useNavigate();
   	
@@ -15,49 +15,50 @@ const HomePage:FunctionComponent = () => {
   	}, []);
   	
   	return (
+		<Layout>
     		<button className={styles.homePage}>
       			<div className={styles.homePage1}>
         				<div className={styles.homePage2}>
           					<div className={styles.homePage3}>
             						<div className={styles.homePage4}>
               							<div className={styles.depth1Frame0}>
-                								<div className={styles.navbar}>
-                  									<div className={styles.depth3Frame0}>
-                    										<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<b className={styles.wandernest}>WanderNest</b>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth3Frame1}>
-                    										<div className={styles.depth4Frame01}>
-                      											<div className={styles.depth4Frame1}  onClick={() => navigate('/destinations')}>
-                        												<div className={styles.destinations}>Destinations</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
-                        												<div className={styles.destinations}>Hotels</div>
-                      											</div>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
-                        												<div className={styles.destinations}>Packages</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth4Frame11}>
-                      											<div className={styles.depth5Frame01} onClick={onDepth5FrameClick}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Sign up</b>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth5Frame11} onClick={onDepth5FrameClick}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Log in</b>
-                        												</div>
-                      											</div>
-                      											<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
-                    										</div>
-                  									</div>
-                								</div>
+                								{/* <div className={styles.navbar}>
+                                                      <div className={styles.depth3Frame0}>
+                                                            <img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
+                                                            <div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                                                                  <b className={styles.wandernest}>WanderNest</b>
+                                                            </div>
+                                                      </div>
+                                                      <div className={styles.depth3Frame1}>
+                                                            <div className={styles.depth4Frame01}>
+                                                                  <div className={styles.depth4Frame1}  onClick={() => navigate('/destinations')}>
+                                                                        <div className={styles.destinations}>Destinations</div>
+                                                                  </div>
+                                                                  <div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
+                                                                        <div className={styles.destinations}>Hotels</div>
+                                                                  </div>
+                                                                  <div className={styles.depth5Frame2}>
+                                                                        <div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
+                                                                  </div>
+                                                                  <div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
+                                                                        <div className={styles.destinations}>Packages</div>
+                                                                  </div>
+                                                            </div>
+                                                            <div className={styles.depth4Frame11}>
+                                                                  <div className={styles.depth5Frame01} onClick={onDepth5FrameClick}>
+                                                                        <div className={styles.depth6Frame0}>
+                                                                              <b className={styles.signUp}>Sign up</b>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div className={styles.depth5Frame11} onClick={onDepth5FrameClick}>
+                                                                        <div className={styles.depth6Frame0}>
+                                                                              <b className={styles.signUp}>Log in</b>
+                                                                        </div>
+                                                                  </div>
+                                                                  <img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
+                                                            </div>
+                                                      </div>
+                								</div> */}
                 								<div className={styles.depth2Frame1}>
                   									<div className={styles.depth3Frame01}>
                     										<div className={styles.depth4Frame02}>
@@ -179,11 +180,11 @@ const HomePage:FunctionComponent = () => {
                         												</div>
                       											</div>
                     										</div>
-                    										<div className={styles.depth2Frame3}>
+                    										{/* <div className={styles.depth2Frame3}>
                       											<div className={styles.depth3Frame02}>
                         												<div className={styles.depth4Frame03}>
                           													<div className={styles.depth5Frame06}>
-                            														<div className={styles.depth6Frame05} onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/about-us')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>About Us</div>
                             														</div>
                             														<div className={styles.depth6Frame12} onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>
@@ -192,7 +193,7 @@ const HomePage:FunctionComponent = () => {
                             														<div className={styles.depth6Frame05} onClick={() => navigate('/terms')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Terms of Service</div>
                             														</div>
-                            														<div className={styles.depth6Frame05} onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/PrivacyPolicy')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Privacy Policy</div>
                             														</div>
                           													</div>
@@ -206,13 +207,15 @@ const HomePage:FunctionComponent = () => {
                           													</div>
                         												</div>
                       											</div>
-                    										</div>
+                    										</div> */}
                   									</div>
                 								</div>
               							</div>
             						</div>
           					</div>
-          					</button>);
+          					</button>
+							</Layout>
+							);
           					};
           					
           					export default HomePage;

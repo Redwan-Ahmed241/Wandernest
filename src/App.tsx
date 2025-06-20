@@ -16,8 +16,9 @@ import RentVehicles from './components/rentVehicles';
 import Restaurant from './components/restaurant';
 import Support from './components/support';
 import VisaAssistance from './components/Visaassistance';
-
-
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Layout from './components/Layout';
 import './global.css';
 
 function App() {
@@ -41,8 +42,10 @@ function App() {
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/support" element={<Support />} />
         <Route path="/visa-assistance" element={<VisaAssistance />} />
-        
-<Route path="/destinations" element={<Destinations />} />
+        <Route path="/navbar" element={<Navbar />} />
+        <Route path="/footer" element={<Footer />} />
+        <Route path="/layout" element={<Layout children={undefined} />} />
+        <Route path="/destinations" element={<Destinations />} />
       </Routes>
     </Router>
   );
