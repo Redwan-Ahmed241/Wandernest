@@ -19,6 +19,7 @@ import VisaAssistance from './components/Visaassistance';
 
 
 import './global.css';
+import Packages from './components/Packages';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/support" element={<Support />} />
         <Route path="/visa-assistance" element={<VisaAssistance />} />
+            <Route path="/packages" element={<Packages />} />
         
 <Route path="/destinations" element={<Destinations />} />
       </Routes>

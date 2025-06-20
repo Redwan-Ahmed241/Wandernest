@@ -1,10 +1,16 @@
 .footer {
   	position: absolute;
   	top: 1270px;
-  	left: -22px;
-  	background-color: #1c170d;
-  	width: 1428px;
-  	height: 200px;
+
+   width: 1520px;
+    background-color: #1c170d;
+    height: 172.3px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
 }
 .depth4Frame0 {
   	width: 16px;
@@ -131,23 +137,21 @@
   	font-size: 14px;
 }
 .navbar {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	border-bottom: 1px solid #e5e8eb;
-  	box-sizing: border-box;
-  	width: 1428px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	padding: 12px 40px;
-  	gap: 0px;
+  width: 100%;
+  max-width: 1428px; 
+  margin: 0 auto; 
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .navbarWrapper {
-  	width: 1428px;
-  	position: relative;
-  	height: 65px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid #e5e8eb;
 }
 .depth7Frame0 {
   	align-self: stretch;
@@ -391,14 +395,11 @@
   	color: #1c170d;
 }
 .depth1Frame0 {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	width: 1428px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
+  width: 1520px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 .depth5Frame05 {
   	position: absolute;
@@ -483,10 +484,10 @@
 .depth2Frame3 {
   	position: absolute;
   	top: 1270px;
-  	left: 0px;
+  	left: -20px;
   	background-color: #1c170d;
-  	width: 1428px;
-  	height: 200px;
+  	width: 1520px;
+  	height: 172px;
   	display: flex;
   	flex-direction: row;
   	align-items: flex-start;

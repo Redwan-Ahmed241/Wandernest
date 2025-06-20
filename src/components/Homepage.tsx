@@ -39,7 +39,7 @@ const HomePage:FunctionComponent = () => {
                       											<div className={styles.depth5Frame2}>
                         												<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
                       											</div>
-                      											<div className={styles.depth4Frame1} onClick={onDepth5FrameClick}>
+                      											<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
                         												<div className={styles.destinations}>Packages</div>
                       											</div>
                     										</div>

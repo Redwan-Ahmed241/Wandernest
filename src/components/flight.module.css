@@ -121,25 +121,23 @@
     gap: 27.6px;
     font-size: 12.06px;
 }
+
 .navbar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-bottom: 0.9px solid #e5e8eb;
-    box-sizing: border-box;
-    width: 1230.5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10.3px 34.5px;
-    gap: 0px;
+  width: 100%;
+  max-width: 1428px; 
+  margin: 0 auto; 
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .navbarWrapper {
-    width: 1230.5px;
-    position: relative;
-    height: 56px;
-    font-size: 15.51px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid #e5e8eb;
 }
 .depth7Frame0 {
     width: 34.5px;
@@ -595,7 +593,7 @@
     max-width: 827.2px;
 }
 .footer {
-    width: 1230.5px;
+    width: 1520px;
     background-color: #1c170d;
     height: 172.3px;
     display: flex;
@@ -606,27 +604,23 @@
     color: #fff;
 }
 .depth1Frame0 {
-    width: 1230.5px;
+    width: 1520px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
 }
 .flights {
-  	position: relative;
+  position: relative;
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-
-  	background-color: #fff;
-
-  	overflow: visible;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	min-height: 1152.35px;
-     padding-left: 80px;
+  background-color: #fff;
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content */
+  font-family: 'Plus Jakarta Sans';
+  padding: 0; /* Remove left padding */
 }
+
 
 

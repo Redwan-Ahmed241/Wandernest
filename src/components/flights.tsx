@@ -38,22 +38,22 @@ const Flights:FunctionComponent = () => {
           					<div className={styles.navbar}>
             						<div className={styles.depth3Frame0}>
               							<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-              							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+              							<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
                 								<b className={styles.wandernest}>WanderNest</b>
               							</div>
             						</div>
             						<div className={styles.depth3Frame1}>
               							<div className={styles.depth4Frame01}>
-                								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                								<div className={styles.depth4Frame1} onClick={() => navigate('/destinations')}>
                   									<div className={styles.destinations}>Destinations</div>
                 								</div>
-                								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                								<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
                   									<div className={styles.destinations}>Hotels</div>
                 								</div>
                 								<div className={styles.depth5Frame2}>
                   									<div className={styles.flights1} onClick={onFlightsTextClick}>Flights</div>
                 								</div>
-                								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                								<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
                   									<div className={styles.destinations}>Packages</div>
                 								</div>
               							</div>

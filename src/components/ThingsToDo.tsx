@@ -56,7 +56,7 @@ const ThingsToDo: FunctionComponent = () => {
                 								<div className={styles.depth5Frame1}>
                   									<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
                 								</div>
-                								<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
+                								<div className={styles.depth5Frame01} onClick={() => navigate('/packages')}>
                   									<div className={styles.stay}>Packages</div>
                 								</div>
               							</div>

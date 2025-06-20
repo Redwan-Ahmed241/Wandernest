@@ -36,10 +36,10 @@ const Destinations:FunctionComponent = () => {
                 								<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
                   									<div className={styles.hotels}>Hotels</div>
                 								</div>
-                								<div className={styles.depth5Frame2}>
-                  									<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
+                								<div className={styles.depth4Frame1} onClick={() => navigate('/flights')}>
+                  									<div className={styles.hotels}>Flights</div>
                 								</div>
-                								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                								<div className={styles.depth4Frame1}onClick={() => navigate('/packages')}>
                   									<div className={styles.hotels}>Packages</div>
                 								</div>
               							</div>
