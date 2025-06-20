@@ -137,16 +137,16 @@
   	gap: 32px;
 }
 .navbar {
-  	width: 1428px;
-  	flex: 1;
-  	border-bottom: 1px solid #e5e8eb;
-  	box-sizing: border-box;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	padding: 12px 40px;
-  	gap: 0px;
+  width: 100%; /* Full width */
+  flex: 1;
+  border-bottom: 1px solid #e5e8eb;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  gap: 0px;
 }
 .discoverTheBeauty {
   	position: absolute;
@@ -192,7 +192,7 @@
   	width: 928px;
   	height: 480px;
   	overflow: hidden;
-  	background-image: url('public/images/homepage/hero-bg.png');
+  	background-image: url('/public/Figma_photoes/homebg.jpg');
   	background-size: cover;
   	background-repeat: no-repeat;
   	background-position: top;
@@ -496,20 +496,27 @@
   	max-width: 960px;
 }
 .depth2Frame3 {
-align-self: stretch;
-  	background-color: #1c170d;
-  	height: 200px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
+ background-color: #1c170d;
+  width: 100%;
+  max-width: 3000px;
+  margin: 0 auto;
+  height: auto;
+  min-height: 200px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  color: #e8f2f2;
+  position: relative; /* ✅ Removes disconnection from layout */
+
+  box-sizing: border-box;
   	justify-content: center;
-  	text-align: center;
-  	font-size: 16px;
-  	color: #e8f2f2;
 }
 .depth1Frame0 {
-  	width: 1428px;
-  	height: 1470px;
+  	width: 1520px;
+  	height: auto;
   	display: flex;
   	flex-direction: column;
   	align-items: center;
