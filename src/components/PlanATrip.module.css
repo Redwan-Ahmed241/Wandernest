@@ -68,8 +68,8 @@
 
 .navbar {
    width: 100%;
-   max-width: 1428px; /* Better than fixed width */
-   margin: 0 auto; /* Center the navbar */
+   max-width: 1428px; 
+   margin: 0 auto; 
    padding: 12px 10px;
    display: flex;
    justify-content: space-between;

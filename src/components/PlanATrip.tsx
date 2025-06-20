@@ -663,7 +663,7 @@ const PlanATrip:FunctionComponent = () => {
                           													</div>
                         												</div>
                         												<div className={styles.depth6Frame112}>
-                          													<div className={styles.depth7Frame012} onClick={onDepth4FrameClick}>
+                          													<div className={styles.depth7Frame012} onClick={() => navigate('/homepage')}>
                             														<img className={styles.depth8Frame021} alt="" src="/Figma_photoes/home.svg" />
                             														<div className={styles.depth5Frame2}>
                               															<div className={styles.destinations}>Home</div>
@@ -687,7 +687,7 @@ const PlanATrip:FunctionComponent = () => {
                               															<div className={styles.destinations}>Plan a Trip</div>
                             														</div>
                           													</div>
-                          													<div className={styles.depth7Frame012} onClick={onDepth4FrameClick}>
+                          													<div className={styles.depth7Frame012} onClick={() => navigate('/flights')}>
                             														<img className={styles.depth8Frame021} alt="" src="/Figma_photoes/flight.svg" />
                             														<div className={styles.depth5Frame2}>
                               															<div className={styles.destinations}>Flights</div>
@@ -699,7 +699,7 @@ const PlanATrip:FunctionComponent = () => {
                               															<div className={styles.destinations}>Hotels</div>
                             														</div>
                           													</div>
-                          													<div className={styles.depth7Frame012} onClick={onDepth4FrameClick}>
+                          													<div className={styles.depth7Frame012} onClick={() => navigate('/rent-vehicles')}>
                             														<img className={styles.depth8Frame021} alt="" src="/Figma_photoes/car.svg" />
                             														<div className={styles.depth5Frame2}>
                               															<div className={styles.destinations}>Cars</div>
