@@ -68,7 +68,7 @@
   	border-radius: 12px;
   	background-color: #abb79a;
   	height: 40px;
-  	overflow: hidden;
+  	overflow: visible;
   	flex-shrink: 0;
   	display: flex;
   	flex-direction: row;
@@ -85,7 +85,7 @@
   	border-radius: 12px;
   	background-color: #e8f2f2;
   	height: 40px;
-  	overflow: hidden;
+  	overflow: visible;
   	flex-shrink: 0;
   	display: flex;
   	flex-direction: row;
@@ -101,7 +101,7 @@
   	width: 40px;
   	border-radius: 12px;
   	height: 40px;
-  	overflow: hidden;
+  	overflow: visible;
   	flex-shrink: 0;
   	max-width: 480px;
 }
@@ -122,24 +122,30 @@
   	gap: 32px;
   	font-size: 14px;
 }
+.navbarWrapper {
+   position: sticky;
+   top: 0;
+   z-index: 100;
+   background: white;
+   width: 100%;
+   border-bottom: 1px solid #e5e8eb;
+}
+
 .navbar {
-  	align-self: stretch;
-  	border-bottom: 1px solid #e5e8eb;
-  	box-sizing: border-box;
-  	height: 65px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	padding: 12px 40px;
-  	gap: 0px;
+   width: 100%;
+   max-width: 1428px; /* Better than fixed width */
+   margin: 0 auto; /* Center the navbar */
+   padding: 12px 0px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 }
 .depth6Frame02 {
   	align-self: stretch;
   	position: relative;
   	border-radius: 12px;
   	max-width: 100%;
-  	overflow: hidden;
+  	overflow: visible;
   	height: 162px;
   	flex-shrink: 0;
   	object-fit: cover;
@@ -278,7 +284,7 @@
   	border-radius: 24px;
   	background-color: #abb79a;
   	height: 48px;
-  	overflow: hidden;
+  	overflow: visible;
   	display: flex;
   	flex-direction: row;
   	align-items: center;
@@ -357,7 +363,7 @@
   	border: 1px solid #e8decf;
   	box-sizing: border-box;
   	height: 56px;
-  	overflow: hidden;
+  	overflow: visible;
   	flex-shrink: 0;
 }
 .depth5Frame06 {
@@ -646,10 +652,10 @@
   	justify-content: flex-start;
 }
 .depth0Frame0 {
-  	width: 1407px;
+  	width: 1520px;
   	background-color: #fff;
   	height: 2096px;
-  	overflow: hidden;
+  	overflow: visible;
   	flex-shrink: 0;
   	display: flex;
   	flex-direction: column;
@@ -658,7 +664,7 @@
   	min-height: 800px;
 }
 .visaAssistance1 {
-  	position: absolute;
+  	position: relative;
   	top: 0px;
   	left: 0px;
   	background-color: #fff;
@@ -734,7 +740,7 @@
   	top: 1896px;
   	left: 0px;
   	background-color: #1c170d;
-  	width: 1407px;
+  	width: 1520px;
   	height: 200px;
   	display: flex;
   	flex-direction: row;
