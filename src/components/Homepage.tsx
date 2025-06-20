@@ -183,16 +183,16 @@ const HomePage:FunctionComponent = () => {
                       											<div className={styles.depth3Frame02}>
                         												<div className={styles.depth4Frame03}>
                           													<div className={styles.depth5Frame06}>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>About Us</div>
                             														</div>
-                            														<div className={styles.depth6Frame12}>
+                            														<div className={styles.depth6Frame12} onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Contact</div>
                             														</div>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/terms')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Terms of Service</div>
                             														</div>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Privacy Policy</div>
                             														</div>
                           													</div>
@@ -216,4 +216,3 @@ const HomePage:FunctionComponent = () => {
           					};
           					
           					export default HomePage;
-          					
