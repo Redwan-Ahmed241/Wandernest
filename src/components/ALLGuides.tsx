@@ -171,30 +171,7 @@ const AllGuides:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-        				<div className={styles.footer} onClick={onDepth4FrameClick}>
-          					<div className={styles.depth5Frame06}>
-            						<div className={styles.depth6Frame06}>
-              							<div className={styles.findTheBest}>About Us</div>
-            						</div>
-            						<div className={styles.depth6Frame06}>
-              							<div className={styles.findTheBest}>Contact</div>
-            						</div>
-            						<div className={styles.depth6Frame06}>
-              							<div className={styles.findTheBest}>Terms of Service</div>
-            						</div>
-            						<div className={styles.depth6Frame06}>
-              							<div className={styles.findTheBest}>Privacy Policy</div>
-            						</div>
-          					</div>
-          					<div className={styles.depth5Frame12}>
-            						<img className={styles.depth6Frame07} alt="" src="/Figma_photoes/facebook.svg" />
-            						<img className={styles.depth6Frame07} alt="" src="/Figma_photoes/twitter.svg" />
-            						<img className={styles.depth6Frame07} alt="" src="/Figma_photoes/insta.svg" />
-          					</div>
-          					<div className={styles.depth5Frame22}>
-            						<div className={styles.findTheBest}>@2025 WanderNest, All rights reserved.</div>
-          					</div>
-        				</div>
+        			
       			</div>
     		</div>
 			</Layout>);
