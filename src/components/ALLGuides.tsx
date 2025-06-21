@@ -17,43 +17,7 @@ const AllGuides:FunctionComponent = () => {
         				<div className={styles.localGuide}>
           					<div className={styles.depth0Frame0}>
             						<div className={styles.depth1Frame0}>
-              							{/* <div className={styles.navbar}>
-                								<div className={styles.depth3Frame0}>
-                  									<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<b className={styles.wandernest}>WanderNest</b>
-                  									</div>
-                								</div>
-                								<div className={styles.depth3Frame1}>
-                  									<div className={styles.depth4Frame01}>
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<div className={styles.destinations}>Destinations</div>
-                    										</div>
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<div className={styles.destinations}>Hotels</div>
-                    										</div>
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                    										</div>
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<div className={styles.flights} onClick={onDepth4FrameClick}>Packages</div>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame11}>
-                    										<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
-                      											<div className={styles.depth6Frame0}>
-                        												<b className={styles.signUp}>Sign up</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth5Frame11} onClick={onDepth4FrameClick}>
-                      											<div className={styles.depth6Frame0}>
-                        												<b className={styles.signUp}>Log in</b>
-                      											</div>
-                    										</div>
-                    										<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
-                  									</div>
-                								</div>
-              							</div> */}
+              							
               							<div className={styles.depth2Frame1}>
                 								<div className={styles.depth3Frame01}>
                   									<div className={styles.depth4Frame02}>
