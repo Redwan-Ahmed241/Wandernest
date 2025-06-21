@@ -1,12 +1,11 @@
 .aboutUs2 {
-  	position: absolute;
-  	top: 0.45px;
-  	left: 0px;
-  	background-color: #fff;
-  	width: 1920px;
-  	height: 1371px;
-  	display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
 }
+
 .depth4Frame0 {
   	width: 22.4px;
   	height: 22.4px;
@@ -131,22 +130,7 @@
   	gap: 44.8px;
   	font-size: 19.61px;
 }
-.navbar {
-  	position: absolute;
-  	top: 0.45px;
-  	left: 0px;
-  	border-bottom: 1.4px solid #e5e8eb;
-  	box-sizing: border-box;
-  	width: 1920px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	padding: 16.8px 56px;
-  	gap: 0px;
-  	text-align: left;
-  	font-size: 25.21px;
-}
+
 .depth8Frame0 {
   	width: 1037.8px;
   	height: 84px;
@@ -288,18 +272,7 @@
   	padding: 28px 224.1px;
   	box-sizing: border-box;
 }
-.frame {
-  	position: absolute;
-  	top: 91.45px;
-  	left: 0px;
-  	width: 1920px;
-  	height: 1371px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	color: #fff;
-}
+
 .depth6Frame04 {
   	width: 224.1px;
   	display: flex;
@@ -366,24 +339,15 @@
   	justify-content: flex-start;
   	max-width: 1344.47px;
 }
-.footer {
-  	position: absolute;
-  	top: 1462.45px;
-  	left: 0px;
-  	background-color: #1c170d;
-  	width: 1920px;
-  	height: 280px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: center;
-  	color: #e8f2f2;
+
+.aboutUs1,
+.frame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
-.aboutUs1 {
-  	align-self: stretch;
-  	position: relative;
-  	height: 1462px;
-}
+
 .aboutUs {
   	width: 100%;
   	position: relative;

@@ -192,7 +192,7 @@
   	width: 928px;
   	height: 480px;
   	overflow: hidden;
-  	background-image: url('C:\Users\HP\Desktop\Wandernest\Wandernest\public\Figma_photoes\homebg.jpg');
+  	background-image: url('/public/Figma_photoes/homebg.jpg');
   	background-size: cover;
   	background-repeat: no-repeat;
   	background-position: top;
@@ -563,4 +563,3 @@
   	align-items: center;
   	justify-content: flex-start;
 }
-
