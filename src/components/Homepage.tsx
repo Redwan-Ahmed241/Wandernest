@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './Homepage.module.css';
-
+import Layout from './Layout';
 const HomePage:FunctionComponent = () => {
   	const navigate = useNavigate();
   	
@@ -15,6 +15,7 @@ const HomePage:FunctionComponent = () => {
   	}, []);
   	
   	return (
+		<Layout>
     		<button className={styles.homePage}>
       			<div className={styles.homePage1}>
         				<div className={styles.homePage2}>
@@ -39,7 +40,7 @@ const HomePage:FunctionComponent = () => {
                       											<div className={styles.depth5Frame2}>
                         												<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
                       											</div>
-                      											<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
+                      											<div className={styles.depth4Frame1} onClick={onDepth5FrameClick}>
                         												<div className={styles.destinations}>Packages</div>
                       											</div>
                     										</div>
@@ -179,20 +180,20 @@ const HomePage:FunctionComponent = () => {
                         												</div>
                       											</div>
                     										</div>
-                    										<div className={styles.depth2Frame3}>
+                    										{/* <div className={styles.depth2Frame3}>
                       											<div className={styles.depth3Frame02}>
                         												<div className={styles.depth4Frame03}>
                           													<div className={styles.depth5Frame06}>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/about-us')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>About Us</div>
                             														</div>
-                            														<div className={styles.depth6Frame12}>
+                            														<div className={styles.depth6Frame12} onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Contact</div>
                             														</div>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/terms')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Terms of Service</div>
                             														</div>
-                            														<div className={styles.depth6Frame05} onClick={onDepth5FrameClick}>
+                            														<div className={styles.depth6Frame05} onClick={() => navigate('/PrivacyPolicy')} style={{ cursor: 'pointer' }}>
                               															<div className={styles.aboutUs}>Privacy Policy</div>
                             														</div>
                           													</div>
@@ -206,14 +207,15 @@ const HomePage:FunctionComponent = () => {
                           													</div>
                         												</div>
                       											</div>
-                    										</div>
+                    										</div> */}
                   									</div>
                 								</div>
               							</div>
             						</div>
           					</div>
-          					</button>);
+          					</button>
+							</Layout>
+							);
           					};
           					
           					export default HomePage;
-          					
