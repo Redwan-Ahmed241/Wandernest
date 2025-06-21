@@ -1,20 +1,9 @@
 .aboutUs2 {
-<<<<<<< HEAD
   width: 100%;
   min-height: 100vh;
   background-color: #fff;
   display: flex;
   flex-direction: column;
-=======
-  	position: relative;
-  	background-color: #fff;
-  	width: 100%;
-  	max-width: 1344px;
-  	margin: 0 auto;
-  	min-height: 100vh;
-  	display: flex;
-  	flex-direction: column;
->>>>>>> 7cb6ef1 (news)
 }
 
 .depth4Frame0 {
@@ -141,26 +130,6 @@
   	gap: 44.8px;
   	font-size: 19.61px;
 }
-<<<<<<< HEAD
-
-=======
-.navbar {
-  	position: absolute;
-  	top: 0.45px;
-  	left: 0px;
-  	border-bottom: 1.4px solid #e5e8eb;
-  	box-sizing: border-box;
-  	width: 1520px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	padding: 16.8px 56px;
-  	gap: 0px;
-  	text-align: left;
-  	font-size: 25.21px;
-}
->>>>>>> 7cb6ef1 (news)
 .depth8Frame0 {
   	width: 500.8px;
   	height: 84px;
@@ -371,7 +340,6 @@
   	justify-content: flex-start;
   	max-width: 1344.47px;
 }
-<<<<<<< HEAD
 
 .aboutUs1,
 .frame {
@@ -379,25 +347,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-=======
-.footer {
-  	position: absolute;
-  	top: 1462.45px;
-  	left: 0px;
-  	background-color: #1c170d;
-  	width: 1520px;
-  	height: 280px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: center;
-  	color: #e8f2f2;
-}
-.aboutUs1 {
-  	align-self: stretch;
-  	position: relative;
-  	height: 1462px;
->>>>>>> 7cb6ef1 (news)
 }
 
 .aboutUs {
