@@ -467,25 +467,21 @@
     color: #1c170d;
 }
 .depth1Frame0 {
-    align-self: stretch;
-    height: 1543.1px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
 }
 .depth0Frame0 {
-    align-self: stretch;
-    background-color: #fff;
-    height: 1496.3px;
-    overflow: hidden;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    min-height: 585.07px;
-    width: auto;
+   	align-self: stretch;
+  	background-color: #fff;
+  	overflow: visible;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 800px;
 }
 .localGuide {
     position: absolute;
@@ -563,17 +559,15 @@
     height: 1496px;
 }
 .allGuides {
-    position: relative;
+	position: relative;
+  	background-color: #fff;
+   min-height: 100vh;
+  height: auto;
   width: 100%;
-max-width: 1700px;
-margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: left;
-    font-size: 18px;
-    color: #0d1c1c;
-    font-family: 'Plus Jakarta Sans';
+  	text-align: left;
+  	font-size: 18px;
+  	color: #0d1c1c;
+  	font-family: 'Plus Jakarta Sans';
+     padding-left: 1px;
 }
 
