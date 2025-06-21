@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './Support.module.css';
+import styles from './support.module.css';
 
 
 const Support:FunctionComponent = () => {

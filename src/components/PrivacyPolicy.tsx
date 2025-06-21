@@ -5,7 +5,7 @@ import styles from './PrivacyPolicy.module.css';
 const PrivacyPolicy:FunctionComponent = () => {
   	
   	const onDepth4FrameClick = useCallback(() => {
-    		// Add your code here
+    	
   	}, []);
   	
   	return (
@@ -14,7 +14,7 @@ const PrivacyPolicy:FunctionComponent = () => {
         				<div className={styles.depth1Frame0}>
           					<div className={styles.navbar}>
             						<div className={styles.depth3Frame0}>
-              							<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
+              							<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
               							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
                 								<b className={styles.wandernest}>WanderNest</b>
               							</div>
@@ -45,7 +45,7 @@ const PrivacyPolicy:FunctionComponent = () => {
                     										<b className={styles.signUp}>Log in</b>
                   									</div>
                 								</div>
-                								<img className={styles.depth5Frame21} alt="" src="Depth 5, Frame 2.svg" />
+                								<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
               							</div>
             						</div>
           					</div>

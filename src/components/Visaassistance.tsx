@@ -1,12 +1,13 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './VisaAssistance.module.css';
-
+import styles from './Visaassistance.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const VisaAssistance:FunctionComponent = () => {
   	
   	const onDepth4FrameClick = useCallback(() => {
     		// Add your code here
   	}, []);
+	 const navigate = useNavigate(); 
   	
   	return (
     		<div className={styles.visaAssistance}>
@@ -15,8 +16,8 @@ const VisaAssistance:FunctionComponent = () => {
           					<div className={styles.depth1Frame0}>
             						<div className={styles.navbar}>
               							<div className={styles.depth3Frame0}>
-                								<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
-                								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                								<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
+                								<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
                   									<b className={styles.wandernest}>WanderNest</b>
                 								</div>
               							</div>
@@ -46,7 +47,7 @@ const VisaAssistance:FunctionComponent = () => {
                       											<b className={styles.signUp}>Log in</b>
                     										</div>
                   									</div>
-                  									<img className={styles.depth5Frame21} alt="" src="Depth 5, Frame 2.svg" />
+                  									<img className={styles.depth5Frame21} alt=""  src="/Figma_photoes/world.svg" />
                 								</div>
               							</div>
             						</div>
@@ -54,7 +55,7 @@ const VisaAssistance:FunctionComponent = () => {
               							<div className={styles.depth3Frame01}>
                 								<div className={styles.depth4Frame02}>
                   									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt="" src="Depth 6, Frame 0.png" />
+                    										<img className={styles.depth6Frame02} alt="" src="/Figma_photoes/c.jpg" />
                     										<div className={styles.depth6Frame1}>
                       											<div className={styles.depth7Frame0}>
                         												<b className={styles.wandernest}>Currency Rate Monitor</b>
@@ -74,7 +75,7 @@ const VisaAssistance:FunctionComponent = () => {
                 								</div>
                 								<div className={styles.depth4Frame02}>
                   									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt="" src="Depth 6, Frame 0.png" />
+                    										<img className={styles.depth6Frame02} alt=""  src="\Figma_photoes\safety-logo-design-concept-hard-hats-design-vector_137499-12.jpg" />
                     										<div className={styles.depth6Frame1}>
                       											<div className={styles.depth7Frame0}>
                         												<b className={styles.wandernest}>Safety Tips</b>
@@ -94,7 +95,7 @@ const VisaAssistance:FunctionComponent = () => {
                 								</div>
                 								<div className={styles.depth4Frame02}>
                   									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt="" src="Depth 6, Frame 0.png" />
+                    										<img className={styles.depth6Frame02} alt="" src="/Figma_photoes/20230619-113454-8m20-links.png" />
                     										<div className={styles.depth6Frame1}>
                       											<div className={styles.depth7Frame0}>
                         												<b className={styles.wandernest}>Quick Links</b>
@@ -165,7 +166,7 @@ const VisaAssistance:FunctionComponent = () => {
                         												<div className={styles.noVisaRequired}>No visa required for selected citizenship.</div>
                       											</div>
                     										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="Depth 6, Frame 1.png" />
+                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\WhatsApp Image 2025-05-06 at 22.04.17_fcc6cfad.jpg" />
                   									</div>
                 								</div>
                 								<div className={styles.depth4Frame02}>
@@ -178,7 +179,7 @@ const VisaAssistance:FunctionComponent = () => {
                         												<div className={styles.noVisaRequired}>Get your visa upon arrival in Bangladesh.</div>
                       											</div>
                     										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="Depth 6, Frame 1.png" />
+                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\OIP (2).jpeg" />
                   									</div>
                 								</div>
                 								<div className={styles.depth4Frame02}>
@@ -191,7 +192,7 @@ const VisaAssistance:FunctionComponent = () => {
                         												<div className={styles.noVisaRequired}>Apply online for an electronic visa.</div>
                       											</div>
                     										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="Depth 6, Frame 1.png" />
+                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\visa-bangladesh.png" />
                   									</div>
                 								</div>
                 								<div className={styles.depth4Frame6}>
@@ -200,19 +201,19 @@ const VisaAssistance:FunctionComponent = () => {
                 								<div className={styles.depth4Frame02}>
                   									<div className={styles.depth5Frame011}>
                     										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.svg" />
+                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\fill.svg" />
                       											<div className={styles.depth7Frame17}>
                         												<b className={styles.visaFree}>Fill Form</b>
                       											</div>
                     										</div>
                     										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.svg" />
+                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\up.svg" />
                       											<div className={styles.depth7Frame17}>
                         												<b className={styles.visaFree}>Upload Documents</b>
                       											</div>
                     										</div>
                     										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.svg" />
+                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\submit.svg" />
                       											<div className={styles.depth7Frame17}>
                         												<b className={styles.visaFree}>{`Submit & Track`}</b>
                       											</div>
@@ -297,9 +298,9 @@ const VisaAssistance:FunctionComponent = () => {
               							</div>
             						</div>
             						<div className={styles.depth5Frame13}>
-              							<img className={styles.depth7Frame07} alt="" src="Depth 6, Frame 0.svg" />
-              							<img className={styles.depth7Frame07} alt="" src="Depth 6, Frame 1.svg" />
-              							<img className={styles.depth7Frame07} alt="" src="Depth 6, Frame 2.svg" />
+              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\facebook.svg" />
+              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\twitter.svg" />
+              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\insta.svg" />
             						</div>
             						<div className={styles.depth5Frame22}>
               							<div className={styles.updatedDaily}>@2025 WanderNest, All rights reserved.</div>

@@ -122,12 +122,12 @@
     font-size: 12.06px;
 }
 .navbar {
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
     border-bottom: 0.9px solid #e5e8eb;
     box-sizing: border-box;
-    width: 1211px;
+    width: 100;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -536,6 +536,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    width: 1520px;
 }
 .depth0Frame0 {
     align-self: stretch;
@@ -546,6 +547,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     min-height: 736.48px;
+    width: 1520px;
 }
 .guideInfo1 {
     width: 1211px;
@@ -653,7 +655,7 @@
     background-color: #444;
     border: 0.8px solid rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
-    width: 1211px;
+    width: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: row;

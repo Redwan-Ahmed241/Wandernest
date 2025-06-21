@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './Restaurant.module.css';
+import styles from './restaurant.module.css';
 
 
 const Restaurant:FunctionComponent = () => {
