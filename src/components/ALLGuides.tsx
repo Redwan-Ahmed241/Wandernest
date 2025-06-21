@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './ALLguides.module.css';
 import {useNavigate} from "react-router-dom";
-
+import Layout from './Layout';
 const AllGuides:FunctionComponent = () => {
   	
   	const onDepth4FrameClick = useCallback(() => {
@@ -11,12 +11,13 @@ const AllGuides:FunctionComponent = () => {
   	const navigate = useNavigate();
 
   	return (
+		<Layout>
     		<div className={styles.allGuides}>
       			<div className={styles.localGuideParent}>
         				<div className={styles.localGuide}>
           					<div className={styles.depth0Frame0}>
             						<div className={styles.depth1Frame0}>
-              							<div className={styles.navbar}>
+              							{/* <div className={styles.navbar}>
                 								<div className={styles.depth3Frame0}>
                   									<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
                   									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
@@ -52,7 +53,7 @@ const AllGuides:FunctionComponent = () => {
                     										<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
                   									</div>
                 								</div>
-              							</div>
+              							</div> */}
               							<div className={styles.depth2Frame1}>
                 								<div className={styles.depth3Frame01}>
                   									<div className={styles.depth4Frame02}>
@@ -195,7 +196,8 @@ const AllGuides:FunctionComponent = () => {
           					</div>
         				</div>
       			</div>
-    		</div>);
+    		</div>
+			</Layout>);
 };
 
 export default AllGuides;
