@@ -123,18 +123,13 @@
     font-size: 14.96px;
 }
 .navbar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-bottom: 1.1px solid #e5e8eb;
-    box-sizing: border-box;
-    width: 1629.8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12.8px 42.7px;
-    gap: 0px;
+ width: 100%;
+  max-width: 1428px; 
+  margin: 0 auto; 
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .navbarWrapper {
     width: 1525.6px;
@@ -276,7 +271,7 @@
     height: 512.8px;
     overflow: hidden;
     flex-shrink: 0;
-    background-image: url('Depth 6, Frame 0.png');
+    background-image: url('/public/Figma_photoes/Alutila-Cave-Khagrachari.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
@@ -462,7 +457,7 @@
     top: 0px;
     left: 0px;
     background-color: #fff;
-    width: 1630px;
+    width: 1700px;
     height: 1470px;
     overflow: hidden;
     display: flex;

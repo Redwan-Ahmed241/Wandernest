@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './hiring.module.css';
+import styles from './Hiring.module.css';
 
 
 const HiringGuide:FunctionComponent = () => {

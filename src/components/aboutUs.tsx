@@ -1,53 +1,17 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './aboutUs.module.css';
-
+import Layout from './Layout';
 const AboutUs:FunctionComponent = () => {
   	
   	const onDepth4FrameClick = useCallback(() => {
     		// Add your code here
   	}, []);
   	
-  	return (
+  	return ( <Layout>
     		<div className={styles.aboutUs}>
       			<div className={styles.aboutUs1}>
         				<div className={styles.aboutUs2} />
-        				<div className={styles.navbar}>
-          					<div className={styles.depth3Frame0}>
-            						<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/aboutUsHero.jpg" />
-            						<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-              							<b className={styles.wandernest}>WanderNest</b>
-            						</div>
-          					</div>
-          					<div className={styles.depth3Frame1}>
-            						<div className={styles.depth4Frame01}>
-              							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                								<div className={styles.destinations}>Destinations</div>
-              							</div>
-              							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                								<div className={styles.destinations}>Hotels</div>
-              							</div>
-              							<div className={styles.depth5Frame2}>
-                								<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-              							</div>
-              							<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                								<div className={styles.destinations}>Packages</div>
-              							</div>
-            						</div>
-            						<div className={styles.depth4Frame11}>
-              							<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
-                								<div className={styles.depth6Frame0}>
-                  									<b className={styles.signUp}>Sign up</b>
-                								</div>
-              							</div>
-              							<div className={styles.depth5Frame11} onClick={onDepth4FrameClick}>
-                								<div className={styles.depth6Frame0}>
-                  									<b className={styles.signUp}>Log in</b>
-                								</div>
-              							</div>
-              							<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/thePhoto-modified-reduced.jpg" />
-            						</div>
-          					</div>
-        				</div>
+        				
         				<div className={styles.frame}>
           					<div className={styles.depth2Frame0}>
             						<div className={styles.depth3Frame01}>
@@ -141,36 +105,11 @@ const AboutUs:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-        				<div className={styles.footer}>
-          					<div className={styles.depth3Frame02}>
-            						<div className={styles.depth4Frame03}>
-              							<div className={styles.depth5Frame04}>
-                								<div className={styles.depth6Frame04} onClick={onDepth4FrameClick}>
-                  									<div className={styles.explorePurposefullyTravel}>About Us</div>
-                								</div>
-                								<div className={styles.depth6Frame11}>
-                  									<div className={styles.explorePurposefullyTravel}>Contact</div>
-                								</div>
-                								<div className={styles.depth6Frame04} onClick={onDepth4FrameClick}>
-                  									<div className={styles.explorePurposefullyTravel}>Terms of Service</div>
-                								</div>
-                								<div className={styles.depth6Frame04} onClick={onDepth4FrameClick}>
-                  									<div className={styles.explorePurposefullyTravel}>Privacy Policy</div>
-                								</div>
-              							</div>
-              							<div className={styles.depth5Frame12}>
-                								<img className={styles.depth6Frame05} alt="" src="aboutUsHero.jpg" />
-                								<img className={styles.depth6Frame05} alt="" src="aboutUsHero.jpg" />
-                								<img className={styles.depth6Frame05} alt="" src="aboutUsHero.jpg" />
-              							</div>
-              							<div className={styles.depth5Frame22}>
-                								<div className={styles.explorePurposefullyTravel}>@2025 WanderNest, All rights reserved.</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
+        			
       			</div>
-    		</div>);
+    		</div>
+			</Layout>	
+			);
 };
 
 export default AboutUs;

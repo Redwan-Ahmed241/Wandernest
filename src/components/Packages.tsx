@@ -26,38 +26,40 @@ const Packages:FunctionComponent = () => {
                 								<div className={styles.navbarWrapper}>
                   									<div className={styles.navbar}>
                     										<div className={styles.depth3Frame0}>
-                      											<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
-                      											<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                      											<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
+                      											<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
                         												<b className={styles.wandernest}>WanderNest</b>
                       											</div>
                     										</div>
                     										<div className={styles.depth3Frame1}>
                       											<div className={styles.depth4Frame01}>
-                        												<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                        												<div className={styles.depth4Frame1} onClick={() => navigate('/destinations')}>
                           													<div className={styles.destinations}>Destinations</div>
                         												</div>
-                        												<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
+                        												<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
                           													<div className={styles.destinations}>Hotels</div>
                         												</div>
                         												<div className={styles.depth5Frame2}>
-                          													<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
+                          													<div className={styles.flights} onClick={() => navigate('/flights')}>
+                          														Flights
+                          													</div>
                         												</div>
-                        												<div className={styles.depth4Frame1} onClick={onDepth5FrameClick}>
+                        												<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
                           													<div className={styles.destinations}>Packages</div>
                         												</div>
                       											</div>
                       											<div className={styles.depth4Frame11}>
-                        												<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
+                        												<div className={styles.depth5Frame01} onClick={() => navigate('/sign-up')}>
                           													<div className={styles.depth6Frame0}>
                             														<b className={styles.signUp}>Sign up</b>
                           													</div>
                         												</div>
-                        												<div className={styles.depth5Frame11} onClick={onDepth4FrameClick}>
+                        												<div className={styles.depth5Frame11} onClick={() => navigate('/login')}>
                           													<div className={styles.depth6Frame0}>
                             														<b className={styles.signUp}>Log in</b>
                           													</div>
                         												</div>
-                        												<img className={styles.depth5Frame21} alt="" src="Depth 5, Frame 2.svg" />
+                        												<img className={styles.depth5Frame21} alt=""src="/Figma_photoes/world.svg" />
                       											</div>
                     										</div>
                   									</div>
@@ -67,7 +69,7 @@ const Packages:FunctionComponent = () => {
                     										<div className={styles.depth4Frame02}>
                       											<div className={styles.depth5Frame02}>
                         												<div className={styles.depth6Frame02}>
-                          													<img className={styles.depth7Frame0} alt="" src="Depth 7, Frame 0.svg" />
+                          													<img className={styles.depth7Frame0} alt="" src="/Figma_photoes/search.svg" />
                           													<div className={styles.depth7Frame1}>
                             														<div className={styles.searchDestinations}>Search  destinations</div>
                           													</div>
@@ -86,31 +88,31 @@ const Packages:FunctionComponent = () => {
                         												<div className={styles.depth6Frame03}>
                           													<div className={styles.destinations}>Destination</div>
                         												</div>
-                        												<img className={styles.depth6Frame1} alt="" src="Depth 6, Frame 1.svg" />
+                        												<img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
                       											</div>
                       											<div className={styles.depth5Frame03}>
                         												<div className={styles.depth6Frame03}>
                           													<div className={styles.destinations}>Duration</div>
                         												</div>
-                        												<img className={styles.depth6Frame1} alt="" src="Depth 6, Frame 1.svg" />
+                        												<img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
                       											</div>
                       											<div className={styles.depth5Frame03}>
                         												<div className={styles.depth6Frame03}>
                           													<div className={styles.destinations}>Budget</div>
                         												</div>
-                        												<img className={styles.depth6Frame1} alt="" src="Depth 6, Frame 1.svg" />
+                        												<img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
                       											</div>
                       											<div className={styles.depth5Frame03}>
                         												<div className={styles.depth6Frame03}>
                           													<div className={styles.destinations}>Activity</div>
                         												</div>
-                        												<img className={styles.depth6Frame1} alt="" src="Depth 6, Frame 1.svg" />
+                        												<img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
                       											</div>
                     										</div>
                     										<div className={styles.depth4Frame3}>
                       											<div className={styles.depth5Frame04}>
                         												<div className={styles.depth6Frame07}>
-                          													<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 0.png" />
+                          													<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/sundarban.jpg" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>Sundarbans Wildlife Expedition</div>
@@ -121,7 +123,7 @@ const Packages:FunctionComponent = () => {
                           													</div>
                         												</div>
                         												<div className={styles.depth6Frame07}>
-                          													<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 0.png" />
+                          													<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/coxsbazar.jpg" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>Cox’s Bazar Beach Retreat</div>
@@ -132,7 +134,7 @@ const Packages:FunctionComponent = () => {
                           													</div>
                         												</div>
                         												<div className={styles.depth6Frame07}>
-                          													<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 2.png" />
+                          													<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/srimangal.png" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>{`Sylhet Tea Garden & Hill Trek`}</div>
@@ -143,7 +145,7 @@ const Packages:FunctionComponent = () => {
                           													</div>
                         												</div>
                         												<div className={styles.depth6Frame07}>
-                          													<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 0.png" />
+                          													<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/dh-hs.jpg" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>{`Dhaka Historical & Cultural Tour`}</div>
@@ -154,7 +156,7 @@ const Packages:FunctionComponent = () => {
                           													</div>
                         												</div>
                         												<div className={styles.depth6Frame07}>
-                          													<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 0.png" />
+                          													<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/bandorban.jpg" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>Chittagong Hill Tracts Adventure</div>
@@ -167,7 +169,7 @@ const Packages:FunctionComponent = () => {
                       											</div>
                       											<div className={styles.depth5Frame13}>
                         												<div className={styles.depth6Frame08}>
-                          													<img className={styles.depth7Frame05} alt="" src="Depth 7, Frame 0.png" />
+                          													<img className={styles.depth7Frame05} alt="" src="/Figma_photoes/Saint-Martin.jpg" />
                           													<div className={styles.depth7Frame11}>
                             														<div className={styles.depth7Frame11}>
                               															<div className={styles.sundarbansWildlifeExpedition}>St. Martin’s Island Escape</div>
@@ -182,7 +184,7 @@ const Packages:FunctionComponent = () => {
                   									</div>
                 								</div>
               							</div>
-              							<img className={styles.depth5Frame05} alt="" src="Depth 5, Frame 0.svg" />
+              							<img className={styles.depth5Frame05} alt="" src="/Figma_photoes/chat.svg" />
               							<div className={styles.depth2Frame3}>
                 								<div className={styles.depth3Frame02}>
                   									<div className={styles.depth4Frame03}>
@@ -201,9 +203,9 @@ const Packages:FunctionComponent = () => {
                       											</div>
                     										</div>
                     										<div className={styles.depth5Frame14}>
-                      											<img className={styles.depth6Frame010} alt="" src="Depth 6, Frame 0.svg" />
-                      											<img className={styles.depth6Frame010} alt="" src="Depth 6, Frame 1.svg" />
-                      											<img className={styles.depth6Frame010} alt="" src="Depth 6, Frame 2.svg" />
+                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/facebook.svg" />
+                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/twitter.svg" />
+                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/insta.svg" />
                     										</div>
                     										<div className={styles.depth5Frame23}>
                       											<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
