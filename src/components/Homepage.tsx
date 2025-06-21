@@ -29,35 +29,7 @@ const HomePage:FunctionComponent = () => {
                       											<b className={styles.wandernest}>WanderNest</b>
                     										</div>
                   									</div>
-                  									<div className={styles.depth3Frame1}>
-                    										<div className={styles.depth4Frame01}>
-                      											<div className={styles.depth4Frame1}  onClick={() => navigate('/destinations')}>
-                        												<div className={styles.destinations}>Destinations</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
-                        												<div className={styles.destinations}>Hotels</div>
-                      											</div>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={onDepth5FrameClick}>
-                        												<div className={styles.destinations}>Packages</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth4Frame11}>
-                      											<div className={styles.depth5Frame01} onClick={onDepth5FrameClick}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Sign up</b>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth5Frame11} onClick={onDepth5FrameClick}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Log in</b>
-                        												</div>
-                      											</div>
-                      											<img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
-                    										</div>
-                  									</div>
+                  					
                 								</div>
                 								<div className={styles.depth2Frame1}>
                   									<div className={styles.depth3Frame01}>
@@ -180,34 +152,7 @@ const HomePage:FunctionComponent = () => {
                         												</div>
                       											</div>
                     										</div>
-                    										{/* <div className={styles.depth2Frame3}>
-                      											<div className={styles.depth3Frame02}>
-                        												<div className={styles.depth4Frame03}>
-                          													<div className={styles.depth5Frame06}>
-                            														<div className={styles.depth6Frame05} onClick={() => navigate('/about-us')} style={{ cursor: 'pointer' }}>
-                              															<div className={styles.aboutUs}>About Us</div>
-                            														</div>
-                            														<div className={styles.depth6Frame12} onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>
-                              															<div className={styles.aboutUs}>Contact</div>
-                            														</div>
-                            														<div className={styles.depth6Frame05} onClick={() => navigate('/terms')} style={{ cursor: 'pointer' }}>
-                              															<div className={styles.aboutUs}>Terms of Service</div>
-                            														</div>
-                            														<div className={styles.depth6Frame05} onClick={() => navigate('/PrivacyPolicy')} style={{ cursor: 'pointer' }}>
-                              															<div className={styles.aboutUs}>Privacy Policy</div>
-                            														</div>
-                          													</div>
-                          													<div className={styles.depth5Frame12}>
-                            														<img className={styles.depth6Frame06} alt="" src="/Figma_photoes/facebook.svg" />
-                            														<img className={styles.depth6Frame06} alt="" src="/Figma_photoes/twitter.svg" />
-                            														<img className={styles.depth6Frame06} alt="" src="/Figma_photoes/insta.svg" />
-                          													</div>
-                          													<div className={styles.depth5Frame22}>
-                            														<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div> */}
+                    										
                   									</div>
                 								</div>
               							</div>
