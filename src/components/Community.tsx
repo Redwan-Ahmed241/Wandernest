@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Community.module.css';
-
+import Layout from './Layout';
 
 const Community:FunctionComponent = () => {
   	
@@ -9,56 +9,13 @@ const Community:FunctionComponent = () => {
   	}, []);
   	
   	return (
+		<Layout>
     		<div className={styles.community}>
       			<div className={styles.communityWrapper}>
         				<div className={styles.community1}>
           					<div className={styles.depth0Frame0}>
             						<div className={styles.depth1Frame0}>
-              							<div className={styles.depth2Frame0}>
-                								<div className={styles.depth3Frame0}>
-                  									<div className={styles.depth3Frame01}>
-                    										<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<b className={styles.wandernest}>WanderNest</b>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame11}>
-                    										<div className={styles.depth5Frame0}>
-                      											<div className={styles.home}>Home</div>
-                    										</div>
-                    										<div className={styles.depth5Frame0}>
-                      											<div className={styles.home}>Explore</div>
-                    										</div>
-                    										<div className={styles.depth5Frame0}>
-                      											<div className={styles.home}>Groups</div>
-                    										</div>
-                    										<div className={styles.depth5Frame0}>
-                      											<div className={styles.home}>Blog</div>
-                    										</div>
-                    										<div className={styles.depth5Frame0}>
-                      											<div className={styles.home}>Contact</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth3Frame1}>
-                  									<div className={styles.depth4Frame01}>
-                    										<div className={styles.depth5Frame01}>
-                      											<img className={styles.depth6Frame0} alt="" src="Depth 6, Frame 0.svg" />
-                      											<div className={styles.depth6Frame1}>
-                        												<div className={styles.search}>Search</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame12}>
-                    										<div className={styles.depth5Frame02}>
-                      											<div className={styles.depth6Frame01}>
-                        												<b className={styles.signUp}>Sign Up</b>
-                      											</div>
-                    										</div>
-                    										<img className={styles.depth5Frame11} alt="" src="Depth 5, Frame 1.svg" />
-                  									</div>
-                								</div>
-              							</div>
+              							
               							<div className={styles.depth2Frame1}>
                 								<div className={styles.depth3Frame02}>
                   									<div className={styles.depth4Frame02}>
@@ -365,35 +322,9 @@ const Community:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-        				<div className={styles.footer}>
-          					<div className={styles.depth3Frame03}>
-            						<div className={styles.depth4Frame03}>
-              							<div className={styles.depth5Frame08}>
-                								<div className={styles.depth6Frame010} onClick={onDepth4FrameClick}>
-                  									<div className={styles.connectShareAnd}>About Us</div>
-                								</div>
-                								<div className={styles.depth6Frame17}>
-                  									<div className={styles.connectShareAnd}>Contact</div>
-                								</div>
-                								<div className={styles.depth6Frame010} onClick={onDepth4FrameClick}>
-                  									<div className={styles.connectShareAnd}>Terms of Service</div>
-                								</div>
-                								<div className={styles.depth6Frame010} onClick={onDepth4FrameClick}>
-                  									<div className={styles.connectShareAnd}>Privacy Policy</div>
-                								</div>
-              							</div>
-              							<div className={styles.depth5Frame14}>
-                								<img className={styles.depth6Frame011} alt="" src="Depth 6, Frame 0.svg" />
-                								<img className={styles.depth6Frame011} alt="" src="Depth 6, Frame 1.svg" />
-                								<img className={styles.depth6Frame011} alt="" src="Depth 6, Frame 2.svg" />
-              							</div>
-              							<div className={styles.depth5Frame22}>
-                								<div className={styles.connectShareAnd}>@2025 WanderNest, All rights reserved.</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>);
+        				
+      			</div>
+				</Layout>);
       			};
       			
       			export default Community;
