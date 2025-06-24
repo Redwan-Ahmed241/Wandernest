@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './HotelsRooms.module.css';
+import Layout from './Layout';
 
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -75,11 +76,12 @@ const HotelsRooms: FunctionComponent = () => {
   };
 
   return (
+    <Layout>
     <div className={styles.hotelsRooms}>
       {/* Navbar */}
       <div className={styles.depth0Frame0}>
         <div className={styles.depth1Frame0}>
-          <div className={styles.navbarWrapper}>
+          {/* <div className={styles.navbarWrapper}>
             <div className={styles.navbar}>
               <div className={styles.depth3Frame0} onClick={onLogoClick}>
                 <img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
@@ -117,7 +119,7 @@ const HotelsRooms: FunctionComponent = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Main Content */}
           <div className={styles.depth2Frame1}>
@@ -877,7 +879,7 @@ const HotelsRooms: FunctionComponent = () => {
         </div>
 
         {/* Footer */}
-        <div className={styles.depth2Frame3}>
+        {/* <div className={styles.depth2Frame3}>
           <div className={styles.depth3Frame02}>
             <div className={styles.depth4Frame05}>
               <div className={styles.depth5Frame09}>
@@ -904,9 +906,10 @@ const HotelsRooms: FunctionComponent = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
+    </Layout>
   );
 };
 
