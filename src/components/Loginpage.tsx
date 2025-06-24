@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Loginpage.module.css';
+import Footer from './Footer';
 //                     										<div className={styles.depth5Frame2}>';
 
 
@@ -17,7 +18,8 @@ const LoginPage:FunctionComponent = () => {
             						<img className={styles.vector0} alt="" src="Vector - 0.svg" />
             						<b className={styles.wandernest}>WanderNest</b>
           					</div>
-          					<div className={styles.footer}>
+							
+          					{/* <div className={styles.footer}>
             						<div className={styles.depth3Frame0}>
               							<div className={styles.depth4Frame0}>
                 								<div className={styles.depth5Frame0}>
@@ -44,7 +46,7 @@ const LoginPage:FunctionComponent = () => {
                 								</div>
               							</div>
             						</div>
-          					</div>
+          					</div> */}
           					<div className={styles.wandernestParent}>
             						<b className={styles.wandernest1}>WanderNest</b>
             						<div className={styles.groupChild} />
@@ -83,7 +85,8 @@ const LoginPage:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-      			</div>);
+      			</div>
+				);
       			};
       			
       			export default LoginPage;
