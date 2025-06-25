@@ -76,7 +76,7 @@ const AboutUs:FunctionComponent = () => {
                     										<img className={styles.thephotoModifiedReducedRemoIcon} alt="" src="mithil_bro-modified_reduced-removebg-preview 1.png" />
                     										<div className={styles.depth4Frame02}>
                       											<div className={styles.depth8Frame01}>
-                        												<div className={styles.ejazUddinSwaron}>Mojammelul Hossain</div>
+                        												<div className={styles.ejazUddinSwaron}>Mojjammel Hossain</div>
                       											</div>
                       											<div className={styles.depth4Frame02}>
                         												<div className={styles.bangladesh}>Bangladesh</div>
@@ -90,7 +90,7 @@ const AboutUs:FunctionComponent = () => {
                     										<img className={styles.thephotoModifiedReducedRemoIcon} alt="" src="abtahi_bro-modified-reduced 1.png" />
                     										<div className={styles.depth4Frame02}>
                       											<div className={styles.depth8Frame01}>
-                        												<div className={styles.ejazUddinSwaron}>Abathi Majumader</div>
+                        												<div className={styles.ejazUddinSwaron}>Abathi Arifeen</div>
                       											</div>
                       											<div className={styles.depth4Frame02}>
                         												<div className={styles.bangladesh}>Bangladesh</div>
