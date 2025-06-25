@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './MyTrips.module.css';
-
+import Layout from './Layout';
 
 const MyTrips:FunctionComponent = () => {
   	
@@ -8,11 +8,11 @@ const MyTrips:FunctionComponent = () => {
     		// Add your code here
   	}, []);
   	
-  	return (
+  	return (<Layout>
     		<div className={styles.myTrips}>
       			<div className={styles.myTrips1}>
         				<div className={styles.depth1Frame0}>
-          					<div className={styles.depth2Frame0}>
+          					{/* <div className={styles.depth2Frame0}>
             						<div className={styles.depth3Frame0}>
               							<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
               							<div className={styles.depth4Frame1}>
@@ -36,7 +36,7 @@ const MyTrips:FunctionComponent = () => {
               							</div>
               							<img className={styles.depth4Frame11} alt="" src="Depth 4, Frame 1.png" />
             						</div>
-          					</div>
+          					</div> */}
           					<div className={styles.depth2Frame1}>
             						<div className={styles.dashboardComponent}>
               							<div className={styles.depth5Frame11}>
@@ -263,7 +263,8 @@ const MyTrips:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-      			</div>);
+      			</div>
+				</Layout>);
       			};
       			
       			export default MyTrips;
