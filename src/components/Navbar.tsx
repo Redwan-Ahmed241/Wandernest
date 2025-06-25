@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
           <div className={styles.depth5Frame2}>
             <div className={styles.flights} onClick={goHome}>Flights</div>
           </div>
-          <div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
+          <div className={styles.depth4Frame1} onClick={() => navigate('/Packages')}>
             <div className={styles.destinations}>Packages</div>
           </div>
         </div>
