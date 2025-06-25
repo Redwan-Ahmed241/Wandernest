@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './Packages.module.css';
-
+import Layout from './Layout';
 
 const Packages:FunctionComponent = () => {
   	const navigate = useNavigate();
@@ -15,55 +15,15 @@ const Packages:FunctionComponent = () => {
     		navigate("/tour-packages");
   	}, [navigate]);
   	
-  	return (
+  	return (<Layout>
     		<div className={styles.packages}>
       			<div className={styles.tourPackagesWrapper}>
         				<div className={styles.tourPackages}>
           					<div className={styles.tourPackages1}>
             						<div className={styles.depth0Frame0}>
-              							<div className={styles.footer} />
+              							
               							<div className={styles.depth1Frame0}>
-                								<div className={styles.navbarWrapper}>
-                  									<div className={styles.navbar}>
-                    										<div className={styles.depth3Frame0}>
-                      											<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-                      											<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
-                        												<b className={styles.wandernest}>WanderNest</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth3Frame1}>
-                      											<div className={styles.depth4Frame01}>
-                        												<div className={styles.depth4Frame1} onClick={() => navigate('/destinations')}>
-                          													<div className={styles.destinations}>Destinations</div>
-                        												</div>
-                        												<div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
-                          													<div className={styles.destinations}>Hotels</div>
-                        												</div>
-                        												<div className={styles.depth5Frame2}>
-                          													<div className={styles.flights} onClick={() => navigate('/flights')}>
-                          														Flights
-                          													</div>
-                        												</div>
-                        												<div className={styles.depth4Frame1} onClick={() => navigate('/packages')}>
-                          													<div className={styles.destinations}>Packages</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth4Frame11}>
-                        												<div className={styles.depth5Frame01} onClick={() => navigate('/sign-up')}>
-                          													<div className={styles.depth6Frame0}>
-                            														<b className={styles.signUp}>Sign up</b>
-                          													</div>
-                        												</div>
-                        												<div className={styles.depth5Frame11} onClick={() => navigate('/login')}>
-                          													<div className={styles.depth6Frame0}>
-                            														<b className={styles.signUp}>Log in</b>
-                          													</div>
-                        												</div>
-                        												<img className={styles.depth5Frame21} alt=""src="/Figma_photoes/world.svg" />
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
+                								
                 								<div className={styles.depth2Frame1}>
                   									<div className={styles.depth3Frame01}>
                     										<div className={styles.depth4Frame02}>
@@ -184,40 +144,14 @@ const Packages:FunctionComponent = () => {
                   									</div>
                 								</div>
               							</div>
-              							<img className={styles.depth5Frame05} alt="" src="/Figma_photoes/chat.svg" />
-              							<div className={styles.depth2Frame3}>
-                								<div className={styles.depth3Frame02}>
-                  									<div className={styles.depth4Frame03}>
-                    										<div className={styles.depth5Frame06}>
-                      											<div className={styles.depth6Frame09} onClick={onDepth4FrameClick}>
-                        												<div className={styles.aboutUs}>About Us</div>
-                      											</div>
-                      											<div className={styles.depth6Frame15}>
-                        												<div className={styles.aboutUs}>Contact</div>
-                      											</div>
-                      											<div className={styles.depth6Frame09} onClick={onDepth4FrameClick}>
-                        												<div className={styles.aboutUs}>Terms of Service</div>
-                      											</div>
-                      											<div className={styles.depth6Frame09} onClick={onDepth4FrameClick}>
-                        												<div className={styles.aboutUs}>Privacy Policy</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth5Frame14}>
-                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/facebook.svg" />
-                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/twitter.svg" />
-                      											<img className={styles.depth6Frame010} alt="" src="/Figma_photoes/insta.svg" />
-                    										</div>
-                    										<div className={styles.depth5Frame23}>
-                      											<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
-                    										</div>
-                  									</div>
-                								</div>
-              							</div>
+              							
+              							
             						</div>
           					</div>
         				</div>
       			</div>
-    		</div>);
+    		</div>
+			</Layout>);
 };
 
 export default Packages;
