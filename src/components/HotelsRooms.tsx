@@ -878,35 +878,7 @@ const HotelsRooms: FunctionComponent = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        {/* <div className={styles.depth2Frame3}>
-          <div className={styles.depth3Frame02}>
-            <div className={styles.depth4Frame05}>
-              <div className={styles.depth5Frame09}>
-                <div className={styles.depth6Frame018} onClick={() => navigate("/about")}>
-                  <div className={styles.findThePerfect}>About Us</div>
-                </div>
-                <div className={styles.depth6Frame114} onClick={() => navigate("/contact")}>
-                  <div className={styles.findThePerfect}>Contact</div>
-                </div>
-                <div className={styles.depth6Frame018} onClick={() => navigate("/terms")}>
-                  <div className={styles.findThePerfect}>Terms of Service</div>
-                </div>
-                <div className={styles.depth6Frame018} onClick={() => navigate("/privacy")}>
-                  <div className={styles.findThePerfect}>Privacy Policy</div>
-                </div>
-              </div>
-              <div className={styles.depth5Frame17}>
-                <img className={styles.depth6Frame019} alt="" src="/Figma_photoes/facebook.svg" />
-                <img className={styles.depth6Frame019} alt="" src="/Figma_photoes/twitter.svg" />
-                <img className={styles.depth6Frame019} alt="" src="/Figma_photoes/insta.svg" />
-              </div>
-              <div className={styles.depth5Frame24}>
-                <div className={styles.findThePerfect}>@2025 WanderNest, All rights reserved.</div>
-              </div>
-            </div>
-          </div>
-        </div> */}
+ 
       </div>
     </div>
     </Layout>
