@@ -22,7 +22,7 @@ import Layout from './components/Layout';
 import Destination01 from './components/Destination_01';
 import Community from './components/Community';
 import './global.css';
-//import Packages from './components/Packages';
+import Packages from './components/Packages';
 
 function App() {
   return (
@@ -52,7 +52,7 @@ function App() {
         <Route path="/destination-01" element={<Destination01 />} />
         <Route path="/community" element={<Community />} />
         {/* Uncomment the following line if you have a Packages component */}
-        {/* <Route path="/packages" element={<Packages />} /> */}
+        {<Route path="/packages" element={<Packages />} />}
         
         {/* Add more routes as needed */}
         
