@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Hiring.module.css';
+import Layout from './Layout';
 
 
 const HiringGuide:FunctionComponent = () => {
@@ -8,13 +9,13 @@ const HiringGuide:FunctionComponent = () => {
     		// Add your code here
   	}, []);
   	
-  	return (
+  	return ( <Layout>
     		<div className={styles.hiringGuide}>
       			<div className={styles.guideInfo}>
         				<div className={styles.guideInfo1}>
           					<div className={styles.depth0Frame0}>
             						<div className={styles.depth1Frame0}>
-              							<div className={styles.navbarWrapper}>
+              							{/* <div className={styles.navbarWrapper}>
                 								<div className={styles.navbar}>
                   									<div className={styles.depth3Frame0}>
                     										<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
@@ -52,7 +53,7 @@ const HiringGuide:FunctionComponent = () => {
                     										</div>
                   									</div>
                 								</div>
-              							</div>
+              							</div> */}
               							<div className={styles.depth2Frame1}>
                 								<div className={styles.depth3Frame01}>
                   									<div className={styles.depth4Frame02}>
@@ -296,7 +297,7 @@ const HiringGuide:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-        				<div className={styles.footer}>
+        				{/* <div className={styles.footer}>
           					<div className={styles.depth3Frame02}>
             						<div className={styles.depth4Frame04}>
               							<div className={styles.depth5Frame06}>
@@ -323,9 +324,10 @@ const HiringGuide:FunctionComponent = () => {
               							</div>
             						</div>
           					</div>
-        				</div>
+        				</div> */}
       			</div>
-    		</div>);
+    		</div>
+			</Layout>);
 };
 
 export default HiringGuide;
