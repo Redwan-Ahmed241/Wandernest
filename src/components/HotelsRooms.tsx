@@ -2,7 +2,6 @@ import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './HotelsRooms.module.css';
 import Layout from './Layout';
-
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate();
   const [hotelQuery, setHotelQuery] = useState('');

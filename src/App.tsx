@@ -19,7 +19,7 @@ import VisaAssistance from './components/Visaassistance';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Layout from './components/Layout';
-import Destination01 from './components/Destination_01';
+
 import Community from './components/Community';
 import './global.css';
 import Packages from './components/Packages';
@@ -49,7 +49,7 @@ function App() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/layout" element={<Layout children={undefined} />} />
         <Route path="/destinations" element={<Destinations />} />
-        <Route path="/destination-01" element={<Destination01 />} />
+      
         <Route path="/community" element={<Community />} />
         {/* Uncomment the following line if you have a Packages component */}
         {<Route path="/packages" element={<Packages />} />}
