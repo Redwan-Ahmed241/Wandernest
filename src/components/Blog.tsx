@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Blog.module.css';
+import Footer from './Footer';
 
 
 const Blogs:FunctionComponent = () => {
@@ -114,7 +115,7 @@ const Blogs:FunctionComponent = () => {
           					</div>
         				</div>
       			</div>
-      			<div className={styles.footer}>
+      			{/* <div className={styles.footer}>
         				<div className={styles.depth3Frame02}>
           					<div className={styles.depth4Frame04}>
             						<div className={styles.depth5Frame07}>
@@ -141,8 +142,10 @@ const Blogs:FunctionComponent = () => {
             						</div>
           					</div>
         				</div>
-      			</div>
-    		</div>);
+      			</div> */}
+	  			<Footer></Footer>
+    		</div>
+		);
 };
 
 export default Blogs;
