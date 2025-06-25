@@ -129,3 +129,26 @@
   height: 40px;
   flex-shrink: 0;
 }
+
+.destinations, .flights, .signUp, .depth5Frame01, .depth5Frame11 {
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.destinations:hover, .flights:hover, .signUp:hover, .depth5Frame01:hover, .depth5Frame11:hover {
+  color: #0d1c1c;
+  background: rgba(106, 177, 135, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px 0 rgba(106, 177, 135, 0.25), 0 1.5px 8px 0 rgba(78, 148, 79, 0.10);
+  transform: scale(1.04);
+}
+
+/* Hover effect for logo */
+.depth3Frame0:hover .wandernest {
+  color: #4a6b5b;
+ 
+  text-underline-offset: 4px;
+}
+
+.depth4Frame0:hover {
+  transform: scale(1.1);
+}
