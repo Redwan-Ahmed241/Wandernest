@@ -2,6 +2,80 @@ import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './HotelsRooms.module.css';
 import Layout from './Layout';
+
+const FILTERS = [
+  {
+    label: 'Price Range',
+    key: 'price',
+    options: ['$0 - $50', '$50 - $100', '$100 - $200', '$200+']
+  },
+  {
+    label: 'Star Rating',
+    key: 'rating',
+    options: ['5 stars', '4 stars', '3 stars', '2 stars', '1 star']
+  },
+  {
+    label: 'Amenities',
+    key: 'amenities',
+    options: ['WiFi', 'Pool', 'Gym', 'Spa', 'Restaurant']
+  },
+  {
+    label: 'Location',
+    key: 'location',
+    options: ['City Center', 'Beachfront', 'Mountain View', 'Countryside']
+  },
+  {
+    label: 'Room Type',
+    key: 'roomType',
+    options: ['Single', 'Double', 'Suite', 'Family']
+  }
+];
+
+const HOTELS = [
+  {
+    id: 'six-seasons',
+    name: 'Luxury Hotel',
+    description: '5-star luxury experience',
+    location: 'City Center',
+    image: '/Figma_photoes/six-seasons-hotel.jpg',
+  },
+  {
+    id: 'budget-inn',
+    name: 'Budget Inn',
+    description: 'Affordable and cozy',
+    location: 'City Center',
+    image: '/Figma_photoes/inn.jpg',
+  },
+  {
+    id: 'beachside-resort',
+    name: 'Beachside Resort',
+    description: 'Relax by the sea',
+    location: 'Beachfront',
+    image: '/Figma_photoes/swimming-pool.jpg',
+  },
+  {
+    id: 'mountain-retreat',
+    name: 'Mountain Retreat',
+    description: 'Breathtaking mountain views',
+    location: 'Mountain View',
+    image: '/Figma_photoes/hillside-resort.jpg',
+  },
+  {
+    id: 'city-center',
+    name: 'City Center Hotel',
+    description: 'Stay in the heart of the city',
+    location: 'City Center',
+    image: '/Figma_photoes/city_center_hotel.png',
+  },
+  {
+    id: 'countryside-lodge',
+    name: 'Countryside Lodge',
+    description: 'Peaceful countryside escape',
+    location: 'Countryside',
+    image: '/Figma_photoes/c_lodge.jpeg',
+  }
+];
+
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate();
   const [hotelQuery, setHotelQuery] = useState('');
@@ -21,6 +95,8 @@ const HotelsRooms: FunctionComponent = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [openFilter, setOpenFilter] = useState<string | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
       setCalendarMonth(11);
@@ -101,6 +177,15 @@ const HotelsRooms: FunctionComponent = () => {
     }
   };
 
+  const filteredHotels = HOTELS.filter(hotel => {
+    const query = hotelQuery.toLowerCase();
+    return (
+      hotel.name.toLowerCase().includes(query) ||
+      hotel.description.toLowerCase().includes(query) ||
+      hotel.location.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <Layout>
     <div className={styles.hotelsRooms}>
@@ -154,111 +239,57 @@ const HotelsRooms: FunctionComponent = () => {
               <div className={styles.depth4Frame02}>
                 {/* Updated Search Input */}
                 <div className={styles.depth5Frame02}>
-                  <div className={styles.searchContainer}>
+                  <div className={styles.searchBarContainer}>
+                    <img
+                      src="/Figma_photoes/search.svg"
+                      alt="search"
+                      className={styles.searchIconInside}
+                    />
                     <input
                       type="text"
                       value={hotelQuery}
-                      onChange={(e) => setHotelQuery(e.target.value)}
+                      onChange={e => setHotelQuery(e.target.value)}
                       placeholder="Search hotels, rooms..."
                       className={styles.searchInput}
                     />
-                    <button className={styles.searchButton} onClick={handleHotelSearch}>
-                      Search
-                    </button>
                   </div>
                 </div>
               </div>
               <div className={styles.depth4Frame12}>
-                {/* Price Range Filter */}
-                <div className={styles.depth5Frame03} onClick={() => toggleFilter('price')}>
-                  <div className={styles.depth6Frame03}>
-                    <div className={styles.destinations}>Price Range</div>
+                {/* Modern Filters Row */}
+                <div className={styles.filtersRow}>
+                  {FILTERS.map(filter => (
+                    <div key={filter.key} className="relative">
+                      <button
+                        className={`${styles.filterButton} ${openFilter === filter.key ? styles.selected : ''}`}
+                        onClick={() => setOpenFilter(openFilter === filter.key ? null : filter.key)}
+                        type="button"
+                      >
+                        {selectedOptions[filter.key] || filter.label}
+                        <img 
+                          src="/Figma_photoes/darrow.svg" 
+                          alt="▼" 
+                          className={styles.filterDropdownArrow}
+                        />
+                      </button>
+                      {openFilter === filter.key && (
+                        <div className={styles.filterDropdown}>
+                          {filter.options.map(option => (
+                            <div
+                              key={option}
+                              className={`${styles.filterDropdownOption} ${selectedOptions[filter.key] === option ? styles.selected : ''}`}
+                              onClick={() => {
+                                setSelectedOptions({ ...selectedOptions, [filter.key]: option });
+                                setOpenFilter(null);
+                              }}
+                            >
+                              {option}
                   </div>
-                  <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/downarrow.png" />
-                  {showPriceRange && (
-                    <div className={styles.filterOptions}>
-                      <div className={styles.filterOption}>$0 - $50</div>
-                      <div className={styles.filterOption}>$50 - $100</div>
-                      <div className={styles.filterOption}>$100 - $200</div>
-                      <div className={styles.filterOption}>$200+</div>
+                          ))}
                     </div>
                   )}
-                </div>
-
-                {/* Star Rating Filter */}
-                <div className={styles.depth5Frame03} onClick={() => toggleFilter('rating')}>
-                  <div className={styles.depth6Frame03}>
-                    <div className={styles.destinations}>Star Rating</div>
-                  </div>
-                  <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/downarrow.png" />
-                  {showStarRating && (
-                    <div className={styles.filterOptions}>
-                      <div className={styles.filterOption}>
-                        <img src="/Figma_photoes/star.svg" alt="5 stars" /> 5 stars
-                      </div>
-                      <div className={styles.filterOption}>
-                        <img src="/Figma_photoes/star.svg" alt="4 stars" /> 4 stars
-                      </div>
-                      <div className={styles.filterOption}>
-                        <img src="/Figma_photoes/star.svg" alt="3 stars" /> 3 stars
-                      </div>
-                      <div className={styles.filterOption}>
-                        <img src="/Figma_photoes/star.svg" alt="2 stars" /> 2 stars
-                      </div>
-                      <div className={styles.filterOption}>
-                        <img src="/Figma_photoes/star.svg" alt="1 star" /> 1 star
-                      </div>
                     </div>
-                  )}
-                </div>
-
-                {/* Amenities Filter */}
-                <div className={styles.depth5Frame03} onClick={() => toggleFilter('amenities')}>
-                  <div className={styles.depth6Frame03}>
-                    <div className={styles.destinations}>Amenities</div>
-                  </div>
-                  <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/downarrow.png" />
-                  {showAmenities && (
-                    <div className={styles.filterOptions}>
-                      <div className={styles.filterOption}>WiFi</div>
-                      <div className={styles.filterOption}>Pool</div>
-                      <div className={styles.filterOption}>Gym</div>
-                      <div className={styles.filterOption}>Spa</div>
-                      <div className={styles.filterOption}>Restaurant</div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Location Filter */}
-                <div className={styles.depth5Frame03} onClick={() => toggleFilter('location')}>
-                  <div className={styles.depth6Frame03}>
-                    <div className={styles.destinations}>Location</div>
-                  </div>
-                  <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/downarrow.png" />
-                  {showLocation && (
-                    <div className={styles.filterOptions}>
-                      <div className={styles.filterOption}>City Center</div>
-                      <div className={styles.filterOption}>Beachfront</div>
-                      <div className={styles.filterOption}>Mountain View</div>
-                      <div className={styles.filterOption}>Countryside</div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Room Type Filter */}
-                <div className={styles.depth5Frame03} onClick={() => toggleFilter('roomType')}>
-                  <div className={styles.depth6Frame03}>
-                    <div className={styles.destinations}>Room Type</div>
-                  </div>
-                  <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/downarrow.png" />
-                  {showRoomType && (
-                    <div className={styles.filterOptions}>
-                      <div className={styles.filterOption}>Single</div>
-                      <div className={styles.filterOption}>Double</div>
-                      <div className={styles.filterOption}>Suite</div>
-                      <div className={styles.filterOption}>Family</div>
-                    </div>
-                  )}
+                  ))}
                 </div>
               </div>
               <div className={styles.depth4Frame2}>
@@ -324,75 +355,25 @@ const HotelsRooms: FunctionComponent = () => {
               </div>
               <div className={styles.depth4Frame13}>
                 <div className={styles.depth5Frame06}>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("six-seasons")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/six-seasons-hotel.jpg" />
-                    <div className={styles.depth1Frame0}>
+                  {filteredHotels.map(hotel => (
+                    <div
+                      className={styles.depth6Frame012}
+                      key={hotel.id}
+                      onClick={() => onHotelClick(hotel.id)}
+                    >
+                      <img className={styles.depth7Frame05} alt="" src={hotel.image} />
                       <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Luxury Hotel</div>
+                    <div className={styles.depth1Frame0}>
+                          <div className={styles.luxuryHotel}>{hotel.name}</div>
                       </div>
                       <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>5-star luxury experience</div>
+                          <div className={styles.starLuxuryExperience}>{hotel.description}</div>
+                      </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("budget-inn")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/inn.jpg" />
-                    <div className={styles.depth1Frame0}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Budget Inn</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Affordable and cozy</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("beachside-resort")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/swimming-pool.jpg" />
-                    <div className={styles.depth1Frame0}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Beachside Resort</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Relax by the sea</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("mountain-retreat")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/hillside-resort.jpg" />
-                    <div className={styles.depth1Frame0}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Mountain Retreat</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Breathtaking mountain views</div>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-                <div className={styles.depth5Frame06}>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("city-center")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/city_center_hotel.png" />
-                    <div className={styles.depth1Frame0}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>City Center Hotel</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Stay in the heart of the city</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame012} onClick={() => onHotelClick("countryside-lodge")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/c_lodge.jpeg" />
-                    <div className={styles.depth1Frame0}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Countryside Lodge</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Peaceful countryside escape</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+             
               </div>
               <div className={styles.depth4Frame21}>
                 <b className={styles.localAmenitiesAnd}>Local Amenities and Guides</b>
