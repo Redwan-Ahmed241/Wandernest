@@ -1,28 +1,28 @@
 import { FunctionComponent } from 'react';
-import './Loginpage.module.css';
+import styles from './Loginpage.module.css';
 
 
 const Component1:FunctionComponent = () => {
   	return (
     		<div className="div">
-      			<div className="images">
-        				<img className="images-child" alt="" src="Rectangle 6.png" />
-        				<img className="images-item" alt="" src="Rectangle 7.png" />
-        				<img className="images-inner" alt="" src="Rectangle 8.png" />
-        				<img className="rectangle-icon" alt="" src="Rectangle 9.png" />
-        				<img className="images-child1" alt="" src="Rectangle 6.png" />
-        				<img className="images-child2" alt="" src="Rectangle 7.png" />
-        				<img className="images-child3" alt="" src="Rectangle 8.png" />
-        				<img className="images-child4" alt="" src="Rectangle 9.png" />
-        				<img className="images-child5" alt="" src="Rectangle 6.png" />
-        				<img className="images-child6" alt="" src="Rectangle 7.png" />
-        				<img className="images-child7" alt="" src="Rectangle 8.png" />
-        				<img className="images-child8" alt="" src="Rectangle 9.png" />
-        				<img className="images-child9" alt="" src="Rectangle 6.png" />
-        				<img className="images-child10" alt="" src="Rectangle 7.png" />
-        				<img className="images-child11" alt="" src="Rectangle 8.png" />
-        				<img className="images-child12" alt="" src="Rectangle 9.png" />
-      			</div>
+      	<div className={styles.images}>
+  <div className={styles.imagesChild} />
+  <div className={styles.imagesItem} />
+  <div className={styles.imagesInner} />
+  <div className={styles.rectangleIcon} />
+  <div className={styles.imagesChild1} />
+  <div className={styles.imagesChild2} />
+  <div className={styles.imagesChild3} />
+  <div className={styles.imagesChild4} />
+  <div className={styles.imagesChild5} />
+  <div className={styles.imagesChild6} />
+  <div className={styles.imagesChild7} />
+  <div className={styles.imagesChild8} />
+  <div className={styles.imagesChild9} />
+  <div className={styles.imagesChild10} />
+  <div className={styles.imagesChild11} />
+  <div className={styles.imagesChild12} />
+</div>
       			<div className="background">
         				<div className="background-child" />
       			</div>
