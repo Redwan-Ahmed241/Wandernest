@@ -23,7 +23,7 @@ import Layout from './components/Layout';
 import Community from './components/Community';
 import './global.css';
 import Packages from './components/Packages';
-
+import CreatePackage from './components/CreatePackages';
 function App() {
   return (
     <Router>
@@ -49,7 +49,7 @@ function App() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/layout" element={<Layout children={undefined} />} />
         <Route path="/destinations" element={<Destinations />} />
-      
+        <Route path="/create-package" element={<CreatePackage />} />
         <Route path="/community" element={<Community />} />
         {/* Uncomment the following line if you have a Packages component */}
         {<Route path="/packages" element={<Packages />} />}
