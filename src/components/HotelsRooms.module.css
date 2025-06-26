@@ -904,3 +904,77 @@
     width: 100%;
   }
 }
+
+.calendarContainer {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 24px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 24px 16px;
+}
+
+.calendarHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.calendarNavBtn {
+  background: none;
+  border: none;
+  font-size: 1.4em;
+  cursor: pointer;
+  color: #222;
+  padding: 0 8px;
+}
+
+.calendarMonthLabel {
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.calendarWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.calendarWeekday {
+  padding: 4px 0;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendarDay, .calendarDayEmpty {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 1em;
+  color: #222;
+}
+
+.calendarDayEmpty {
+  background: none;
+}
+
+.calendarDay:hover {
+  background: #e8f5e8 !important;
+  border-radius: 50% !important;
+}
+
+.selectedCalendarDay {
+  background: #b7c6a7 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+}
