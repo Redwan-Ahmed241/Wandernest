@@ -1,191 +1,62 @@
-.depth4Frame0 {
-  	width: 16px;
-  	height: 16px;
+:root {
+  --primary-color: #007e6a;
+  --text-color: #0d1c1c;
+  --muted-text: #444;
+  --background-light: #f7fcfc;
+  --background-dark: #1c170d;
 }
-.wandernest {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 18px;
-  	line-height: 23px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-}
-.depth4Frame1 {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	cursor: pointer;
-}
-.depth3Frame0 {
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: flex-start;
-  	gap: 16px;
-}
-.destinations {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 14px;
-  	line-height: 21px;
-  	font-weight: 500;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-}
-.flights {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 14px;
-  	line-height: 21px;
-  	font-weight: 500;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-  	cursor: pointer;
-}
-.depth5Frame2 {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-}
-.depth4Frame01 {
-  	height: 40px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: flex-start;
-  	gap: 36px;
-}
-.signUp {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 14px;
-  	line-height: 21px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: center;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-  	white-space: nowrap;
-}
-.depth6Frame0 {
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: flex-start;
-}
-.depth5Frame01 {
-  	width: 84px;
-  	border-radius: 12px;
-  	background-color: #abb79a;
-  	height: 40px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: center;
-  	padding: 0px 16px;
-  	box-sizing: border-box;
-  	min-width: 84px;
-  	max-width: 480px;
-  	cursor: pointer;
-}
-.depth5Frame11 {
-  	width: 84px;
-  	border-radius: 12px;
-  	background-color: #e8f2f2;
-  	height: 40px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: center;
-  	padding: 0px 16px;
-  	box-sizing: border-box;
-  	min-width: 84px;
-  	max-width: 480px;
-  	cursor: pointer;
-}
-.depth5Frame21 {
-  	width: 40px;
-  	border-radius: 12px;
-  	height: 40px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	max-width: 480px;
-}
-.depth4Frame11 {
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 8px;
-}
-.depth3Frame1 {
-  	flex: 1;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-end;
-  	gap: 32px;
-}
-.navbar {
-  width: 100%; /* Full width */
-  flex: 1;
-  border-bottom: 1px solid #e5e8eb;
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
+  background-color: #fff;
+  color: var(--text-color);
+}
+
+/* ------------------ Layout Wrapper ------------------ */
+
+.homePage {
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 40px;
-  gap: 0px;
+  background-color: var(--background-light);
+  padding-bottom: 60px;
 }
-.discoverTheBeauty {
-  	position: absolute;
-  	top: 0px;
-  	left: 45px;
-  	font-size: 20px;
-  	line-height: 24px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #fff;
-  	text-align: center;
-}
-.depth8Frame1 {
-  	position: absolute;
-  	top: 68px;
-  	left: 0px;
-  	width: 829px;
-  	height: 24px;
-}
-.depth7Frame0 {
-  	position: absolute;
-  	top: 247px;
-  	left: calc(50% - 414px);
-  	width: 829px;
-  	height: 92px;
-}
-.exploreBangladeshWith {
-  	position: absolute;
-  	top: 210px;
-  	left: 63px;
-  	font-size: 48px;
-  	letter-spacing: -2px;
-  	line-height: 60px;
-  	font-weight: 800;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #fff;
-  	text-align: center;
-}
+
+/* ------------------ Hero Section ------------------ */
+
 .depth6Frame02 {
-  	position: absolute;
+  position: relative;
+  top: 16px;
+  left: 16px;
+  width: 80%;
+  height: 480px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-image: url('/public/Figma_photoes/homebg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 40% 60%;
+
+  border-radius: 12px;
+  overflow: hidden;
+        
+  position: relative;          
+
+ 
+}
+
+
+	/* position: absolute;
   	top: 16px;
   	left: 16px;
   	border-radius: 12px;
@@ -196,370 +67,195 @@
   	background-size: cover;
   	background-repeat: no-repeat;
   	background-position: top;
-  	min-height: 480px;
-}
-.depth5Frame02 {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	width: 960px;
-  	height: 512px;
-}
-.depth4Frame02 {
-  	width: 960px;
-  	position: relative;
-  	height: 512px;
-}
-.featuredDestinations {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 22px;
-  	line-height: 28px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-}
-.depth4Frame12 {
-  	align-self: stretch;
-  	height: 60px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 20px 16px 12px;
-  	box-sizing: border-box;
-}
-.depth7Frame01 {
-  	align-self: stretch;
-  	position: relative;
-  	border-radius: 12px;
-  	max-width: 100%;
-  	overflow: hidden;
-  	height: 197px;
-  	flex-shrink: 0;
-  	object-fit: cover;
-}
-.srimangal {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 16px;
-  	line-height: 24px;
-  	font-weight: 500;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-}
-.exploreLushTea {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 14px;
-  	line-height: 21px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #444;
-  	text-align: left;
-}
-.depth7Frame1 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-}
-.depth6Frame03 {
-  	align-self: stretch;
-  	flex: 1;
-  	border-radius: 8px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 16px;
-  	min-width: 160px;
-}
-.depth6Frame1 {
-  	align-self: stretch;
-  	flex: 1;
-  	border-radius: 8px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 16px;
-  	min-width: 160px;
-  	cursor: pointer;
-}
-.depth5Frame03 {
-  	width: 648px;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 16px;
-  	box-sizing: border-box;
-  	gap: 12px;
-}
-.depth4Frame2 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	cursor: pointer;
-}
-.depth7Frame05 {
-  	align-self: stretch;
-  	max-width: 100%;
-  	overflow: hidden;
-  	height: 24px;
-  	flex-shrink: 0;
-}
-.visaAssistance {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 16px;
-  	line-height: 20px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #0d1c1c;
-  	text-align: left;
-}
-.depth8Frame04 {
-  	align-self: stretch;
-  	height: 20px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-}
-.depth7Frame14 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 4px;
-}
-.depth6Frame04 {
-  	align-self: stretch;
-  	width: 301px;
-  	border-radius: 8px;
-  	background-color: #f7fcfc;
-  	border: 1px solid #d1e8e8;
-  	box-sizing: border-box;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 16px;
-  	gap: 12px;
-  	cursor: pointer;
-}
-.depth5Frame04 {
-  	align-self: stretch;
-  	flex: 1;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 12px;
-}
-.depth4Frame4 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 16px;
-}
-.depth5Frame05 {
-  	width: 61px;
-  	position: relative;
-  	border-radius: 12px;
-  	height: 60px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	max-width: 480px;
-}
-.depth4Frame5 {
-  	align-self: stretch;
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-end;
-  	padding: 0px 20px 20px;
-}
-.depth3Frame01 {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	width: 960px;
-  	height: 1205px;
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	max-width: 960px;
-}
-.depth6Frame31 {
-  	position: absolute;
-  	top: 588px;
-  	left: 704px;
-  	border-radius: 8px;
-  	width: 160px;
-  	height: 279px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 16px;
-  	min-width: 160px;
-}
-.depth2Frame1 {
-  	width: 960px;
-  	position: relative;
-  	height: 1205px;
-}
-.aboutUs {
-  	align-self: stretch;
-  	position: relative;
-  	font-size: 16px;
-  	line-height: 24px;
-  	font-family: 'Plus Jakarta Sans';
-  	color: #e8f2f2;
-  	text-align: center;
-}
-.depth6Frame05 {
-  	width: 160px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: flex-start;
-  	min-width: 160px;
-  	cursor: pointer;
-}
-.depth6Frame12 {
-  	width: 160px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: flex-start;
-  	min-width: 160px;
-}
-.depth5Frame06 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: space-between;
-  	flex-wrap: wrap;
-  	align-content: center;
-  	gap: 24px 0px;
-}
-.depth6Frame06 {
-  	width: 24px;
-  	height: 24px;
-}
-.depth5Frame12 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: center;
-  	flex-wrap: wrap;
-  	align-content: flex-start;
-  	gap: 16px;
-}
-.depth5Frame22 {
-  	align-self: stretch;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: flex-start;
-}
-.depth4Frame03 {
-  	align-self: stretch;
-  	flex: 1;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 40px 20px;
-  	gap: 24px;
-}
-.depth3Frame02 {
-  	width: 960px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	max-width: 960px;
-}
-.depth2Frame3 {
- background-color: #1c170d;
-  width: 100%;
-  max-width: 3000px;
-  margin: 0 auto;
-  height: auto;
-  min-height: 200px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  text-align: center;
-  font-size: 16px;
-  color: #e8f2f2;
-  position: relative; /* ✅ Removes disconnection from layout */
+  	min-height: 480px; */
 
-  box-sizing: border-box;
-  	justify-content: center;
+
+
+.exploreBangladeshWith {
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  z-index: 1;
 }
-.depth1Frame0 {
-  	width: 1520px;
-  	height: auto;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: flex-start;
+
+.discoverTheBeauty {
+  font-size: 20px;
+  line-height: 28px;
+  color: #fff;
+  z-index: 1;
+  max-width: 720px;
 }
-.homePage4 {
-  	position: absolute;
-  	top: 0px;
-  	left: calc(50% - 714px);
-  	background-color: #f7fcfc;
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: flex-start;
+
+/* ------------------ Destinations Section ------------------ */
+
+.Destinations {
+  width: 100%;
+  padding: 60px 20px;
+  background-color: #fff;
+  z-index: 2;
+  text-align: center;
 }
-.homePage3 {
-  	position: absolute;
-  	top: 0px;
-  	left: calc(50% - 714px);
-  	width: 1428px;
-  	height: 1470px;
+
+.sectionTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #073535;
 }
-.homePage2 {
-  	width: 1428px;
-  	position: relative;
-  	height: 1470px;
+
+.destinationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  text-align: left;
 }
-.homePage1 {
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: flex-start;
+
+/* ------------------ Destination Card ------------------ */
+
+.destinationCard {
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
-.homePage {
-  	cursor: pointer;
-  	border: none;
-  	padding: 0;
-  	background-color: #fff;
-  	position: relative;
-  	width: 100%;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: flex-start;
+
+.destinationCard:hover {
+  transform: scale(1.03);
+}
+
+.destinationImage {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.destinationContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.destinationTitle {
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.destinationTag {
+  font-size: 14px;
+  font-weight: 400;
+  color: #888;
+  margin-left: 8px;
+}
+
+.destinationDescription {
+  font-size: 14px;
+  color: var(--muted-text);
+}
+
+.destinationPrice {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.bookButton {
+  margin-top: auto;
+  padding: 10px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.bookButton:hover {
+  background-color: #005e4c;
+}
+
+/* ------------------ Services Section ------------------ */
+
+.depth4Frame12 {
+  width: 100%;
+  padding: 20px;
+}
+
+.featuredDestinations {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: bold;
+  color: var(--text-color);
+  text-align: left;
+}
+
+.depth4Frame4 {
+  width: 100%;
+  padding: 16px 20px;
+}
+
+.depth5Frame04 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.depth6Frame04 {
+  width: 300px;
+  background-color: #f7fcfc;
+  border: 1px solid #d1e8e8;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.depth7Frame05 {
+  width: 100%;
+  height: 24px;
+  object-fit: contain;
+}
+
+.depth7Frame14 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.depth8Frame04 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.exploreLushTea {
+  font-size: 14px;
+  color: var(--muted-text);
+  line-height: 21px;
+}
+
+/* ------------------ Optional Footer Icon ------------------ */
+
+.depth4Frame5 {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.depth5Frame05 {
+  width: 61px;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
 }

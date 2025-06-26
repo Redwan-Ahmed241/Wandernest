@@ -5,22 +5,24 @@
   min-height: 200px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center everything horizontally */
+  align-items: center;
   justify-content: center;
   text-align: center;
   font-size: 16px;
   color: #e8f2f2;
   box-sizing: border-box;
-  padding: 40px 20px; /* Added padding for breathing room */
-  gap: 24px; /* Space between main footer sections */
+  padding: 40px 20px;
+  gap: 24px;
+  position: relative;
+  z-index: 10;
 }
 
 .depth3Frame02 {
   width: 100%;
-  max-width: 1200px; /* Optional: to keep things from stretching too wide */
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center contents */
+  align-items: center;
   justify-content: center;
   gap: 24px;
 }
@@ -36,13 +38,13 @@
 .depth5Frame06 {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px; /* More even spacing */
-  justify-content: center; /* Center footer links */
+  gap: 16px 32px;
+  justify-content: center;
+  text-align: center;
 }
 
 .depth6Frame05,
 .depth6Frame12 {
-  width: auto;
   min-width: 120px;
   display: flex;
   flex-direction: column;
@@ -57,6 +59,11 @@
   font-family: 'Plus Jakarta Sans';
   color: #e8f2f2;
   text-align: center;
+}
+
+.aboutUs:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .depth5Frame12 {
@@ -76,7 +83,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center copyright too */
+  justify-content: center;
   font-size: 14px;
   color: #ccc;
 }
