@@ -111,7 +111,9 @@ const Packages: FunctionComponent = () => {
         {/* Header Section: Flexbox for label and button */}
         <div className={styles.groupParent}>
           <div className={styles.tourPackages2}>Tour Packages</div>
-          <button className={styles.createCustomPackage}>Create custom package</button>
+          <button className={styles.createCustomPackage} onClick={() => navigate('/create-package')}>
+            Create custom package
+          </button>
         </div>
         {/* Search Bar: Centered below header */}
         <div className={styles.searchBarContainer}>

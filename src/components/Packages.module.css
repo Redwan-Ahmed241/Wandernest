@@ -10,8 +10,8 @@
 .searchBarContainer {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  margin: 20px auto 30px;
+  max-width: 500px;
+  margin: 24px auto 32px;
 }
 
 .depth5Frame02 {
@@ -39,27 +39,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px !important;
+  padding: 12px 18px !important;
   min-width: 150px;
-  border-radius: 20px;
-  background: #f5f0e5;
-  border: 1.5px solid #e5e8eb;
+  border-radius: 24px;
+  background: #f8f9fa;
+  border: 1.5px solid #e9ecef;
   font-size: 15px;
-  color: #0d1c1c;
+  color: #495057;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(106, 177, 135, 0.04);
-  transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s, transform 0.18s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
   font-weight: 500;
   outline: none;
-  gap: 8px;
+  gap: 10px;
 }
 
 .depth6Frame03:hover, .depth6Frame03:focus {
-  background: #e8f2f2;
+  background: #e8f5e8;
   border: 1.5px solid #6ab187;
   color: #4e944f;
-  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.10);
-  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12);
+  transform: translateY(-1px);
 }
 
 .filterDropdown {
@@ -67,29 +67,29 @@
   top: 100% !important;
   left: 0;
   background: #fff;
-  border: 1.5px solid #e5e8eb;
-  border-radius: 12px !important;
+  border: 1.5px solid #e9ecef;
+  border-radius: 16px !important;
   min-width: 180px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   z-index: 20;
-  padding: 4px 0;
+  padding: 8px 0;
   margin-top: 8px;
   width: 100%;
 }
 
 .filterDropdownOption {
-  padding: 12px 22px;
+  padding: 12px 20px;
   cursor: pointer;
   font-size: 15px;
-  color: #0d1c1c;
+  color: #495057;
   background: transparent;
-  border-radius: 8px;
-  transition: background 0.18s, color 0.18s;
-  margin: 2px 6px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  margin: 2px 8px;
 }
 
 .filterDropdownOption:hover, .filterDropdownOption.selected {
-  background: #e8f2f2;
+  background: #e8f5e8;
   color: #4e944f;
 }
 
@@ -131,9 +131,10 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 40px 0 30px;
+  max-width: 1200px;
+  margin: 32px auto 0;
   padding: 0 20px;
-  gap: 0;
+  gap: 24px;
 }
 
 .tourPackages2 {
@@ -144,18 +145,13 @@
   letter-spacing: 0.5px;
   line-height: 1.2;
   text-align: left;
-  /* REMOVE THIS: flex: 1; */
-  flex-shrink: 0; /* Add this */
-  margin-right: auto; /* Add this */
+  flex-shrink: 0;
 }
 
 .rectangleParent {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: auto;
-  height: auto;
-  margin-left: 0;
 }
 
 .groupChild {
@@ -166,72 +162,83 @@
 
 .createCustomPackage {
   position: static !important;
-  padding: 12px 32px;
-  border-radius: 28px;
-  background-color: #abb79a;
+  padding: 12px 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #6ab187 0%, #5a9a75 100%);
   color: #fff;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(106, 177, 135, 0.10);
+  box-shadow: 0 4px 12px rgba(106, 177, 135, 0.3);
   border: none;
-  transition: background-color 0.3s, box-shadow 0.2s, transform 0.18s;
+  transition: all 0.2s ease;
   outline: none;
-  margin-left: -29px;
   white-space: nowrap;
 }
 
 .createCustomPackage:hover {
-  background-color: #8f9e83;
-  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.18);
-  transform: translateY(-2px) scale(1.03);
+  background: linear-gradient(135deg, #5a9a75 0%, #4e8a66 100%);
+  box-shadow: 0 6px 20px rgba(106, 177, 135, 0.4);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
   .groupParent {
     flex-direction: column;
-    align-items: flex-start;
-  
-      margin: 20px 0 10px;
-  }
-  .rectangleParent {
-    justify-content: flex-start;
-    width: 100%;
-  }
-  .createCustomPackage {
-    width: 100%;
+    align-items: center;
+    gap: 16px;
+    margin: 20px auto 0;
     text-align: center;
   }
+  
+  .tourPackages2 {
+    font-size: 28px;
+  }
+  
+  .createCustomPackage {
+    width: auto;
+    min-width: 200px;
+  }
+  
   .depth4Frame2 {
     flex-direction: column;
     align-items: center;
   }
+  
   .depth5Frame04 {
     grid-template-columns: 1fr;
   }
-  .tourPackages2 {
-    font-size: 28px;
+  
+  .searchBarContainer {
+    max-width: 400px;
+    margin: 20px auto 28px;
   }
 }
 
 @media (max-width: 480px) {
- .searchBarContainer {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto 30px;
-}
+  .searchBarContainer {
+    max-width: 90%;
+    margin: 16px auto 24px;
+  }
 
   .depth6Frame03 {
-    min-width: 160px;
-    padding: 10px 16px !important;
+    min-width: 140px;
+    padding: 10px 14px !important;
+    font-size: 14px;
   }
+  
   .tourPackages2 {
     font-size: 24px;
   }
+  
   .createCustomPackage {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 15px;
+    min-width: 180px;
+  }
+  
+  .groupParent {
+    padding: 0 16px;
   }
 }
 
@@ -258,34 +265,43 @@
 
 .searchInput {
   width: 100%;
-  padding: 10px 16px 10px 40px;
-  border: 1.5px solid #e5e8eb;
-  border-radius: 24px;
-  font-size: 15px;
+  padding: 14px 20px 14px 48px;
+  border: 2px solid #e9ecef;
+  border-radius: 28px;
+  font-size: 16px;
   background: #fff;
-  color: #222;
+  color: #495057;
   outline: none;
-  transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(106, 177, 135, 0.06);
-  margin-bottom: 0;
-  margin-top: 0;
-  display: block;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  font-weight: 400;
 }
 
 .searchInput:focus {
-  border: 1.5px solid #6ab187;
-  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12);
+  border: 2px solid #6ab187;
+  box-shadow: 0 6px 24px rgba(106, 177, 135, 0.15);
+  transform: translateY(-1px);
+}
+
+.searchInput::placeholder {
+  color: #6c757d;
+  font-weight: 400;
 }
 
 .searchIconInside {
   position: absolute;
-  left: 14px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.searchBarContainer:focus-within .searchIconInside {
+  opacity: 0.8;
 }
 
 .footer {
