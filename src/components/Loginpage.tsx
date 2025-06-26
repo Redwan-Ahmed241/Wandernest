@@ -1,93 +1,81 @@
-import { FunctionComponent, useCallback, useState } from 'react';
-import styles from './Loginpage.module.css';
-import Footer from './Footer';
-//                     										<div className={styles.depth5Frame2}>';
+import { FunctionComponent } from 'react';
+import './Loginpage.module.css';
 
 
-const LoginPage:FunctionComponent = () => {
-  	
-  	const onDepth6FrameClick = useCallback(() => {
-    		// Add your code here
-  	}, []);
-  	
+const Component1:FunctionComponent = () => {
   	return (
-    		<div className={styles.loginPage}>
-      			<div className={styles.loginPage1}>
-        				<div className={styles.depth0Frame0}>
-          					<div className={styles.depth1Frame0}>
-            						<img className={styles.vector0} alt="" src="Vector - 0.svg" />
-            						<b className={styles.wandernest}>WanderNest</b>
-          					</div>
-							
-          					{/* <div className={styles.footer}>
-            						<div className={styles.depth3Frame0}>
-              							<div className={styles.depth4Frame0}>
-                								<div className={styles.depth5Frame0}>
-                  									<div className={styles.depth6Frame0} onClick={onDepth6FrameClick}>
-                    										<div className={styles.aboutUs}>About Us</div>
-                  									</div>
-                  									<div className={styles.depth6Frame1}>
-                    										<div className={styles.aboutUs}>Contact</div>
-                  									</div>
-                  									<div className={styles.depth6Frame0} onClick={onDepth6FrameClick}>
-                    										<div className={styles.aboutUs}>Terms of Service</div>
-                  									</div>
-                  									<div className={styles.depth6Frame0} onClick={onDepth6FrameClick}>
-                    										<div className={styles.aboutUs}>Privacy Policy</div>
-                  									</div>
+    		<div className="div">
+      			<div className="images">
+        				<img className="images-child" alt="" src="Rectangle 6.png" />
+        				<img className="images-item" alt="" src="Rectangle 7.png" />
+        				<img className="images-inner" alt="" src="Rectangle 8.png" />
+        				<img className="rectangle-icon" alt="" src="Rectangle 9.png" />
+        				<img className="images-child1" alt="" src="Rectangle 6.png" />
+        				<img className="images-child2" alt="" src="Rectangle 7.png" />
+        				<img className="images-child3" alt="" src="Rectangle 8.png" />
+        				<img className="images-child4" alt="" src="Rectangle 9.png" />
+        				<img className="images-child5" alt="" src="Rectangle 6.png" />
+        				<img className="images-child6" alt="" src="Rectangle 7.png" />
+        				<img className="images-child7" alt="" src="Rectangle 8.png" />
+        				<img className="images-child8" alt="" src="Rectangle 9.png" />
+        				<img className="images-child9" alt="" src="Rectangle 6.png" />
+        				<img className="images-child10" alt="" src="Rectangle 7.png" />
+        				<img className="images-child11" alt="" src="Rectangle 8.png" />
+        				<img className="images-child12" alt="" src="Rectangle 9.png" />
+      			</div>
+      			<div className="background">
+        				<div className="background-child" />
+      			</div>
+      			<div className="frame-parent">
+        				<div className="frame-wrapper">
+          					<div className="frame-group">
+            						<div className="welcome-back-parent">
+              							<div className="welcome-back">Welcome back</div>
+              							<div className="were-so-excited">We’re so excited to see you again!</div>
+            						</div>
+            						<div className="email-parent">
+              							<div className="email">
+                								<div className="label-wrapper">
+                  									<div className="label">Email or phone number</div>
                 								</div>
-                								<div className={styles.depth5Frame1}>
-                  									<img className={styles.depth6Frame01} alt="" src="Depth 6, Frame 0.svg" />
-                  									<img className={styles.depth6Frame01} alt="" src="Depth 6, Frame 1.svg" />
-                  									<img className={styles.depth6Frame01} alt="" src="Depth 6, Frame 2.svg" />
+                								<div className="text-field" />
+              							</div>
+              							<div className="email-group">
+                								<div className="email">
+                  									<div className="label-wrapper">
+                    										<div className="label">Password</div>
+                  									</div>
+                  									<div className="text-field" />
                 								</div>
-                								<div className={styles.depth5Frame2}>
-                  									<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
+                								<div className="have-an-account-login">
+                  									<div className="already-have-an">Forget your password</div>
                 								</div>
               							</div>
             						</div>
-          					</div> */}
-          					<div className={styles.wandernestParent}>
-            						<b className={styles.wandernest1}>WanderNest</b>
-            						<div className={styles.groupChild} />
-            						<div className={styles.depth5Frame01}>
-              							<div className={styles.depth6Frame02}>
-                								<div className={styles.emailAddress}>Email Address</div>
-              							</div>
-              							<div className={styles.depth6Frame12}>
-                								<div className={styles.enterYourEmail}>Enter  your email</div>
+            						<div className="button">
+              							<div className="sign-up-wrapper">
+                								<div className="welcome-back">Log in</div>
               							</div>
             						</div>
-            						<div className={styles.depth5Frame02}>
-              							<div className={styles.depth6Frame02}>
-                								<div className={styles.emailAddress}>Password</div>
-              							</div>
-              							<div className={styles.depth6Frame13}>
-                								<div className={styles.depth7Frame0}>
-                  									<div className={styles.enterYourEmail}>Enter  your password</div>
-                								</div>
-                								<img className={styles.depth7Frame1} alt="" src="Depth 7, Frame 1.svg" />
-              							</div>
-            						</div>
-            						<div className={styles.depth5Frame0Parent}>
-              							<div className={styles.depth5Frame03} onClick={onDepth6FrameClick}>
-                								<div className={styles.depth6Frame04} />
-              							</div>
-              							<b className={styles.logIn}>Log In</b>
-            						</div>
-            						<div className={styles.dontHaveAn}>Don't have an account?</div>
-              							<div className={styles.depth5Frame0Group}>
-                								<div className={styles.depth5Frame04}>
-                  									<div className={styles.depth6Frame05} />
-                								</div>
-                								<b className={styles.signUp}>Sign Up</b>
+            						<div className="have-an-account-login1">
+              							<div className="already-have-an-container">
+                								<span>{`Don’t have an acount? `}</span>
+                								<span className="sign-up1">{`Sign up  `}</span>
               							</div>
             						</div>
           					</div>
         				</div>
+        				<div className="frame-container">
+          					<div className="qr-code-parent">
+            						<img className="qr-code-icon" alt="" src="QR Code.svg" />
+            						<div className="log-in-with-qr-code-parent">
+              							<div className="log-in-with">Log in with QR code</div>
+              							<div className="scan-this-with">Scan this with our App to log in instantly</div>
+            						</div>
+          					</div>
+        				</div>
       			</div>
-				);
-      			};
-      			
-      			export default LoginPage;
-      			
+    		</div>);
+};
+
+export default Component1;
