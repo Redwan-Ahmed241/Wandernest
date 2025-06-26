@@ -901,8 +901,8 @@
 }
 .createPackage {
     width: 100%;
-    max-width: none;
-    margin: 0;
+    max-width: 1300px;
+    margin: 0 auto;
     position: relative;
     display: flex;
     flex-direction: column;
