@@ -63,7 +63,7 @@ const cardData = [
   },
 ];
 
-const filterCategories = ['All', 'Nature', 'Food', 'Culture', 'Adventure'];
+const filterCategories = ['Nature', 'Food', 'Culture', 'Adventure', 'All'];
 
 const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState('');
@@ -79,7 +79,7 @@ const ThingsToDo: FunctionComponent = () => {
     return matchesCategory && matchesActivity && matchesLocation;
   });
 
-  // Handler for filter buttons (Nature, Food, etc.)
+  // Handler for pill label click
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
@@ -175,7 +175,7 @@ const ThingsToDo: FunctionComponent = () => {
                     <button className={styles.searchButton} type="button">Search</button>
                   </div>
                 </div>
-                <div className={styles.depth4Frame5}>
+               {/* <div className={styles.depth4Frame5}>
                   <div className={styles.depth5Frame05}>
                     <div className={styles.depth6Frame02}>
                       <div className={styles.nature}>Nature</div>
@@ -201,7 +201,7 @@ const ThingsToDo: FunctionComponent = () => {
                       <div className={styles.stay}>All</div>
                     </div>
                   </div>
-                </div>
+                </div>*/}
                 {/*<div className={styles.depth4Frame4}>
                   {/*<div className={styles.depth5Frame06}>
                     <div className={styles.depth6Frame07}>
@@ -299,6 +299,19 @@ const ThingsToDo: FunctionComponent = () => {
               </div>
             </div>
           </div>
+        </div>
+        {/* Pill-shaped filter labels as buttons */}
+        <div className={styles.pillFilterRow}>
+          {filterCategories.map(cat => (
+            <div
+              key={cat}
+              className={cat === selectedCategory ? styles.activePill : styles.pill}
+              onClick={() => handleCategoryClick(cat)}
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+            >
+              {cat}
+            </div>
+          ))}
         </div>
         {/* Card Grid Section */}
         <div className={styles.cardGrid}>
