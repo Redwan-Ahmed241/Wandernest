@@ -4,19 +4,94 @@ import styles from './ThingsToDo.module.css';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 
+const cardData = [
+  {
+    title: 'Explore the Sundarbans Mangrove Forest',
+    location: 'Khulna',
+    description: `Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.`,
+    image: '/Figma_photoes/mangrove.jpg',
+    category: 'Nature',
+  },
+  {
+    title: 'Savor Street Food in Old Dhaka',
+    location: 'Dhaka',
+    description: 'Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.',
+    image: '/Figma_photoes/puran_dhaka.jpg',
+    category: 'Food',
+  },
+  {
+    title: 'Discover Historical Sites at Lalbagh Fort',
+    location: 'Dhaka',
+    description: 'Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.',
+    image: '/Figma_photoes/lalbagh.jpg',
+    category: 'Culture',
+  },
+  {
+    title: 'Boat Trip on the Buriganga River',
+    location: 'Dhaka',
+    description: `Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.`,
+    image: '/Figma_photoes/burigangha.jpg',
+    category: 'Adventure',
+  },
+  {
+    title: `Relax at Cox's Bazar Beach`,
+    location: `Cox's Bazar`,
+    description: `Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.`,
+    image: '/Figma_photoes/coxsbazar.jpg',
+    category: 'Nature',
+  },
+  {
+    title: 'Experience Traditional Cuisine in a Local Eatery',
+    location: 'Dhaka',
+    description: 'Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.',
+    image: '/Figma_photoes/local_cuisine.jpeg',
+    category: 'Food',
+  },
+  {
+    title: 'Visit the National Museum of Bangladesh',
+    location: 'Dhaka',
+    description: `Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.`,
+    image: '/Figma_photoes/museum.jpeg',
+    category: 'Culture',
+  },
+  {
+    title: 'Cycle through the Countryside',
+    location: 'Dhaka',
+    description: `Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.`,
+    image: '/Figma_photoes/cycling.jpg',
+    category: 'Adventure',
+  },
+];
+
+const filterCategories = ['All', 'Nature', 'Food', 'Culture', 'Adventure'];
+
 const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState('');
   const [locationQuery, setLocationQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
 
-  const handleActivitySearch = () => {
-    console.log('Searching for activities:', activityQuery);
-    // Add your search logic here (API call/filtering)
+  // Filtering logic
+  const filteredCards = cardData.filter(card => {
+    const matchesCategory = selectedCategory === 'All' || card.category === selectedCategory;
+    const matchesActivity = activityQuery.trim() === '' || card.title.toLowerCase().includes(activityQuery.toLowerCase()) || card.description.toLowerCase().includes(activityQuery.toLowerCase());
+    const matchesLocation = locationQuery.trim() === '' || card.location.toLowerCase().includes(locationQuery.toLowerCase());
+    return matchesCategory && matchesActivity && matchesLocation;
+  });
+
+  // Handler for filter buttons (Nature, Food, etc.)
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
   };
 
-  const handleLocationSearch = () => {
-    console.log('Searching in location:', locationQuery);
-    // Add your search logic here
+  // Handler for activity search (real-time)
+  const handleActivityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setActivityQuery(e.target.value);
+  };
+
+  // Handler for location search (real-time)
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocationQuery(e.target.value);
   };
 
   const onDepth4FrameClick = () => {
@@ -76,37 +151,28 @@ const ThingsToDo: FunctionComponent = () => {
                 </div>
                 <div className={styles.depth4Frame12}>
                   {/* Search for Activities */}
-                  <div className={styles.depth4Frame12}>
-                    <div className={styles.searchLabel}>Search for activities</div>
-                    <div className={styles.searchContainer}>
-                      <input
-                        type="text"
-                        value={activityQuery}
-                        onChange={(e) => setActivityQuery(e.target.value)}
-                        placeholder="e.g., hiking, museums"
-                        className={styles.searchInput}
-                      />
-                      <button className={styles.searchButton} onClick={handleActivitySearch}>
-                        Search
-                      </button>
-                    </div>
+                  <div className={styles.searchLabel}>Search for activities</div>
+                  <div className={styles.searchContainer}>
+                    <input
+                      type="text"
+                      value={activityQuery}
+                      onChange={handleActivityChange}
+                      placeholder="e.g., hiking, museums"
+                      className={styles.searchInput}
+                    />
+                    <button className={styles.searchButton} type="button">Search</button>
                   </div>
-
                   {/* Search for Locations */}
-                  <div className={styles.depth4Frame12}>
-                    <div className={styles.searchLabel}>Select location</div>
-                    <div className={styles.searchContainer}>
-                      <input
-                        type="text"
-                        value={locationQuery}
-                        onChange={(e) => setLocationQuery(e.target.value)}
-                        placeholder="e.g., Dhaka, Cox's Bazar"
-                        className={styles.searchInput}
-                      />
-                      <button className={styles.searchButton} onClick={handleLocationSearch}>
-                        Search
-                      </button>
-                    </div>
+                  <div className={styles.searchLabel}>Select location</div>
+                  <div className={styles.searchContainer}>
+                    <input
+                      type="text"
+                      value={locationQuery}
+                      onChange={handleLocationChange}
+                      placeholder="e.g., Dhaka, Cox's Bazar"
+                      className={styles.searchInput}
+                    />
+                    <button className={styles.searchButton} type="button">Search</button>
                   </div>
                 </div>
                 <div className={styles.depth4Frame5}>
@@ -234,72 +300,22 @@ const ThingsToDo: FunctionComponent = () => {
             </div>
           </div>
         </div>
-        {/* Card Grid Section - move this directly after the labels/filter UI */}
+        {/* Card Grid Section */}
         <div className={styles.cardGrid}>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/mangrove.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Explore the Sundarbans Mangrove Forest</div>
-              <div className={styles.cardLocation}>Khulna</div>
-              <div className={styles.immerseYourselfIn}>Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/puran_dhaka.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Savor Street Food in Old Dhaka</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/lalbagh.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Discover Historical Sites at Lalbagh Fort</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/burigangha.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Boat Trip on the Buriganga River</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/coxsbazar.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Relax at Cox's Bazar Beach</div>
-              <div className={styles.cardLocation}>Cox's Bazar</div>
-              <div className={styles.immerseYourselfIn}>Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/local_cuisine.jpeg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Experience Traditional Cuisine in a Local Eatery</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/museum.jpeg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Visit the National Museum of Bangladesh</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.</div>
-            </div>
-          </div>
-          <div className={styles.depth6Frame07}>
-            <img className={styles.cardImage} alt="" src="/Figma_photoes/cycling.jpg" />
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>Cycle through the Countryside</div>
-              <div className={styles.cardLocation}>Dhaka</div>
-              <div className={styles.immerseYourselfIn}>Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.</div>
-            </div>
-          </div>
+          {filteredCards.length === 0 ? (
+            <div style={{ gridColumn: '1/-1', textAlign: 'center', color: '#888', padding: 32 }}>No activities found.</div>
+          ) : (
+            filteredCards.map((card, idx) => (
+              <div className={styles.depth6Frame07} key={idx}>
+                <img className={styles.cardImage} alt="" src={card.image} />
+                <div className={styles.cardContent}>
+                  <div className={styles.cardTitle}>{card.title}</div>
+                  <div className={styles.cardLocation}>{card.location}</div>
+                  <div className={styles.immerseYourselfIn}>{card.description}</div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </Layout>
