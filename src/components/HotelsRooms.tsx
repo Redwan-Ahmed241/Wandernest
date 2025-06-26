@@ -10,6 +10,33 @@ const HotelsRooms: FunctionComponent = () => {
   const [showAmenities, setShowAmenities] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
   const [showRoomType, setShowRoomType] = useState(false);
+  // Calendar state
+  const today = new Date();
+  const [calendarMonth, setCalendarMonth] = useState(today.getMonth());
+  const [calendarYear, setCalendarYear] = useState(today.getFullYear());
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const handlePrevMonth = () => {
+    if (calendarMonth === 0) {
+      setCalendarMonth(11);
+      setCalendarYear(calendarYear - 1);
+    } else {
+      setCalendarMonth(calendarMonth - 1);
+    }
+  };
+  const handleNextMonth = () => {
+    if (calendarMonth === 11) {
+      setCalendarMonth(0);
+      setCalendarYear(calendarYear + 1);
+    } else {
+      setCalendarMonth(calendarMonth + 1);
+    }
+  };
 
   const onLogoClick = useCallback(() => {
     navigate("/");
@@ -237,386 +264,40 @@ const HotelsRooms: FunctionComponent = () => {
               <div className={styles.depth4Frame2}>
                 <div className={styles.depth5Frame04}>
                   <div className={styles.depth6Frame08}>
-                    <img className={styles.depth7Frame01} alt="" src="/Figma_photoes/oside.svg" />
-                    <div className={styles.depth7Frame11}>
-                      <b className={styles.localRestaurants}>November 2025</b>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame15}>
-                    <div className={styles.depth7Frame02}>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>S</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>M</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>T</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>W</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>T</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>F</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>S</b>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>1</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>2</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>3</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>4</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame41}>
-                        <div className={styles.depth9Frame04}>
-                          <div className={styles.div}>5</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>6</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>7</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>8</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>9</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>10</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>11</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>12</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>13</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>14</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>15</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>16</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>17</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>18</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>19</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>20</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>21</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>22</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>23</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>24</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>25</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>26</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>27</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>28</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>29</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>30</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.depth5Frame04}>
-                  <div className={styles.depth6Frame08}>
-                    <div className={styles.depth7Frame03}>
-                      <b className={styles.localRestaurants}>December 2025</b>
-                    </div>
-                    <img className={styles.depth7Frame01} alt="" src="/Figma_photoes/sidee.svg" />
-                  </div>
-                  <div className={styles.depth6Frame15}>
-                    <div className={styles.depth7Frame02}>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>S</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>M</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>T</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>W</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>T</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>F</b>
-                      </div>
-                      <div className={styles.depth8Frame0}>
-                        <b className={styles.s}>S</b>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame14}>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>1</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>2</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>3</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>4</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>5</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame51}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>6</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame66}>
-                        <div className={styles.depth9Frame04}>
-                          <div className={styles.div}>7</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>8</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>9</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>10</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>11</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>12</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>13</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>14</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>15</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>16</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>17</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>18</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>19</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>20</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>21</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>22</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>23</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>24</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>25</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>26</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>27</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>28</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame12}>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>29</div>
-                        </div>
-                      </div>
-                      <div className={styles.depth8Frame01}>
-                        <div className={styles.depth9Frame0}>
-                          <div className={styles.div}>30</div>
-                        </div>
+                    <div className={styles.calendarContainer}>
+                      <div className={styles.calendarHeaderRow}>
+                        <button onClick={handlePrevMonth} className={styles.calendarNavBtn}>{'<'}</button>
+                        <span className={styles.calendarMonthLabel}>
+                          {new Date(calendarYear, calendarMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}
+                        </span>
+                        <button onClick={handleNextMonth} className={styles.calendarNavBtn}>{'>'}</button>
+                      </div>
+                      <div className={styles.calendarWeekdays}>
+                        {weekDays.map((d, i) => (
+                          <span key={i} className={styles.calendarWeekday}>{d}</span>
+                        ))}
+                      </div>
+                      <div className={styles.calendarGrid}>
+                        {Array.from({ length: firstDayOfWeek }).map((_, i) => (
+                          <span key={'empty-' + i} className={styles.calendarDayEmpty}></span>
+                        ))}
+                        {daysArray.map(day => (
+                          <span
+                            key={day}
+                            className={
+                              styles.calendarDay +
+                              (selectedDay === day && selectedMonth === calendarMonth && selectedYear === calendarYear ? ' ' + styles.selectedCalendarDay : '')
+                            }
+                            onClick={() => {
+                              setSelectedDay(day);
+                              setSelectedMonth(calendarMonth);
+                              setSelectedYear(calendarYear);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {day}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -701,7 +382,7 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame012} onClick={() => onHotelClick("countryside-lodge")}>
-                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/lodge.png" />
+                    <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/c_lodge.jpeg" />
                     <div className={styles.depth1Frame0}>
                       <div className={styles.depth1Frame0}>
                         <div className={styles.luxuryHotel}>Countryside Lodge</div>
@@ -718,7 +399,7 @@ const HotelsRooms: FunctionComponent = () => {
               </div>
               <div className={styles.depth4Frame3}>
                 <div className={styles.depth5Frame06}>
-                  <div className={styles.depth6Frame014} onClick={() => onAmenityClick("restaurants")}>
+                  <div className={styles.depth6Frame014} onClick={() => navigate('/restaurant')}>
                     <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/loc_res.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
@@ -876,8 +557,6 @@ const HotelsRooms: FunctionComponent = () => {
             </div>
           </div>
         </div>
-
- 
       </div>
     </div>
     </Layout>
