@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './PlanATrip.module.css';
-
+import Layout from './Layout';
 
 const PlanATrip:FunctionComponent = () => {
   	const navigate = useNavigate();
@@ -23,6 +23,7 @@ const PlanATrip:FunctionComponent = () => {
     // Add your hotel search logic here (API call/filtering)
   };
   	return (
+		<Layout>  
     		<div className={styles.planATrip}>
       			<div className={styles.profileWrapper}>
         				<div className={styles.profileWrapper}>
@@ -720,7 +721,7 @@ const PlanATrip:FunctionComponent = () => {
               							</div>
             						</div>
           					</div>
-          					<div className={styles.depth2Frame4}>
+          					{/* <div className={styles.depth2Frame4}> 
             						<div className={styles.depth3Frame01}>
               							<div className={styles.depth4Frame03}>
                 								<div className={styles.depth5Frame015}>
@@ -747,8 +748,9 @@ const PlanATrip:FunctionComponent = () => {
                 								</div>
               							</div>
             						</div>
-          					</div>
-        				</div>);
+          					 </div> */}
+        				</div>
+						</Layout>);
         				};
         				
         				export default PlanATrip;

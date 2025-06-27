@@ -44,9 +44,9 @@ const AboutUs: React.FC = () => {
           <div className={styles.heroOverlay}>
             <h1 className={styles.heroTitle}>Explore purposefully, Travel meaningfully, Feel at home anywhere.</h1>
             <p className={styles.heroSubtitle}>Find Your Nest, Wander the World.</p>
-          </div>
-        </div>
-
+          					</div>
+        				</div>
+        			
         {/* Team Section */}
         <section className={styles.teamSection}>
           <h2 className={styles.teamTitle}>Meet the Team</h2>
@@ -58,14 +58,14 @@ const AboutUs: React.FC = () => {
                   <h3 className={styles.teamName}>{member.name}</h3>
                   <div className={styles.teamCountry}>{member.country}</div>
                   <div className={styles.teamDesc}>{member.desc}</div>
-                </div>
+      			</div>
               </div>
             ))}
           </div>
         </section>
-      </div>
-    </Layout>
-  );
+    		</div>
+			</Layout>	
+			);
 };
 
 export default AboutUs;

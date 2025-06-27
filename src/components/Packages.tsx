@@ -16,43 +16,37 @@ const PACKAGES = [
   {
     name: 'Sundarbans Wildlife Expedition',
     image: '/Figma_photoes/sundarban.jpg',
-    description: "Explore the world's largest mangrove forest, home to the Royal Bengal Tiger.",
-    price: '$250/person',
+    description: "Explore the world's largest mangrove forest, home to the Royal Bengal Tiger. $250/person",
     destination: 'Sundarbans',
   },
   {
     name: "Cox's Bazar Beach Retreat",
     image: '/Figma_photoes/coxsbazar.jpg',
-    description: "Relax on the world's longest natural sea beach with golden sands.",
-    price: '$150/person',
+    description: "Relax on the world's longest natural sea beach with golden sands. $150/person",
     destination: "Cox's Bazar",
   },
   {
     name: 'Sylhet Tea Garden & Hill Trek',
     image: '/Figma_photoes/srimangal.png',
-    description: 'Discover lush tea gardens, rolling hills, and indigenous tribal cultures.',
-    price: '$300/person',
+    description: 'Discover lush tea gardens, rolling hills, and indigenous tribal cultures. $300/person',
     destination: 'Sylhet',
   },
   {
     name: 'Dhaka Historical & Cultural Tour',
     image: '/Figma_photoes/dh-hs.jpg',
-    description: "Immerse yourself in the rich history and vibrant culture of Bangladesh's capital.",
-    price: '$200/person',
+    description: "Immerse yourself in the rich history and vibrant culture of Bangladesh's capital. $200/person",
     destination: 'Dhaka',
   },
   {
     name: 'Chittagong Hill Tracts Adventure',
     image: '/Figma_photoes/bandorban.jpg',
-    description: 'Embark on an adventurous journey through breathtaking landscapes and remote villages.',
-    price: '$350/person',
+    description: 'Embark on an adventurous journey through breathtaking landscapes and remote villages. $350/person',
     destination: 'Bandarban',
   },
   {
     name: "St. Martin's Island Escape",
     image: '/Figma_photoes/Saint-Martin.jpg',
-    description: "Unwind on the only coral island of Bangladesh, surrounded by crystal-clear waters.",
-    price: '$180/person',
+    description: "Unwind on the only coral island of Bangladesh, surrounded by crystal-clear waters. $180/person",
     destination: "St. Martin's Island",
   },
 ];
@@ -195,14 +189,6 @@ const Packages: FunctionComponent = () => {
                                 <div className={styles.depth8Frame1}>
                                   <div className={styles.exploreTheWorlds}>{pkg.description}</div>
                                 </div>
-                                <div className={styles.cardPrice}>{pkg.price}</div>
-                                <button
-                                  className={styles.bookButton}
-                                  onClick={e => { e.stopPropagation(); alert(`Booking for ${pkg.name}`); }}
-                                  type="button"
-                                >
-                                  Book Now
-                                </button>
                               </div>
                             </div>
                           ))}

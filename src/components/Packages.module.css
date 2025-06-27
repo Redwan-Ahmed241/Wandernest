@@ -732,30 +732,3 @@
   font-family: 'Plus Jakarta Sans';
 }
 
-.bookButton {
-  background: #008060;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding: 14px 0;
-  width: 100%;
-  margin-top: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
-  cursor: pointer;
-}
-.bookButton:hover, .bookButton:focus {
-  background: #00684a;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-  transform: translateY(-2px) scale(1.03);
-}
-
-.cardPrice {
-  font-size: 1.15rem;
-  color: #179c6a !important;
-  font-weight: 700;
-  margin: 12px 0 0 0;
-}
-
