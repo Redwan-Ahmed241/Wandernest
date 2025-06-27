@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import "./styles/login.css"
+import styles from "./Loginpage.module.css"
 
 export default function TravelLogin() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -14,14 +14,15 @@ const Sidebar: FunctionComponent = () => {
         </div>
       </div>
       <nav className={styles.navMenu}>
-        <button className={styles.navItem} onClick={() => navigate('/homepage')}>
-          <span className={styles.icon}>●●●</span> Home
+        
+        <button className={`${styles.navItem} ${window.location.pathname === '/dashboard' ? styles.active : ''}`} onClick={() => navigate('/dashboard')}>
+          <span className={styles.icon}>📊</span> Dashboard
         </button>
         <button className={`${styles.navItem} ${window.location.pathname === '/my-trips' ? styles.active : ''}`} onClick={() => navigate('/my-trips')}>
           <span className={styles.icon}>●●●</span> My Trips
         </button>
-        <button className={styles.navItem} onClick={() => navigate('/explore')}>
-          <span className={styles.icon}>👓</span> Explore
+        <button className={styles.navItem} onClick={() => navigate('/visa-assistance')}>
+          <span className={styles.icon}>🛂</span> Visa Assistance
         </button>
         <button className={styles.navItem} onClick={() => navigate('/plan-a-trip')}>
           <span className={styles.icon}>N</span> Plan a Trip
@@ -37,6 +38,12 @@ const Sidebar: FunctionComponent = () => {
         </button>
         <button className={styles.navItem} onClick={() => navigate('/gift-cards')}>
           <span className={styles.icon}>🎁</span> Gift Cards
+        </button>
+        <button className={styles.navItem} onClick={() => navigate('/groups')}>
+          <span className={styles.icon}>👥</span> Groups
+        </button>
+        <button className={styles.navItem} onClick={() => navigate('/community')}>
+          <span className={styles.icon}>🌐</span> Community
         </button>
       </nav>
     </aside>
