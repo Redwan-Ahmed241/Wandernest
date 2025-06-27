@@ -31,22 +31,19 @@ html {
 
 .depth6Frame02 {
   position: relative;
-  top: 16px;
-  left: 16px;
-  width: 80%;
-  height: 540px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  border-radius: 16.81px;
+  height: 340px;
   background-image: url('/public/Figma_photoes/homebg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: 40% 60%;
-  border-radius: 56px / 36px;
-  overflow: hidden;
-  position: relative;
+  background-position: top;
+  min-height: 600.23px;
+
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 16px;
+
 }
 
 .heroContentWrapper {
