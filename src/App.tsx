@@ -25,6 +25,8 @@ import './global.css';
 import Packages from './components/Packages';
 import CreatePackage from './components/CreatePackages';
 import SignupForm from './components/Signup-form';
+import ShoppingCenters from './components/shopping-center';
+import PublicTransport from './components/public-transport';
 function App() {
   return (
     <Router>
@@ -54,6 +56,8 @@ function App() {
         <Route path="/community" element={<Community />} />
         <Route path="/my-trips" element={<MyTrips />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/shopping-centers" element={<ShoppingCenters />} />
+        <Route path="/public-transport" element={<PublicTransport />} />
         {/* Uncomment the following line if you have a Packages component */}
         {/* <Route path="/packages" element={<Packages />} /> */}
         
