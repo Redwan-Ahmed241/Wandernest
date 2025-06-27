@@ -11,36 +11,30 @@ const HomePage: FunctionComponent = () => {
       name: 'Srimangal',
       image: '/Figma_photoes/srimangal.png',
       description: 'Explore lush tea gardens',
-      destination: 'srimangal',
-      price: '$220/person',
+   
     },
     {
       name: "Cox's Bazar",
       image: '/Figma_photoes/cox.jpg',
-      description: "Enjoy the world's longest sea beach",
-      destination: 'coxsbazar',
-      price: '$150/person',
-    },
+      description: "Enjoy the world's longest sea beach"},
+    
     {
       name: 'Sundarbans',
       image: '/Figma_photoes/deer.jpg',
       description: 'Discover the mangrove forest',
-     // destination: 'sundarbans',
-      price: '$250/person',
+    
     },
     {
       name: 'Rangamati',
       image: '/Figma_photoes/rangamati01-1.jpg',
-      description: 'Discover the lavish landscapes between hills and lakes',
-      destination: 'rangamati',
-      price: '$180/person',
+      description: 'Discover the lavish landscapes between hills and lakes'
+  
     },
     {
       name: 'Bandarban',
       image: '/Figma_photoes/bandorban.jpg',
-      description: 'Discover the Hills',
-      destination: 'bandarban',
-      price: '$300/person',
+      description: 'Discover the Hills'
+     
     },
   ];
 
@@ -79,22 +73,13 @@ const HomePage: FunctionComponent = () => {
                 <div className={styles.destinationContent}>
                   <div className={styles.destinationTitle}>
                     {place.name}
-                    <span className={styles.destinationTag}> — {place.destination}</span>
+                  
                   </div>
                   <div className={styles.destinationDescription}>
                     {place.description}
                   </div>
-                  <div className={styles.destinationPrice}>{place.price}</div>
-                  <button
-                    type="button"
-                    className={styles.bookButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      alert(`Booking for ${place.name}`);
-                    }}
-                  >
-                    Book Now
-                  </button>
+                 
+             
                 </div>
               </div>
             ))}
