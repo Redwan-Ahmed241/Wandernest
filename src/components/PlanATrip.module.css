@@ -991,3 +991,518 @@
 .searchButton:hover {
   background-color: #3a3325;
 }
+
+/* --- Modern PlanATrip Layout and Card Styles (Refined) --- */
+.planATripGrid {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.sidebarModern {
+  background: #f5f0e5;
+  border-right: 1.5px solid #e5e8eb;
+  padding: 32px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 260px;
+  min-width: 220px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.mainContentModern {
+  flex: 1;
+  padding: 40px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.searchBarContainerModern {
+  display: flex;
+  align-items: center;
+  background: #f5f0e5;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(60, 64, 67, 0.08);
+  padding: 4px 8px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 24px;
+}
+
+.calendarSectionModern {
+  width: 100%;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: flex-start;
+}
+.calendarContainerModern {
+  width: 340px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.activitiesGridModern {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+.activityCardModern {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  outline: none;
+  min-width: 0;
+}
+.activityCardModern:hover, .activityCardModern:focus {
+  box-shadow: 0 8px 32px rgba(31,31,31,0.13);
+  transform: translateY(-4px) scale(1.025);
+}
+.activityImageModern {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 18px 18px 0 0;
+}
+.activityContentModern {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.addToItineraryBtnModern {
+  background: #008060;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 0;
+  width: 100%;
+  margin-top: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  cursor: pointer;
+}
+.addToItineraryBtnModern:hover, .addToItineraryBtnModern:focus {
+  background: #00684a;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 1100px) {
+  .planATripGrid {
+    flex-direction: column;
+  }
+  .sidebarModern {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 16px 0;
+    border-right: none;
+    border-bottom: 1.5px solid #e5e8eb;
+    position: static;
+  }
+  .mainContentModern {
+    padding: 24px 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .calendarContainerModern {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 2px;
+  }
+  .activitiesGridModern {
+    gap: 12px;
+  }
+  .activityImageModern {
+    height: 120px;
+  }
+}
+
+/* --- PlanATrip Modern Responsive Styles --- */
+:root {
+  --primary: #1c170d;
+  --bg: #fff;
+  --accent: #a1824a;
+  --radius: 18px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.09);
+  --shadow-hover: 0 8px 32px rgba(31,31,31,0.13);
+}
+
+.planATripGrid {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.sidebarModern {
+  width: 260px;
+  min-width: 220px;
+  background: var(--bg);
+  border-right: 1.5px solid #e5e8eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 0 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 10;
+  transition: left 0.3s;
+}
+
+@media (max-width: 1024px) {
+  .sidebarModern {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    min-width: 0;
+    box-shadow: var(--shadow);
+    background: var(--bg);
+    transition: left 0.3s;
+  }
+  .sidebarModern.open {
+    left: 0;
+  }
+}
+
+.sidebarToggle {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 20;
+  cursor: pointer;
+}
+@media (max-width: 1024px) {
+  .sidebarToggle {
+    display: block;
+  }
+}
+
+.profileSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.profilePic {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 4px solid #fff;
+  box-shadow: var(--shadow);
+}
+.profileName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  align-items: flex-start;
+  padding-left: 32px;
+}
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.08rem;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 8px 0;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+.navItem.active, .navItem:hover, .navItem:focus {
+  background: #e8f2e8;
+  color: var(--accent);
+}
+.navIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.mainContentModern {
+  flex: 1;
+  padding: 40px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .mainContentModern {
+    padding: 24px 8px;
+  }
+}
+
+.searchBarContainerModern {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  padding: 4px 8px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s;
+}
+.searchBarContainerModern:focus-within, .searchBarContainerModern:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1.1rem;
+  padding: 12px 16px;
+  border-radius: 999px;
+  color: var(--primary);
+}
+.searchButton {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: var(--shadow);
+}
+.searchButton:hover, .searchButton:focus {
+  background: var(--accent);
+}
+.searchIconInside {
+  width: 22px;
+  height: 22px;
+  opacity: 0.6;
+  margin-right: 10px;
+}
+
+.calendarSectionModern {
+  width: 100%;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: flex-start;
+}
+.calendarContainerModern {
+  width: 340px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 24px 16px;
+  text-align: center;
+}
+.calendarHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.calendarNavBtn {
+  background: var(--bg);
+  border: none;
+  font-size: 1.4em;
+  cursor: pointer;
+  color: var(--primary);
+  padding: 4px 12px;
+  border-radius: 8px;
+  transition: background 0.18s;
+}
+.calendarNavBtn:hover {
+  background: #e8f5e8;
+}
+.calendarMonthLabel {
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.calendarWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 4px;
+}
+.calendarWeekday {
+  padding: 4px 0;
+}
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendarDay, .calendarDayEmpty {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 1em;
+  color: var(--primary);
+  border-radius: 8px;
+  background: #f8f9fa;
+  transition: background 0.18s, color 0.18s;
+}
+.calendarDayEmpty {
+  background: none;
+}
+.calendarDay:hover {
+  background: #e8f5e8;
+  color: #008060;
+  cursor: pointer;
+}
+.selectedCalendarDay {
+  background: #008060 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.activitiesSection {
+  margin-top: 32px;
+  width: 100%;
+}
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 18px;
+}
+.activitiesGridModern {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+.activityCardModern {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  outline: none;
+  min-width: 0;
+}
+.activityCardModern:hover, .activityCardModern:focus {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px) scale(1.025);
+}
+.activityImageModern {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.activityContentModern {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.addToItineraryBtnModern {
+  background: #008060;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 0;
+  width: 100%;
+  margin-top: auto;
+  box-shadow: var(--shadow);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  cursor: pointer;
+}
+.addToItineraryBtnModern:hover, .addToItineraryBtnModern:focus {
+  background: #00684a;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 1024px) {
+  .planATripGrid {
+    flex-direction: column;
+  }
+  .sidebarModern {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 16px 0;
+    border-right: none;
+    border-bottom: 1.5px solid #e5e8eb;
+    position: static;
+  }
+  .mainContentModern {
+    padding: 24px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebarModern {
+    display: none;
+  }
+  .mainContentModern {
+    padding: 12px 2vw;
+  }
+  .calendarContainerModern {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 2px;
+  }
+  .activitiesGridModern {
+    gap: 12px;
+  }
+  .activityImageModern {
+    height: 120px;
+  }
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+}
