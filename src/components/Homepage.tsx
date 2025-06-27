@@ -50,13 +50,15 @@ const HomePage: FunctionComponent = () => {
     <Layout>
       <main className={styles.homePage}>
         <div className={styles.depth6Frame02}>
-          <div className={styles.depth7Frame0}>
-            <div className={styles.discoverTheBeauty}>
-              Discover the beauty and culture of Bangladesh with our tailored travel services.
+          <div className={styles.heroContentWrapper}>
+            <div className={styles.depth7Frame0}>
+              <div className={styles.discoverTheBeauty}>
+                Discover the beauty and culture of Bangladesh with our tailored travel services.
+              </div>
             </div>
-          </div>
-          <div className={styles.exploreBangladeshWith}>
-            Explore Bangladesh with WanderNest
+            <div className={styles.exploreBangladeshWith}>
+              Explore Bangladesh with WanderNest
+            </div>
           </div>
         </div>
 

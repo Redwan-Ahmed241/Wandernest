@@ -533,7 +533,7 @@ margin-top: 16px;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
   width: 100%;
-  padding:  32px;
+  padding: 0 32px;
   margin-left: 0;
   margin-right: 0;
   box-sizing: border-box;
