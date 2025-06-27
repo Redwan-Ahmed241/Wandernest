@@ -168,8 +168,8 @@
 .depth6Frame02 {
   	position: relative;
   	border-radius: 16.81px;
-  	height: 672.2px;
-  	background-image: url('../../public/Figma_photoes/aboutUsHero.jpg');
+  	height: 672.23px;
+  	background-image: url("C:\Users\HP\Desktop\Wandernest\Wandernest\public\Figma_photoes\aboutUsHero.jpg"); 
   	background-size: cover;
   	background-repeat: no-repeat;
   	background-position: top;
@@ -361,4 +361,140 @@
   color: #0d1c1c;
   font-family: 'Plus Jakarta Sans';
   overflow-x: hidden;
+}
+
+.aboutUsPage {
+  background: #f7fcfc;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.heroSection {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  margin: 0 auto 48px auto;
+  border-radius: 32px;
+  overflow: hidden;
+  background: url('C:\Users\HP\Desktop\Wandernest\Wandernest\public\Figma_photoes\aboutUsHero.jpg') center center/cover no-repeat; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.heroTitle {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 1.2px;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+
+.heroSubtitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.teamSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.teamTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #073535;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+.teamCard {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 24px 20px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.teamCard:hover {
+  box-shadow: 0 8px 32px rgba(31,31,31,0.13);
+  transform: translateY(-4px) scale(1.025);
+}
+
+.teamPhoto {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 18px;
+  border: 4px solid #e8f2f2;
+  background: #f7fcfc;
+}
+
+.teamInfo {
+  text-align: center;
+}
+
+.teamName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1c170d;
+  margin-bottom: 6px;
+}
+
+.teamCountry {
+  font-size: 1rem;
+  color: #a1824a;
+  margin-bottom: 10px;
+}
+
+.teamDesc {
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .heroSection {
+    height: 220px;
+    border-radius: 18px;
+  }
+  .heroTitle {
+    font-size: 1.3rem;
+  }
+  .teamGrid {
+    gap: 18px;
+  }
+  .teamCard {
+    padding: 20px 8px 16px 8px;
+  }
+  .teamPhoto {
+    width: 70px;
+    height: 70px;
+  }
 }
