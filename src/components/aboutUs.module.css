@@ -169,7 +169,7 @@
   	position: relative;
   	border-radius: 16.81px;
   	height: 672.23px;
-  	background-image: url("C:\Users\HP\Desktop\Wandernest\Wandernest\public\Figma_photoes\aboutUsHero.jpg"); 
+  	background-image: urlurl('/public/Figma_photoes/aboutUsHero.jpg'); 
   	background-size: cover;
   	background-repeat: no-repeat;
   	background-position: top;
@@ -377,7 +377,7 @@
   margin: 0 auto 48px auto;
   border-radius: 32px;
   overflow: hidden;
-  background: url('C:\Users\HP\Desktop\Wandernest\Wandernest\public\Figma_photoes\aboutUsHero.jpg') center center/cover no-repeat; 
+  background: url('/public/Figma_photoes/aboutUsHero.jpg') center center/cover no-repeat; 
   display: flex;
   align-items: center;
   justify-content: center;
