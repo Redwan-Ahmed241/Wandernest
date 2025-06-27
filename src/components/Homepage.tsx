@@ -25,7 +25,7 @@ const HomePage: FunctionComponent = () => {
       name: 'Sundarbans',
       image: '/Figma_photoes/deer.jpg',
       description: 'Discover the mangrove forest',
-      destination: 'sundarbans',
+     // destination: 'sundarbans',
       price: '$250/person',
     },
     {
@@ -44,21 +44,21 @@ const HomePage: FunctionComponent = () => {
     },
   ];
 
-  const handleCardClick = (destination: string) => {
-    navigate(`/destinations/${destination}`);
-  };
+
 
   return (
     <Layout>
       <main className={styles.homePage}>
         <div className={styles.depth6Frame02}>
-          <div className={styles.depth7Frame0}>
-            <div className={styles.discoverTheBeauty}>
-              Discover the beauty and culture of Bangladesh with our tailored travel services.
+          <div className={styles.heroContentWrapper}>
+            <div className={styles.depth7Frame0}>
+              <div className={styles.discoverTheBeauty}>
+                Discover the beauty and culture of Bangladesh with our tailored travel services.
+              </div>
             </div>
-          </div>
-          <div className={styles.exploreBangladeshWith}>
-            Explore Bangladesh with WanderNest
+            <div className={styles.exploreBangladeshWith}>
+              Explore Bangladesh with WanderNest
+            </div>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ const HomePage: FunctionComponent = () => {
               <div
                 key={index}
                 className={styles.destinationCard}
-                onClick={() => handleCardClick(place.destination)}
+               // onClick={() => handleCardClick(place.destination)}
               >
                 <img
                   src={place.image}

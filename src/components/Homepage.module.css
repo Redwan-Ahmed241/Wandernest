@@ -4,6 +4,33 @@
   --muted-text: #444;
   --background-light: #f7fcfc;
   --background-dark: #1c170d;
+:root {
+  --primary-color: #007e6a;
+  --text-color: #0d1c1c;
+  --muted-text: #444;
+  --background-light: #f7fcfc;
+  --background-dark: #1c170d;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: var(--text-color);
+}
+
+/* ------------------ Layout Wrapper ------------------ */
+
+.homePage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background-light);
+  padding-bottom: 60px;
 }
 
 body,

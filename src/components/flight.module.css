@@ -613,14 +613,18 @@
 .flights {
   position: relative;
   width: 100%;
-  background-color: #fff;
-  min-height: 100vh; /* Full viewport height */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content */
-  font-family: 'Plus Jakarta Sans';
-  padding: 0; /* Remove left padding */
-}
+  max-width: 1400px;
+  margin: 0 auto;
 
+  	background-color: #fff;
+
+  	overflow: visible;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 1152.35px;
+     padding-left: 80px;
+}
 
 

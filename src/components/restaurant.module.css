@@ -653,4 +653,15 @@
         padding-left: 0 !important;
     }
 }
+.topRatedEateries {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #073535;
+    margin-bottom: 22px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding-left: 94px;
+  padding-right: 94px;
+    line-height: 1.2;
+}
 
