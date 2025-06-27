@@ -145,6 +145,56 @@
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+.depth3Frame0 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+  border-bottom: 1px solid #e5e8eb;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 12px 40px;
+}
+
+.depth4Frame0 {
+  width: 32px; /* Increased from 16px for better visibility */
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.depth4Frame0:hover {
+  transform: scale(1.1);
+}
+
+.wandernest {
+  font-size: 18px;
+  line-height: 23px;
+  font-family: 'Plus Jakarta Sans';
+  color: #0d1c1c;
+  text-align: left;
+  transition: color 0.3s;
+}
+
+.depth3Frame0:hover .wandernest {
+  color: #4a6b5b;
+}
+
+.depth4Frame1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  cursor: pointer;
+}
 
 .button {
   width: 100%;

@@ -11,6 +11,7 @@ const Navbar: React.FC = () => {
 
   const handleAuthClick = useCallback(() => {
     navigate('/login'); // Or '/signup' based on context
+    navigate('/signup'); // Redirect to signup page
   }, [navigate]);
 
   return (
@@ -32,7 +33,7 @@ const Navbar: React.FC = () => {
               <div className={styles.destinations}>Hotels</div>
             </div>
             <div className={styles.depth5Frame2}onClick={() => navigate('/flights')}>
-              <div className={styles.flights} onClick={goHome}>Flights</div>
+              <div className={styles.flights} >Flights</div>
             </div>
             <div className={styles.depth4Frame1} onClick={() => navigate('/Packages')}>
               <div className={styles.destinations}>Packages</div>
