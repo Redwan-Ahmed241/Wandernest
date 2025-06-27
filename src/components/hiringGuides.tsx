@@ -1,333 +1,249 @@
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useState } from 'react';
 import styles from './Hiring.module.css';
 import Layout from './Layout';
 
+interface ReviewProps {
+  name: string;
+  date: string;
+  rating: number;
+  comment: string;
+  likes: number;
+  dislikes: number;
+}
 
-const HiringGuide:FunctionComponent = () => {
-  	
-  	const onDepth4FrameClick = useCallback(() => {
-    		// Add your code here
-  	}, []);
-  	
-  	return ( <Layout>
-    		<div className={styles.hiringGuide}>
-      			<div className={styles.guideInfo}>
-        				<div className={styles.guideInfo1}>
-          					<div className={styles.depth0Frame0}>
-            						<div className={styles.depth1Frame0}>
-              							{/* <div className={styles.navbarWrapper}>
-                								<div className={styles.navbar}>
-                  									<div className={styles.depth3Frame0}>
-                    										<img className={styles.depth4Frame0} alt="" src="Depth 4, Frame 0.svg" />
-                    										<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                      											<b className={styles.wandernest}>WanderNest</b>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth3Frame1}>
-                    										<div className={styles.depth4Frame01}>
-                      											<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                        												<div className={styles.destinations}>Destinations</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                        												<div className={styles.destinations}>Hotels</div>
-                      											</div>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                      											</div>
-                      											<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                        												<div className={styles.destinations}>Packages</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth4Frame11}>
-                      											<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Sign up</b>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth5Frame11}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.signUp}>Log in</b>
-                        												</div>
-                      											</div>
-                      											<img className={styles.depth5Frame21} alt="" src="Depth 5, Frame 2.svg" />
-                    										</div>
-                  									</div>
-                								</div>
-              							</div> */}
-              							<div className={styles.depth2Frame1}>
-                								<div className={styles.depth3Frame01}>
-                  									<div className={styles.depth4Frame02}>
-                    										<div className={styles.depth5Frame02}>
-                      											<div className={styles.depth6Frame02}>
-                        												<img className={styles.depth7Frame0} alt="" src="Depth 7, Frame 0.png" />
-                        												<div className={styles.depth7Frame1}>
-                          													<div className={styles.depth8Frame0}>
-                            														<b className={styles.nadirHussein}>Nadir Hussein - Sundarban Guide</b>
-                          													</div>
-                          													<div className={styles.depth8Frame1}>
-                            														<div className={styles.yearsOfExperienceContainer}>
-                              															<p className={styles.blankLine}>&nbsp;</p>
-                              															<p className={styles.blankLine}>10+ years of experience in Sundarban tourism</p>
-                            														</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame12}>
-                    										<div className={styles.depth5Frame03}>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.fare50perHourContainer}>
-                          													<span>Fare</span>
-                          													<span className={styles.perHour}>                                                  $50/per hour</span>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame1} />
-                    										</div>
-                    										<div className={styles.depth5Frame03}>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.fare50perHourContainer}>
-                          													<span className={styles.specialty}>{`Specialty                                    `}</span>
-                          													<span className={styles.expertInWildlife}>Expert in wildlife tours</span>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame11} />
-                    										</div>
-                    										<div className={styles.depth5Frame03}>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.fare50perHourContainer}>
-                          													<span className={styles.specialty}>{`Ratings                                          `}</span>
-                          													<span className={styles.expertInWildlife}>4.8/5</span>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame11} />
-                    										</div>
-                    										<div className={styles.depth5Frame03}>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.fare50perHourContainer}>
-                          													<span className={styles.specialty}>{`Contact Info                            `}</span>
-                          													<span className={styles.expertInWildlife}>019999999999</span>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame11} />
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame2}>
-                    										<div className={styles.depth5Frame04}>
-                      											<div className={styles.depth6Frame07}>
-                        												<div className={styles.div}>4.8</div>
-                      											</div>
-                      											<div className={styles.depth6Frame14}>
-                        												<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 0.svg" />
-                        												<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 1.svg" />
-                        												<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 2.svg" />
-                        												<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 3.svg" />
-                        												<img className={styles.depth7Frame01} alt="" src="Depth 7, Frame 4.svg" />
-                      											</div>
-                      											<div className={styles.depth6Frame2}>
-                        												<div className={styles.reviews}>150 reviews</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth5Frame13}>
-                      											<div className={styles.depth6Frame08}>
-                        												<div className={styles.depth7Frame02}>
-                          													<div className={styles.fare50perHourContainer}>5</div>
-                        												</div>
-                        												<div className={styles.depth7Frame12}>
-                          													<div className={styles.depth8Frame01} />
-                        												</div>
-                        												<div className={styles.depth7Frame21}>
-                          													<div className={styles.fare50perHourContainer}>72%</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame08}>
-                        												<div className={styles.depth7Frame02}>
-                          													<div className={styles.fare50perHourContainer}>4</div>
-                        												</div>
-                        												<div className={styles.depth7Frame12}>
-                          													<div className={styles.depth8Frame02} />
-                        												</div>
-                        												<div className={styles.depth7Frame21}>
-                          													<div className={styles.fare50perHourContainer}>20%</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame08}>
-                        												<div className={styles.depth7Frame02}>
-                          													<div className={styles.fare50perHourContainer}>3</div>
-                        												</div>
-                        												<div className={styles.depth7Frame12}>
-                          													<div className={styles.depth8Frame03} />
-                        												</div>
-                        												<div className={styles.depth7Frame21}>
-                          													<div className={styles.fare50perHourContainer}>5%</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame08}>
-                        												<div className={styles.depth7Frame02}>
-                          													<div className={styles.fare50perHourContainer}>2</div>
-                        												</div>
-                        												<div className={styles.depth7Frame12}>
-                          													<div className={styles.depth8Frame04} />
-                        												</div>
-                        												<div className={styles.depth7Frame21}>
-                          													<div className={styles.fare50perHourContainer}>2%</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame08}>
-                        												<div className={styles.depth7Frame02}>
-                          													<div className={styles.fare50perHourContainer}>1</div>
-                        												</div>
-                        												<div className={styles.depth7Frame12}>
-                          													<div className={styles.depth8Frame05} />
-                        												</div>
-                        												<div className={styles.depth7Frame21}>
-                          													<div className={styles.fare50perHourContainer}>1%</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth4Frame3}>
-                    										<div className={styles.depth5Frame05}>
-                      											<div className={styles.depth6Frame09}>
-                        												<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.png" />
-                        												<div className={styles.depth7Frame17}>
-                          													<div className={styles.depth1Frame0}>
-                            														<div className={styles.mizan}>Mizan</div>
-                          													</div>
-                          													<div className={styles.depth8Frame11}>
-                            														<div className={styles.fare50perHourContainer}>2023-09-15</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame16}>
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 0.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 1.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 2.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 3.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 4.svg" />
-                      											</div>
-                      											<div className={styles.depth1Frame0}>
-                        												<div className={styles.jnadirIsAn}>JNadir  is an excellent guide, very knowledgeable!</div>
-                      											</div>
-                      											<div className={styles.depth6Frame31}>
-                        												<div className={styles.depth7Frame09}>
-                          													<img className={styles.depth7Frame08} alt="" src="Depth 8, Frame 0.svg" />
-                          													<div className={styles.depth8Frame12}>
-                            														<div className={styles.reviews}>10</div>
-                          													</div>
-                        												</div>
-                        												<img className={styles.depth7Frame19} alt="" src="Depth 7, Frame 1.svg" />
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth5Frame05}>
-                      											<div className={styles.depth6Frame09}>
-                        												<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.png" />
-                        												<div className={styles.depth7Frame17}>
-                          													<div className={styles.depth1Frame0}>
-                            														<div className={styles.mizan}>Priti</div>
-                          													</div>
-                          													<div className={styles.depth8Frame11}>
-                            														<div className={styles.fare50perHourContainer}>2023-09-10</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame16}>
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 0.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 1.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 2.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 3.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 4.svg" />
-                      											</div>
-                      											<div className={styles.depth1Frame0}>
-                        												<div className={styles.reviews}>Had a great experience with Nadir</div>
-                      											</div>
-                      											<div className={styles.depth6Frame31}>
-                        												<div className={styles.depth7Frame09}>
-                          													<img className={styles.depth7Frame08} alt="" src="Depth 8, Frame 0.svg" />
-                          													<div className={styles.depth8Frame12}>
-                            														<div className={styles.reviews}>8</div>
-                          													</div>
-                        												</div>
-                        												<div className={styles.depth7Frame09}>
-                          													<img className={styles.depth7Frame08} alt="" src="Depth 8, Frame 0.svg" />
-                          													<div className={styles.depth8Frame12}>
-                            														<div className={styles.reviews}>1</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth5Frame05}>
-                      											<div className={styles.depth6Frame09}>
-                        												<img className={styles.depth7Frame07} alt="" src="Depth 7, Frame 0.png" />
-                        												<div className={styles.depth7Frame17}>
-                          													<div className={styles.depth1Frame0}>
-                            														<div className={styles.mizan}>Kabbo</div>
-                          													</div>
-                          													<div className={styles.depth8Frame11}>
-                            														<div className={styles.fare50perHourContainer}>2023-09-05</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame16}>
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 0.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 1.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 2.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 3.svg" />
-                        												<img className={styles.depth7Frame08} alt="" src="Depth 7, Frame 4.svg" />
-                      											</div>
-                      											<div className={styles.depth1Frame0}>
-                        												<div className={styles.reviews}>Highly recommended for Sundarban tours!</div>
-                      											</div>
-                      											<div className={styles.depth6Frame31}>
-                        												<div className={styles.depth7Frame09}>
-                          													<img className={styles.depth7Frame08} alt="" src="Depth 8, Frame 0.svg" />
-                          													<div className={styles.depth8Frame12}>
-                            														<div className={styles.reviews}>15</div>
-                          													</div>
-                        												</div>
-                        												<img className={styles.depth7Frame19} alt="" src="Depth 7, Frame 1.svg" />
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth3Frame11}>
-                  									<div className={styles.depth4Frame03} />
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-        				{/* <div className={styles.footer}>
-          					<div className={styles.depth3Frame02}>
-            						<div className={styles.depth4Frame04}>
-              							<div className={styles.depth5Frame06}>
-                								<div className={styles.depth6Frame012} onClick={onDepth4FrameClick}>
-                  									<div className={styles.aboutUs}>About Us</div>
-                								</div>
-                								<div className={styles.depth6Frame19}>
-                  									<div className={styles.aboutUs}>Contact</div>
-                								</div>
-                								<div className={styles.depth6Frame012} onClick={onDepth4FrameClick}>
-                  									<div className={styles.aboutUs}>Terms of Service</div>
-                								</div>
-                								<div className={styles.depth6Frame012} onClick={onDepth4FrameClick}>
-                  									<div className={styles.aboutUs}>Privacy Policy</div>
-                								</div>
-              							</div>
-              							<div className={styles.depth5Frame15}>
-                								<img className={styles.depth6Frame013} alt="" src="Depth 6, Frame 0.svg" />
-                								<img className={styles.depth6Frame013} alt="" src="Depth 6, Frame 1.svg" />
-                								<img className={styles.depth6Frame013} alt="" src="Depth 6, Frame 2.svg" />
-              							</div>
-              							<div className={styles.depth5Frame24}>
-                								<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div> */}
-      			</div>
-    		</div>
-			</Layout>);
+const Review: FunctionComponent<ReviewProps & { avatar: string }> = ({ name, date, rating, comment, likes, dislikes, avatar }) => {
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  
+  const handleLike = () => {
+    setLiked(!liked);
+    if (!liked && disliked) setDisliked(false);
+  };
+  
+  const handleDislike = () => {
+    setDisliked(!disliked);
+    if (!disliked && liked) setLiked(false);
+  };
+
+  return (
+    <div className={styles.reviewCard}>
+      <div className={styles.reviewHeader}>
+        <img className={styles.avatar} alt={name} src={avatar} />
+        <div className={styles.reviewerInfo}>
+          <div className={styles.reviewerName}>{name}</div>
+          <div className={styles.reviewDate}>{date}</div>
+        </div>
+      </div>
+      
+      <div className={styles.ratingContainer}>
+        {[...Array(5)].map((_, i) => (
+          <img 
+            key={i}
+            className={styles.starIcon} 
+            alt="" 
+            src="/Figma_photoes/star.svg" 
+            style={{ opacity: i < rating ? 1 : 0.3 }}
+          />
+        ))}
+      </div>
+      
+      <div className={styles.reviewComment}>{comment}</div>
+      
+      <div className={styles.feedbackContainer}>
+        <div 
+          className={`${styles.feedbackButton} ${liked ? styles.activeFeedback : ''}`} 
+          onClick={handleLike}
+        >
+          <img 
+            className={styles.feedbackIcon} 
+            alt="Like" 
+            src="/Figma_photoes/like.svg" 
+          />
+          <span>{likes + (liked ? 1 : 0)}</span>
+        </div>
+        
+        <div 
+          className={`${styles.feedbackButton} ${disliked ? styles.activeFeedback : ''}`} 
+          onClick={handleDislike}
+        >
+          <img 
+            className={styles.feedbackIcon} 
+            alt="Dislike" 
+            src="/Figma_photoes/dislike.svg" 
+          />
+          <span>{dislikes + (disliked ? 1 : 0)}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const HiringGuide: FunctionComponent = () => {
+  const handleHire = () => {
+    alert('You have hired this guide!');
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i <= 4 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+      pageNumbers.push(i);
+    } else if (i === 5 && currentPage < 5) {
+      pageNumbers.push('...');
+    } else if (i === currentPage + 2 && currentPage < totalPages - 2) {
+      pageNumbers.push('...');
+    }
+  }
+
+  return (
+    <Layout>
+      <div className={styles.hiringGuide}>
+        <div className={styles.guideContainer}>
+          <div className={styles.guideHeader}>
+            <div className={styles.guideProfile}>
+              <img className={styles.profileImage} alt="Nadir Hussein" src="/Figma_photoes/nadir.jpg" />
+              <div className={styles.profileInfo}>
+                <h1 className={styles.guideName}>Nadir Hussein</h1>
+                <p className={styles.guideSpecialty}>Sundarban Wildlife Guide</p>
+              </div>
+            </div>
+            
+            <button className={styles.hireButton} onClick={handleHire}>
+              Hire Now
+            </button>
+          </div>
+          
+          <div className={styles.guideStats}>
+            <div className={styles.statCard}>
+              <div className={styles.statValue}>10+</div>
+              <div className={styles.statLabel}>Years Experience</div>
+            </div>
+            
+            <div className={styles.statCard}>
+              <div className={styles.statValue}>4.8/5</div>
+              <div className={styles.statLabel}>Rating</div>
+            </div>
+            
+            <div className={styles.statCard}>
+              <div className={styles.statValue}>150+</div>
+              <div className={styles.statLabel}>Tours Guided</div>
+            </div>
+            
+            <div className={styles.statCard}>
+              <div className={styles.statValue}>$50</div>
+              <div className={styles.statLabel}>Per Hour</div>
+            </div>
+          </div>
+          
+          <div className={styles.guideDetails}>
+            <div className={styles.detailSection}>
+              <h2 className={styles.sectionTitle}>About Nadir</h2>
+              <p className={styles.sectionContent}>
+                Nadir is a certified Sundarban wildlife guide with over a decade of experience. 
+                Specializing in tiger tracking and bird watching, he has extensive knowledge of 
+                the mangrove ecosystem. Fluent in English, Bengali, and Hindi, Nadir provides 
+                engaging and informative tours that connect visitors with nature.
+              </p>
+            </div>
+            
+            <div className={styles.detailSection}>
+              <h2 className={styles.sectionTitle}>Specialties</h2>
+              <ul className={styles.specialtyList}>
+                <li>Wildlife photography tours</li>
+                <li>Bird watching expeditions</li>
+                <li>Night safari adventures</li>
+                <li>Cultural immersion experiences</li>
+                <li>Eco-friendly tourism</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className={styles.ratingDistribution}>
+            <h2 className={styles.sectionTitle}>Rating Distribution</h2>
+            <div className={styles.ratingBars}>
+              {[5, 4, 3, 2, 1].map((stars) => (
+                <div key={stars} className={styles.ratingBar}>
+                  <div className={styles.ratingStars}>
+                    {[...Array(stars)].map((_, i) => (
+                      <img key={i} className={styles.smallStar} alt="★" src="/Figma_photoes/star.svg" />
+                    ))}
+                  </div>
+                  <div className={styles.barContainer}>
+                    <div 
+                      className={styles.barFill} 
+                      style={{ 
+                        width: `${[72, 20, 5, 2, 1][5 - stars]}%`,
+                        backgroundColor: stars === 5 ? '#abb79a' : '#e8decf'
+                      }}
+                    ></div>
+                  </div>
+                  <div className={styles.ratingPercent}>
+                    {[72, 20, 5, 2, 1][5 - stars]}%
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className={styles.reviewsSection}>
+            <h2 className={styles.sectionTitle}>Client Reviews</h2>
+            
+            <Review 
+              name="Mizan Rahman"
+              date="September 15, 2023"
+              rating={5}
+              comment="Nadir's knowledge of the Sundarbans is incredible! He showed us tigers on our very first day. His passion for wildlife conservation is inspiring. Would book again in a heartbeat!"
+              likes={10}
+              dislikes={1}
+              avatar="/Figma_photoes/OIF.jpeg"
+            />
+            
+            <Review 
+              name="Kabbo Haque"
+              date="September 5, 2023"
+              rating={5}
+              comment="Our family had an amazing experience with Nadir. He tailored the tour to include activities for both kids and adults. His stories about the Sundarbans made the trip unforgettable!"
+              likes={15}
+              dislikes={2}
+              avatar="/Figma_photoes/OIP (9).jpeg"
+            />
+            
+            <Review 
+              name="Tasnim Ahmed"
+              date="August 22, 2023"
+              rating={4}
+              comment="Professional and knowledgeable guide. The boat tour was well-organized and Nadir pointed out wildlife we would have completely missed on our own. Only wish we had more time!"
+              likes={8}
+              dislikes={0}
+              avatar="/Figma_photoes/OIP (10).jpeg"
+            />
+            <div className={styles.paginationBar}>
+              {pageNumbers.map((num, idx) =>
+                num === '...'
+                  ? <span key={idx} className={styles.ellipsis}>...</span>
+                  : <span
+                      key={num}
+                      className={
+                        num === currentPage
+                          ? `${styles.pageNumber} ${styles.activePage}`
+                          : styles.pageNumber
+                      }
+                      onClick={() => typeof num === 'number' && setCurrentPage(num)}
+                    >
+                      {num}
+                    </span>
+              )}
+              {currentPage < totalPages && (
+                <span className={styles.pageNumber} onClick={() => setCurrentPage(currentPage + 1)}>
+                  Next
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
 export default HiringGuide;
