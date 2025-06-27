@@ -286,6 +286,7 @@ export default function SignupForm() {
                         required
                       >
                         <option value="">Select your country</option>
+                        <option value="mx">Bangladesh</option>
                         <option value="us">United States</option>
                         <option value="ca">Canada</option>
                         <option value="uk">United Kingdom</option>
