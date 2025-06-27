@@ -1,88 +1,68 @@
-import { FunctionComponent } from 'react';
-import styles from './Loginpage.module.css';
+"use client"
 
-const Loginpage: FunctionComponent = () => {
+import type React from "react"
+import "./styles/login.css"
+
+export default function TravelLogin() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // Handle login logic here
+    console.log("Login submitted")
+  }
+
+  const handleWanderNestClick = () => {
+    // Handle WanderNest button click (e.g., navigate to home page)
+    console.log("WanderNest clicked")
+  }
+
   return (
-    <div className={styles.div}>
-      <div className={styles.images}>
-        <div className={styles.imagesChild} />
-        <div className={styles.imagesItem} />
-        <div className={styles.imagesInner} />
-        <div className={styles.rectangleIcon} />
-        <div className={styles.imagesChild1} />
-        <div className={styles.imagesChild2} />
-        <div className={styles.imagesChild3} />
-        <div className={styles.imagesChild4} />
-        <div className={styles.imagesChild5} />
-        <div className={styles.imagesChild6} />
-        <div className={styles.imagesChild7} />
-        <div className={styles.imagesChild8} />
-        <div className={styles.imagesChild9} />
-        <div className={styles.imagesChild10} />
-        <div className={styles.imagesChild11} />
-        <div className={styles.imagesChild12} />
-      </div>
-
-      <div className={styles.background}>
-        <div className={styles.backgroundChild} />
-      </div>
-
-      <div className={styles.frameParent}>
-        <div className={styles.frameWrapper}>
-          <div className={styles.frameGroup}>
-            <div className={styles.welcomeBackParent}>
-              <div className={styles.welcomeBack}>Welcome back</div>
-              <div className={styles.wereSoExcited}>We’re so excited to see you again!</div>
-            </div>
-
-            <div className={styles.emailParent}>
-              <div className={styles.email}>
-                <div className={styles.labelWrapper}>
-                  <div className={styles.label}>Email or phone number</div>
-                </div>
-                <div className={styles.textField} />
-              </div>
-
-              <div className={styles.emailGroup}>
-                <div className={styles.email}>
-                  <div className={styles.labelWrapper}>
-                    <div className={styles.label}>Password</div>
-                  </div>
-                  <div className={styles.textField} />
-                </div>
-                <div className={styles.haveAnAccountLogin}>
-                  <div className={styles.alreadyHaveAn}>Forget your password</div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.button}>
-              <div className={styles.signUpWrapper}>
-                <div className={styles.welcomeBack}>Log in</div>
-              </div>
-            </div>
-
-            <div className={styles.haveAnAccountLogin1}>
-              <div className={styles.alreadyHaveAnContainer}>
-                <span>Don’t have an acount? </span>
-                <span className={styles.signUp1}>Sign up</span>
-              </div>
-            </div>
-          </div>
+    <div className="container">
+      <div className="card">
+        <div className="cardHeader">
+          <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className="logo" />
+          <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
+            WanderNest
+          </button>
         </div>
 
-        <div className={styles.frameContainer}>
-          <div className={styles.qrCodeParent}>
-            <img className={styles.qrCodeIcon} alt="" src="QR Code.svg" />
-            <div className={styles.logInWithQrCodeParent}>
-              <div className={styles.logInWith}>Log in with QR code</div>
-              <div className={styles.scanThisWith}>Scan this with our App to log in instantly</div>
-            </div>
-          </div>
+        <div className="header">
+          <h1 className="title">Welcome back</h1>
+          <p className="subtitle">We're so excited to see you again!</p>
         </div>
+
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="field">
+            <label htmlFor="email" className="label">
+              Email or phone number
+            </label>
+            <input id="email" type="text" className="input" required />
+          </div>
+
+          <div className="field">
+            <label htmlFor="password" className="label">
+              Password
+            </label>
+            <input id="password" type="password" className="input" required />
+          </div>
+
+          <div className="forgotPassword">
+            <a href="#" className="link">
+              Forget your password
+            </a>
+          </div>
+
+          <button type="submit" className="button">
+            Log in
+          </button>
+
+          <div className="footer">
+            Don't have an account?{" "}
+            <a href="#" className="signupLink">
+              Sign up
+            </a>
+          </div>
+        </form>
       </div>
     </div>
-  );
-};
-
-export default Loginpage;
+  )
+}
