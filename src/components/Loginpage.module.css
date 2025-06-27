@@ -6,8 +6,7 @@
   height: 256px;
   background-image: url('/images/Rectangle 6.png');
   background-size: cover;
-  background-position: center;
-}
+  background-position: center;}
 .images-item {
   position: absolute;
   top: 0px;
@@ -543,4 +542,4 @@
   	color: #666;
   	font-family: Poppins;
 }
-
+}
