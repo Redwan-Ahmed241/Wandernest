@@ -122,6 +122,7 @@
     font-size: 12.06px;
 }
 
+
 .navbar {
   width: 100%;
   max-width: 1428px; 
@@ -613,18 +614,377 @@
 .flights {
   position: relative;
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-
-  	background-color: #fff;
-
-  	overflow: visible;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	min-height: 1152.35px;
-     padding-left: 80px;
+  background-color: #fff;
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content */
+  font-family: 'Plus Jakarta Sans';
+  padding: 0; /* Remove left padding */
 }
+
+/* Hero Section */
+.heroSection {
+  /*background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url('/Figma_photoes/flight-bg.jpg') center/cover no-repeat;*/
+  background-color: #ffffff;
+  padding: 60px 500px;
+  color: white;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #1c170d;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #1c170d;
+}
+
+.searchForm {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0px;
+  padding: 45px;
+  box-shadow: 0 8px 32px rgba(31, 31, 31, 0.1);
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px;
+  margin-bottom: 20px;
+}
+
+.inputGroup {
+  flex: 1;
+  min-width: 380px;
+  text-align: left;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1c170d;
+}
+
+.inputGroup input, 
+.inputGroup select {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #eaeaea;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #e8f5e8;
+  color: #1c170d;
+}
+
+.searchButton {
+  background: #abb79a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+}
+
+.searchButton:hover {
+  background: #8a9a7a;
+}
+
+.section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #1c170d;
+  font-weight: 700;
+}
+
+.weatherContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.weatherMap {
+  flex: 1;
+  min-width: 300px;
+  background: #f9f7f2;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.mapImage {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.weatherDetails {
+  flex: 1;
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.weatherCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.weatherCard h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1c170d;
+}
+
+.weatherInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.temperature {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-right: 15px;
+  color: #1c170d;
+}
+
+.condition {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.weatherStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  color: #6c757d;
+}
+
+.currencyContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.currencyRates {
+  flex: 1;
+  min-width: 300px;
+}
+
+.currencyTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.currencyTable th {
+  background: #f5f0e5;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #1c170d;
+}
+
+.currencyTable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e8decf;
+  color: #1c170d;
+}
+
+.positiveChange {
+  color: #4e944f;
+  font-weight: 500;
+}
+
+.currencyChart {
+  flex: 1;
+  min-width: 300px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.chartImage {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.chartCaption {
+  text-align: center;
+  margin-top: 10px;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.footer {
+  background: #1c170d;
+  color: #e8f2f2;
+  padding: 40px 20px;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.footerLink {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footerLink:hover {
+  color: #abb79a;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.socialIcon {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.socialIcon:hover {
+  transform: translateY(-3px);
+}
+
+.copyright {
+  font-size: 0.9rem;
+  color: #a8a8a8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.7rem;
+  }
+  
+  .formRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .weatherContainer,
+  .currencyContainer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+  
+  .searchForm {
+    padding: 20px 15px;
+  }
+  
+  .inputGroup {
+    min-width: 100%;
+  }
+}
+
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.swapButton {
+  background: #fff;
+  border: 1.5px solid #e8decf;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 0 8px 18px 8px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.swapButton:hover, .swapButton:focus {
+  background: #e8f5e8;
+  border-color: #b7c6a7;
+  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12);
+}
+
+@media (max-width: 768px) {
+  .swapButton {
+    margin: 12px auto 18px auto;
+  }
+}
+
 
 
