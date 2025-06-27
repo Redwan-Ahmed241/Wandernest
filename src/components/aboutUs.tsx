@@ -16,7 +16,7 @@ const teamMembers = [
     desc: 'Passionate developer with expertise in creating modern web applications.'
   },
   {
-    name: 'Ifthakar Majumder',
+    name: 'Iftikhar Majumder',
     country: 'Bangladesh',
     img: '/Figma_photoes/ifty_bro_2-modified_reduced.png',
     desc: 'Passionate developer with expertise in creating modern web applications.'
