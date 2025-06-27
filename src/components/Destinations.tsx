@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './Destinations.module.css';
-import AboutUs from './aboutUs';
+import Layout from './Layout';
 
 
 const Destinations:FunctionComponent = () => {
@@ -17,10 +17,11 @@ const Destinations:FunctionComponent = () => {
   	}, [navigate]);
   	
   	return (
+		<Layout>
     		<div className={styles.destinations}>
       			<div className={styles.depth0Frame0}>
         				<div className={styles.depth1Frame0}>
-							<div className={styles.navbarWrapper}>
+							{/* <div className={styles.navbarWrapper}> 
           					<div className={styles.navbar}>
             						<div className={styles.depth3Frame0}>
               							<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
@@ -58,7 +59,7 @@ const Destinations:FunctionComponent = () => {
               							</div>
             						</div>
 									</div>
-          					</div>
+          					 </div> */}
           					<div className={styles.depth2Frame1}>
             						<div className={styles.depth3Frame01}>
               							<div className={styles.depth4Frame02}>
@@ -77,57 +78,38 @@ const Destinations:FunctionComponent = () => {
                 								<b className={styles.exploreDestinations}>Explore Destinations</b>
               							</div>
               							<div className={styles.depth4Frame2}>
-                								<div className={styles.depth5Frame03}>
-                  									<div className={styles.depth6Frame03}>
-                    										<img className={styles.depth7Frame01} alt="" src="/Figma_photoes/cox.jpg" onClick={onDepth4FrameClick} />
-                    										<div className={styles.depth1Frame0}>
-                      											<div className={styles.depth1Frame0} onClick={() => navigate('/coxsbazar')}>
-                        												<div className={styles.coxsBazar}>Cox's Bazar</div>
-                        												</div>
-                        												<div className={styles.depth8Frame1}>
-                          													<div className={styles.worldsLongestSea}>World's longest sea beach</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame03}>
-                        												<img className={styles.depth7Frame02} alt="" src="/Figma_photoes/sundarban.jpg" />
-                        												<div className={styles.depth1Frame0}>
-                          													<div className={styles.depth1Frame0} onClick={() => navigate('/sundarban')}>
-                            														<div className={styles.coxsBazar}>Sundarbans</div>
-                          													</div>
-                          													<div className={styles.depth8Frame1}>
-                            														<div className={styles.worldsLongestSea}>Discover the mangrove forest</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth6Frame2}>
-                        												<img className={styles.depth7Frame02} alt="" src="/Figma_photoes/bandarban.jpg" />
-                        												<div className={styles.depth1Frame0}>
-                          													<div className={styles.depth1Frame0} onClick={() => navigate('/bandarban')}>
-                            														<div className={styles.coxsBazar}>Bandarban</div>
-                          													</div>
-                          													<div className={styles.depth8Frame1}>
-                            														<div className={styles.worldsLongestSea}>Hills and waterfalls</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                      											
-                    										</div>
-                    										<div className={styles.depth5Frame12}>
-                      											<div className={styles.depth6Frame03}>
-                        												<img className={styles.depth7Frame02} alt="" src="/Figma_photoes/sylhet.jpg"/>
-                        												<div className={styles.depth1Frame0}>
-                          													<div className={styles.depth1Frame0} onClick={() => navigate('/sylhet')}>
-                            														<div className={styles.coxsBazar}>Sylhet</div>
-                          													</div>
-                          													<div className={styles.depth8Frame1}>
-                            														<div className={styles.worldsLongestSea}>Lush tea gardens</div>
-                          													</div>
-                        												</div>
-                      											</div>
+                								<div className={styles.destinationsGrid}>
+                  									<div className={styles.destinationCard} onClick={() => navigate('/coxsbazar')}>
+                    										<img className={styles.destinationImage} alt="Cox's Bazar" src="/Figma_photoes/cox.jpg" />
+                    										<div className={styles.destinationContent}>
+                      											<div className={styles.destinationTitle}>Cox's Bazar</div>
+                      											<div className={styles.destinationDescription}>World's longest sea beach</div>
                     										</div>
                   									</div>
-                  									<div className={styles.depth4Frame3}>
+                  									<div className={styles.destinationCard} onClick={() => navigate('/sundarban')}>
+                    										<img className={styles.destinationImage} alt="Sundarbans" src="/Figma_photoes/sundarban.jpg" />
+                    										<div className={styles.destinationContent}>
+                      											<div className={styles.destinationTitle}>Sundarbans</div>
+                      											<div className={styles.destinationDescription}>Discover the mangrove forest</div>
+                    										</div>
+                  									</div>
+                  									<div className={styles.destinationCard} onClick={() => navigate('/bandarban')}>
+                    										<img className={styles.destinationImage} alt="Bandarban" src="/Figma_photoes/bandarban.jpg" />
+                    										<div className={styles.destinationContent}>
+                      											<div className={styles.destinationTitle}>Bandarban</div>
+                      											<div className={styles.destinationDescription}>Hills and waterfalls</div>
+                    										</div>
+                  									</div>
+                  									<div className={styles.destinationCard} onClick={() => navigate('/sylhet')}>
+                    										<img className={styles.destinationImage} alt="Sylhet" src="/Figma_photoes/sylhet.jpg" />
+                    										<div className={styles.destinationContent}>
+                      											<div className={styles.destinationTitle}>Sylhet</div>
+                      											<div className={styles.destinationDescription}>Lush tea gardens</div>
+                    										</div>
+                  									</div>
+                								</div>
+              							</div>
+              							<div className={styles.depth4Frame3}>
                     										<div className={styles.depth5Frame04}>
                       											<div className={styles.depth6Frame11}>
                         												<div className={styles.depth7Frame06}>
@@ -154,7 +136,7 @@ const Destinations:FunctionComponent = () => {
               							</div>
             						</div>
           					</div>
-          					<div className={styles.depth2Frame4}>
+          					{/* <div className={styles.depth2Frame4}>
             						<div className={styles.depth3Frame02}>
               							<div className={styles.depth4Frame04}>
                 								<div className={styles.depth5Frame05}>
@@ -195,8 +177,10 @@ const Destinations:FunctionComponent = () => {
                 								</div>
               							</div>
             						</div>
-          					</div>
-        				</div>);
+          					</div> */}
+        				</div>
+					</Layout>
+				);
         				};
         				
         				export default Destinations;
