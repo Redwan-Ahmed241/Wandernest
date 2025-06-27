@@ -19,7 +19,7 @@ import VisaAssistance from './components/Visaassistance';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Layout from './components/Layout';
-
+import MyTrips from './components/MyTrips';
 import Community from './components/Community';
 import './global.css';
 import Packages from './components/Packages';
@@ -51,6 +51,17 @@ function App() {
         <Route path="/destinations" element={<Destinations />} />
         <Route path="/create-package" element={<CreatePackage />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/my-trips" element={<MyTrips />} />
+        
+        {/* Uncomment the following line if you have a Packages component */}
+        {/* <Route path="/packages" element={<Packages />} /> */}
+        
+        {/* Example of a nested route for packages */}
+        
+        {/* Uncomment the following line if you have a Packages component */}
+        {/* <Route path="/packages" element={<Packages />} /> */}
+        
+        {/* Example of a nested route for packages */}
         {/* Uncomment the following line if you have a Packages component */}
         {<Route path="/packages" element={<Packages />} />}
         
