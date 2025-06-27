@@ -1,545 +1,261 @@
-.images-child {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;}
-.images-item {
-  position: absolute;
-  top: 0px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image:url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-inner {
-  position: absolute;
-  top: 0px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.rectangle-icon {
-  position: absolute;
-  top: 0px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image:url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child1 {
-  position: absolute;
-  top: 256px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child2 {
-  position: absolute;
-  top: 256px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child3 {
-  position: absolute;
-  top: 256px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child4 {
-  position: absolute;
-  top: 256px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child5 {
-  position: absolute;
-  top: 512px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child6 {
-  position: absolute;
-  top: 512px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child7 {
-  position: absolute;
-  top: 512px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child8 {
-  position: absolute;
-  top: 512px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child9 {
-  position: absolute;
-  top: 768px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child10 {
-  position: absolute;
-  top: 768px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child11 {
-  position: absolute;
-  top: 768px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child12 {
-  position: absolute;
-  top: 768px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-
-
-
-
-.images-child {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-item {
-  position: absolute;
-  top: 0px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-inner {
-  position: absolute;
-  top: 0px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.rectangle-icon {
-  position: absolute;
-  top: 0px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child1 {
-  position: absolute;
-  top: 256px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child2 {
-  position: absolute;
-  top: 256px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child3 {
-  position: absolute;
-  top: 256px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child4 {
-  position: absolute;
-  top: 256px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child5 {
-  position: absolute;
-  top: 512px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child6 {
-  position: absolute;
-  top: 512px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png  ');
-  background-size: cover;
-  background-position: center;
-}
-.images-child7 {
-  position: absolute;
-  top: 512px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child8 {
-  position: absolute;
-  top: 512px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child9 {
-  position: absolute;
-  top: 768px;
-  left: 0px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (6).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child10 {
-  position: absolute;
-  top: 768px;
-  left: 360px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (7).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child11 {
-  position: absolute;
-  top: 768px;
-  left: 720px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (8).png');
-  background-size: cover;
-  background-position: center;
-}
-.images-child12 {
-  position: absolute;
-  top: 768px;
-  left: 1080px;
-  width: 360px;
-  height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle (9).png');
-  background-size: cover;
-  background-position: center;
-}
-
-
-
+/* Image Grid */
 .images {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	width: 1440px;
-  	height: 1024px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 1440px;
+  height: 1024px;
 }
+.images-child, .images-item, .images-inner, .rectangle-icon,
+.images-child1, .images-child2, .images-child3, .images-child4,
+.images-child5, .images-child6, .images-child7, .images-child8,
+.images-child9, .images-child10, .images-child11, .images-child12 {
+  position: absolute;
+  width: 360px;
+  height: 256px;
+  background-size: cover;
+  background-position: center;
+}
+.images-child { top: 0px; left: 0px; background-image: url('/public/Figma_photoes/Rectangle (1).png'); }
+.images-item { top: 0px; left: 360px; background-image: url('/public/Figma_photoes/Rectangle (2).png'); }
+.images-inner { top: 0px; left: 720px; background-image: url('/public/Figma_photoes/Rectangle (3).png'); }
+.rectangle-icon { top: 0px; left: 1080px; background-image: url('/public/Figma_photoes/Rectangle (4).png'); }
+.images-child1 { top: 256px; left: 0px; background-image: url('/public/Figma_photoes/Rectangle (5).png'); }
+.images-child2 { top: 256px; left: 360px; background-image: url('/public/Figma_photoes/Rectangle (6).png'); }
+.images-child3 { top: 256px; left: 720px; background-image: url('/public/Figma_photoes/Rectangle (7).png'); }
+.images-child4 { top: 256px; left: 1080px; background-image: url('/public/Figma_photoes/Rectangle (8).png'); }
+.images-child5 { top: 512px; left: 0px; background-image: url('/public/Figma_photoes/Rectangle (9).png'); }
+.images-child6 { top: 512px; left: 360px; background-image: url('/public/Figma_photoes/Rectangle (10).png'); }
+.images-child7 { top: 512px; left: 720px; background-image: url('/public/Figma_photoes/Rectangle (11).png'); }
+.images-child8 { top: 512px; left: 1080px; background-image: url('/public/Figma_photoes/Rectangle (12).png'); }
+.images-child9 { top: 768px; left: 0px; background-image: url('/public/Figma_photoes/Rectangle (13).png'); }
+.images-child10 { top: 768px; left: 360px; background-image: url('/public/Figma_photoes/Rectangle (14).png'); }
+.images-child11 { top: 768px; left: 720px; background-image: url('/public/Figma_photoes/Rectangle (15).png'); }
+.images-child12 { top: 768px; left: 1080px; background-image: url('/public/Figma_photoes/Rectangle (16).png'); }
+
+/* Blur Background Overlay */
 .background-child {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	background-color: rgba(0, 0, 0, 0.35);
-	width: 1440px;
-	height: 1024px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.35);
+  width: 1440px;
+  height: 1024px;
 }
 .background {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-  	width: 1440px;
-  	height: 1024px;
-  	overflow: hidden;
-}
-.welcome-back {
-  	position: relative;
-  	font-weight: 500;
-}
-.were-so-excited {
-  	position: relative;
-  	font-size: 24px;
-  	color: #666;
-}
-.welcome-back-parent {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
-  	gap: 2px;
-  	font-size: 40px;
-  	color: #333;
-}
-.label {
-  	position: absolute;
-  	top: 0px;
-  	left: 0px;
-}
-.label-wrapper {
-  	align-self: stretch;
-  	position: relative;
-  	height: 27px;
-}
-.text-field {
-  	align-self: stretch;
-  	position: relative;
-  	border-radius: 12px;
-  	border: 1px solid rgba(102, 102, 102, 0.35);
-  	box-sizing: border-box;
-  	height: 56px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-}
-.email {
-  	width: 484px;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 4px;
-}
-.already-have-an {
-  	position: relative;
-  	text-decoration: underline;
-  	font-weight: 500;
-}
-.have-an-account-login {
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 2px;
-  	color: #111;
-}
-.email-group {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 8px;
-}
-.email-parent {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	gap: 24px;
-  	text-align: left;
-}
-.sign-up-wrapper {
-  	position: absolute;
-  	top: calc(50% - 17px);
-  	left: calc(50% - 32.5px);
-  	display: flex;
-  	flex-direction: row;
-  	align-items: center;
-  	justify-content: center;
-}
-.button {
-  	width: 484px;
-  	position: relative;
-  	border-radius: 32px;
-  	background-color: #111;
-  	height: 64px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	opacity: 0.25;
-  	font-size: 22px;
-  	color: #fff;
-}
-.sign-up1 {
-  	text-decoration: underline;
-  	font-weight: 500;
-  	color: #111;
-  	white-space: pre-wrap;
-}
-.already-have-an-container {
-  	position: relative;
-}
-.have-an-account-login1 {
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 2px;
-  	text-align: left;
-}
-.frame-group {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
-  	gap: 32px;
-}
-.frame-wrapper {
-  	background-color: #fff;
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: column;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-  	padding: 48px;
-}
-.qr-code-icon {
-  	width: 320px;
-  	position: relative;
-  	height: 320px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-}
-.log-in-with {
-  	position: relative;
-  	font-weight: 600;
-}
-.scan-this-with {
-  	position: relative;
-  	font-size: 22px;
-  	color: #666;
-}
-.log-in-with-qr-code-parent {
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
-  	gap: 4px;
-}
-.qr-code-parent {
-  	position: absolute;
-  	top: 80px;
-  	left: calc(50% - 219px);
-  	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
-  	gap: 40px;
-}
-.frame-container {
-  	width: 534px;
-  	position: relative;
-  	background-color: #fff;
-  	height: 616px;
-  	overflow: hidden;
-  	flex-shrink: 0;
-  	font-size: 40px;
-  	color: #333;
-}
-.frame-parent {
-  	position: absolute;
-  	top: 204px;
-  	left: 163px;
-  	border-radius: 40px;
-  	overflow: hidden;
-  	display: flex;
-  	flex-direction: row;
-  	align-items: flex-start;
-  	justify-content: flex-start;
-}
-.div {
-  	width: 100%;
-  	position: relative;
-  	background-color: #fff;
-  	height: 1024px;
-  	overflow: hidden;
-  	text-align: center;
-  	font-size: 16px;
-  	color: #666;
-  	font-family: Poppins;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 1440px;
+  height: 1024px;
+  overflow: hidden;
 }
 
+/* Typography and Layout */
+.welcome-back {
+  position: relative;
+  font-weight: 500;
+}
+.were-so-excited {
+  position: relative;
+  font-size: 24px;
+  color: #666;
+}
+.welcome-back-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 40px;
+  color: #333;
+}
+
+/* Form Controls */
+.label {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.label-wrapper {
+  align-self: stretch;
+  position: relative;
+  height: 27px;
+}
+.text-field {
+  align-self: stretch;
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid rgba(102, 102, 102, 0.35);
+  box-sizing: border-box;
+  height: 56px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.email {
+  width: 484px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.email-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.email-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24px;
+  text-align: left;
+}
+
+/* Password Reset */
+.already-have-an {
+  position: relative;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.have-an-account-login {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2px;
+  color: #111;
+}
+.have-an-account-login1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2px;
+  text-align: left;
+}
+.already-have-an-container {
+  position: relative;
+}
+.sign-up1 {
+  text-decoration: underline;
+  font-weight: 500;
+  color: #111;
+  white-space: pre-wrap;
+}
+
+/* Button */
+.button {
+  width: 484px;
+  position: relative;
+  border-radius: 32px;
+  background-color: #111;
+  height: 64px;
+  overflow: hidden;
+  flex-shrink: 0;
+  opacity: 0.25;
+  font-size: 22px;
+  color: #fff;
+}
+.sign-up-wrapper {
+  position: absolute;
+  top: calc(50% - 17px);
+  left: calc(50% - 32.5px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* QR Code Section */
+.qr-code-icon {
+  width: 320px;
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.log-in-with {
+  position: relative;
+  font-weight: 600;
+}
+.scan-this-with {
+  position: relative;
+  font-size: 22px;
+  color: #666;
+}
+.log-in-with-qr-code-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.qr-code-parent {
+  position: absolute;
+  top: 80px;
+  left: calc(50% - 219px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* Containers */
+.frame-container {
+  width: 534px;
+  position: relative;
+  background-color: #fff;
+  height: 616px;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-size: 40px;
+  color: #333;
+}
+.frame-wrapper {
+  background-color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 48px;
+}
+.frame-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+.frame-parent {
+  position: absolute;
+  top: 204px;
+  left: 163px;
+  border-radius: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Global Wrapper */
+.div {
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  height: 1024px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  font-family: Poppins;
+}
