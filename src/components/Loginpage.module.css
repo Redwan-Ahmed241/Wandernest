@@ -4,7 +4,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 6.png');
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;}
 .images-item {
@@ -13,7 +13,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 7.png');
+  background-image:url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -23,7 +23,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 8.png');
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -33,7 +33,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 9.png');
+  background-image:url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }
@@ -43,7 +43,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 6.png');
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -53,7 +53,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 7.png');
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -63,7 +63,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 8.png');
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -73,7 +73,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 9.png');
+  background-image: url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }
@@ -83,7 +83,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 6.png');
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -93,7 +93,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 7.png');
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -103,7 +103,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 8.png');
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -113,7 +113,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  background-image: url('/public/Figma_photoes/Rectangle6.png');
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -123,7 +123,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 6.png');
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -133,7 +133,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 7.png');
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -143,7 +143,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 8.png');
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -153,21 +153,21 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  background-image: url('/images/Rectangle 9.png');
+  background-image: url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }
 
 
 
-.images {
+
 .images-child {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 360px;
   height: 256px;
- /* background-image: url('/Figma_photoes/Rectangle6.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -177,7 +177,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle7.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -187,7 +187,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle8.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -197,7 +197,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle9.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }
@@ -207,7 +207,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle6.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -217,7 +217,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle7.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -227,7 +227,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle8.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -237,7 +237,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle9.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }
@@ -247,7 +247,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle6.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -257,7 +257,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle7.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (7).png  ');
   background-size: cover;
   background-position: center;
 }
@@ -267,7 +267,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle8.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -277,7 +277,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle6.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -287,7 +287,7 @@
   left: 0px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle6.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (6).png');
   background-size: cover;
   background-position: center;
 }
@@ -297,7 +297,7 @@
   left: 360px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle7.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (7).png');
   background-size: cover;
   background-position: center;
 }
@@ -307,7 +307,7 @@
   left: 720px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle8.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (8).png');
   background-size: cover;
   background-position: center;
 }
@@ -317,7 +317,7 @@
   left: 1080px;
   width: 360px;
   height: 256px;
-  /*background-image: url('/Figma_photoes/Rectangle9.png');*/
+  background-image: url('/public/Figma_photoes/Rectangle (9).png');
   background-size: cover;
   background-position: center;
 }

@@ -101,7 +101,7 @@ const Restaurant:FunctionComponent = () => {
           <div className={styles.depth0Frame0}>
             <div className={styles.depth1Frame0}>
               <div className={styles.groupParent}>
-                <div className={styles.tourPackages2}>Top-Rated Eateries Across Bangladesh</div>
+                <h1 className={styles.topRatedEateries}>Top-Rated Eateries Across Bangladesh</h1>
               </div>
               {/* Search Bar */}
               <div className={styles.searchBarContainer}>
