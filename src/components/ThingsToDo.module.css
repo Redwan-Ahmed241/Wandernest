@@ -531,9 +531,9 @@ margin-top: 16px;
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 12px;
+  gap: 16px;
   width: 100%;
-  padding: 0 24px;
+  padding:  32px;
   margin-left: 0;
   margin-right: 0;
   box-sizing: border-box;
@@ -634,7 +634,8 @@ margin-top: 16px;
 @media (max-width: 900px) {
   .cardGrid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 10px;
+    gap: 14px;
+    padding: 0 24px;
   }
   .cardImage {
     height: 180px;
@@ -656,7 +657,8 @@ margin-top: 16px;
   }
   .cardGrid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px;
+    padding: 0 16px;
   }
   .depth2Frame1 {
     padding: 20px 8px !important;
