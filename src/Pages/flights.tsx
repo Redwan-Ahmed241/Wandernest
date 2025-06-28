@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import styles from './flight.module.css';
+import styles from '../Styles/flight.module.css';
 import Layout from '../App/Layout';
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate();

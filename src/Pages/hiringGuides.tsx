@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import styles from './Hiring.module.css';
+import styles from '../Styles/Hiring.module.css';
 import Layout from '../App/Layout';
 
 interface ReviewProps {

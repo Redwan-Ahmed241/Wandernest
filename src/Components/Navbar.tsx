@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Navbar.module.css';
+import styles from '../Styles/Navbar.module.css';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -41,12 +41,12 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className={styles.depth4Frame11}>
-            <div className={styles.depth5Frame01} onClick={handleAuthClick}>
+            <div className={styles.depth5Frame01} onClick={() => navigate('/signup')}>
               <div className={styles.depth6Frame0}>
                 <b className={styles.signUp}>Sign up</b>
               </div>
             </div>
-            <div className={styles.depth5Frame11} onClick={handleAuthClick}>
+            <div className={styles.depth5Frame11} onClick={() => navigate('/login')}>
               <div className={styles.depth6Frame0}>
                 <b className={styles.signUp}>Log in</b>
               </div>

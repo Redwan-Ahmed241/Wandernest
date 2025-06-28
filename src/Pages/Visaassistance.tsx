@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './Visaassistance.module.css';
+import styles from '../Styles/Visaassistance.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const VisaAssistance:FunctionComponent = () => {

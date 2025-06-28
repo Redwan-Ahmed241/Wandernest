@@ -246,7 +246,7 @@ const Community = () => {
         console.log("Join result:", result)
 
         // Update local state
-        setJoinedGroups((prev) => new Set([...prev, groupId]))
+        //setJoinedGroups((prev) => new Set([...prev, groupId]))
 
         // Show success message
         const groupName = groups.find((g) => g.id === groupId)?.name

@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './Blog.module.css';
+import styles from '../Styles/Blog.module.css';
 import Footer from '../Components/Footer';
 
 

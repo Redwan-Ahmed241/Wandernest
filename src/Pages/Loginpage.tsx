@@ -1,13 +1,16 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import styles from "./Loginpage.module.css
+import { useNavigate } from "react-router-dom"
+import styles from "../Styles/Loginpage.module.css"
 
 export default function TravelLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -17,6 +20,7 @@ export default function TravelLogin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError("")
+    setIsLoading(true)
 
     try {
       const response = await fetch("https://wander-nest-ad3s.onrender.com/api/auth/login", {
@@ -37,6 +41,8 @@ export default function TravelLogin() {
       setIsLoggedIn(true)
     } catch (err: any) {
       setError(err.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -48,21 +54,23 @@ export default function TravelLogin() {
   }
 
   const handleWanderNestClick = () => {
-    console.log("WanderNest clicked")
+    navigate("/")
   }
 
   if (isLoggedIn) {
     return (
-      <div className="container">
-        <div className="card">
-          <div className="cardHeader">
-            <img src="/Figma_photos/wandernest.svg" alt="WanderNest Logo" className="logo" />
-            <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
-              WanderNest
-            </button>
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div className={styles.logoContainer} onClick={handleWanderNestClick}>
+              <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className={styles.logo} />
+              <button type="button" className={styles.wanderNestButton}>
+                WanderNest
+              </button>
+            </div>
           </div>
-          <h1 className="title">You're logged in!</h1>
-          <button className="button" onClick={handleLogout}>
+          <h1 className={styles.title}>You're logged in!</h1>
+          <button className={styles.button} onClick={handleLogout}>
             Logout
           </button>
         </div>
@@ -71,64 +79,76 @@ export default function TravelLogin() {
   }
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="cardHeader">
-          <img src="/Figma_photos/wandernest.svg" alt="WanderNest Logo" className="logo" />
-          <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
-            WanderNest
-          </button>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div className={styles.logoContainer} onClick={handleWanderNestClick}>
+            <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className={styles.logo} />
+            <button type="button" className={styles.wanderNestButton}>
+              WanderNest
+            </button>
+          </div>
+        </div>
+        
+        <div className={styles.header}>
+          <h1 className={styles.title}>Welcome back</h1>
+          <p className={styles.subtitle}>We're so excited to see you again!</p>
         </div>
 
-        <div className="header">
-          <h1 className="title">Welcome back</h1>
-          <p className="subtitle">We're so excited to see you again!</p>
-        </div>
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
 
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="field">
-            <label htmlFor="email" className="label">
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.field}>
+            <label htmlFor="email" className={styles.label}>
               Email or phone number
             </label>
-            <input
-              id="email"
-              type="text"
-              className="input"
-              required
+            <input 
+              id="email" 
+              type="email" 
+              className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required 
+              placeholder="Enter your email"
             />
           </div>
-
-          <div className="field">
-            <label htmlFor="password" className="label">
+          
+          <div className={styles.field}>
+            <label htmlFor="password" className={styles.label}>
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              className="input"
-              required
+            <input 
+              id="password" 
+              type="password" 
+              className={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required 
+              placeholder="Enter your password"
             />
           </div>
 
-          {error && <div className="error">{error}</div>}
-
-          <div className="forgotPassword">
-            <a href="#" className="link">
-              Forget your password
+          <div className={styles.forgotPassword}>
+            <a href="#" className={styles.link}>
+              Forget your password?
             </a>
           </div>
-
-          <button type="submit" className="button">
-            Log in
+          
+          <button 
+            type="submit" 
+            className={styles.button}
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Log in"}
           </button>
-
-          <div className="footer">
+          
+          <div className={styles.footer}>
             Don't have an account?{" "}
-            <a href="#" className="signupLink">
+            <a href="/signup" className={styles.signupLink}>
               Sign up
             </a>
           </div>

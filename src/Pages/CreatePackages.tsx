@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import styles from './CreatePackage.module.css';
+import styles from '../Styles/CreatePackage.module.css';
 import Layout from '../App/Layout';
 
 const CreatePackage: FunctionComponent = () => {

@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import './Destination01.css';
+import '../Styles/Destination01.css';
 import Footer from '../Components/Footer';
 
 const Destination01:FunctionComponent = () => {

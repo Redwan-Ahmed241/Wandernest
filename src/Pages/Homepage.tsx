@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { useNavigate } from "react-router-dom";
-import styles from './Homepage.module.css';
+import styles from '../Styles/Homepage.module.css';
 import Layout from '../App/Layout';
 
 const HomePage: FunctionComponent = () => {
@@ -45,13 +45,13 @@ const HomePage: FunctionComponent = () => {
       <main className={styles.homePage}>
         <div className={styles.depth6Frame02}>
           <div className={styles.heroContentWrapper}>
+            <div className={styles.exploreBangladeshWith}>
+              Explore Bangladesh with WanderNest
+            </div>
             <div className={styles.depth7Frame0}>
               <div className={styles.discoverTheBeauty}>
                 Discover the beauty and culture of Bangladesh with our tailored travel services.
               </div>
-            </div>
-            <div className={styles.exploreBangladeshWith}>
-              Explore Bangladesh with WanderNest
             </div>
           </div>
         </div>

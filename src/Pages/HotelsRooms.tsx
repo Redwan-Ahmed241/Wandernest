@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import styles from './HotelsRooms.module.css';
+import styles from '../Styles/HotelsRooms.module.css';
 import Layout from '../App/Layout';
 
 const FILTERS = [
@@ -37,42 +37,42 @@ const HOTELS = [
     name: 'Luxury Hotel',
     description: '5-star luxury experience',
     location: 'City Center',
-    image: '/Figma_photos/six-seasons-hotel.jpg',
+    image: '/Figma_photoes/six-seasons-hotel.jpg',
   },
   {
     id: 'budget-inn',
     name: 'Budget Inn',
     description: 'Affordable and cozy',
     location: 'City Center',
-    image: '/Figma_photos/inn.jpg',
+    image: '/Figma_photoes/inn.jpg',
   },
   {
     id: 'beachside-resort',
     name: 'Beachside Resort',
     description: 'Relax by the sea',
     location: 'Beachfront',
-    image: '/Figma_photos/swimming-pool.jpg',
+    image: '/Figma_photoes/swimming-pool.jpg',
   },
   {
     id: 'mountain-retreat',
     name: 'Mountain Retreat',
     description: 'Breathtaking mountain views',
     location: 'Mountain View',
-    image: '/Figma_photos/hillside-resort.jpg',
+    image: '/Figma_photoes/hillside-resort.jpg',
   },
   {
     id: 'city-center',
     name: 'City Center Hotel',
     description: 'Stay in the heart of the city',
     location: 'City Center',
-    image: '/Figma_photos/city_center_hotel.png',
+    image: '/Figma_photoes/city_center_hotel.png',
   },
   {
     id: 'countryside-lodge',
     name: 'Countryside Lodge',
     description: 'Peaceful countryside escape',
     location: 'Countryside',
-    image: '/Figma_photos/c_lodge.jpeg',
+    image: '/Figma_photoes/c_lodge.jpeg',
   }
 ];
 
@@ -203,7 +203,7 @@ const HotelsRooms: FunctionComponent = () => {
                 <div className={styles.depth5Frame02}>
                   <div className={styles.searchBarContainer}>
                     <img
-                      src="/Figma_photos/search.svg"
+                      src="/Figma_photoes/search.svg"
                       alt="search"
                       className={styles.searchIconInside}
                     />
@@ -229,7 +229,7 @@ const HotelsRooms: FunctionComponent = () => {
                       >
                         {selectedOptions[filter.key] || filter.label}
                         <img 
-                          src="/Figma_photos/darrow.svg" 
+                          src="/Figma_photoes/darrow.svg" 
                           alt="▼" 
                           className={styles.filterDropdownArrow}
                         />
@@ -343,7 +343,7 @@ const HotelsRooms: FunctionComponent = () => {
               <div className={styles.depth4Frame3}>
                 <div className={styles.depth5Frame06}>
                   <div className={styles.depth6Frame014} onClick={() => navigate('/restaurant')}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photos/loc_res.svg" />
+                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/loc_res.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
                         <b className={styles.localRestaurants}>Local Restaurants</b>
@@ -354,7 +354,7 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame110} onClick={() => onAmenityClick("attractions")}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photos/attraction.svg" />
+                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/attraction.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
                         <b className={styles.localRestaurants}>Tourist Attractions</b>
@@ -365,7 +365,7 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame110} onClick={() => onAmenityClick("transport")}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photos/transport.svg" />
+                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/transport.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
                         <b className={styles.localRestaurants}>Public Transport</b>
@@ -376,7 +376,7 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame110} onClick={() => onAmenityClick("shopping")}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photos/shop.svg" />
+                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/shop.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
                         <b className={styles.localRestaurants}>Shopping Centers</b>
@@ -404,23 +404,23 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
                   </div>
                   <div className={styles.depth1Frame0}>
                     <div className={styles.findThePerfect}>Amazing stay with great amenities.</div>
                   </div>
                   <div className={styles.depth6Frame32}>
                     <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photos/like.svg" />
+                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
                       <div className={styles.depth6Frame03}>
                         <div className={styles.findThePerfect}>12</div>
                       </div>
                     </div>
-                    <img className={styles.depth7Frame117} alt="" src="/Figma_photos/dislike.svg" />
+                    <img className={styles.depth7Frame117} alt="" src="/Figma_photoes/dislike.svg" />
                   </div>
                 </div>
                 <div className={styles.depth5Frame08}>
@@ -435,24 +435,24 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
                   </div>
                   <div className={styles.depth1Frame0}>
                     <div className={styles.findThePerfect}>Affordable and convenient location.</div>
                   </div>
                   <div className={styles.depth6Frame32}>
                     <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photos/like.svg" />
+                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
                       <div className={styles.depth6Frame03}>
                         <div className={styles.findThePerfect}>8</div>
                       </div>
                     </div>
                     <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photos/dislike.svg" />
+                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/dislike.svg" />
                       <div className={styles.findThePerfect}>2</div>
                     </div>
                   </div>
@@ -469,24 +469,24 @@ const HotelsRooms: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photos/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
+                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
                   </div>
                   <div className={styles.depth1Frame0}>
                     <div className={styles.findThePerfect}>Decent experience but room for improvement.</div>
                   </div>
                   <div className={styles.depth6Frame32}>
                     <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photos/like.svg" />
+                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
                       <div className={styles.depth6Frame03}>
                         <div className={styles.findThePerfect}>5</div>
                       </div>
                     </div>
                     <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photos/dislike.svg" />
+                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/dislike.svg" />
                       <div className={styles.depth6Frame03}>
                         <div className={styles.findThePerfect}>3</div>
                       </div>

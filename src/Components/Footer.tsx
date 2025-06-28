@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Footer.module.css';
+import styles from '../Styles/Footer.module.css';
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
@@ -25,9 +25,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div className={styles.depth5Frame12}>
-            <img className={styles.depth6Frame06} alt="Facebook" src="/Figma_photos/facebook.svg" />
-            <img className={styles.depth6Frame06} alt="Twitter" src="/Figma_photos/twitter.svg" />
-            <img className={styles.depth6Frame06} alt="Instagram" src="/Figma_photos/insta.svg" />
+            <img className={styles.depth6Frame06} alt="Facebook" src="/Figma_photoes/facebook.svg" />
+            <img className={styles.depth6Frame06} alt="Twitter" src="/Figma_photoes/twitter.svg" />
+            <img className={styles.depth6Frame06} alt="Instagram" src="/Figma_photoes/insta.svg" />
           </div>
 
           <div className={styles.depth5Frame22}>

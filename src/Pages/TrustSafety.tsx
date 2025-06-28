@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './TrustSafety.module.css';
+import styles from '../Styles/TrustSafety.module.css';
 
 
 const TrustSafety:FunctionComponent = () => {

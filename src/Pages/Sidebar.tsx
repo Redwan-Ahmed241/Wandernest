@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Sidebar.module.css';
+import styles from '../Styles/Sidebar.module.css';
 
 const Sidebar: FunctionComponent = () => {
   const navigate = useNavigate();

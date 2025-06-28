@@ -4,7 +4,7 @@ import type React from "react"
 import Footer from "../Components/Footer" 
 import { useCallback } from "react"
 import { useState } from "react"
-import "./signup-form.css"
+import "../Styles/signup-form.css"
 import { useNavigate } from 'react-router-dom';
 interface FormData {
   username: string
@@ -204,7 +204,7 @@ export default function SignupForm() {
   return (
     <>
       <div className={"depth3Frame0"}>
-          <img className={"depth4Frame0"} alt="Logo" src="/Figma_photos/wandernest.svg" />
+          <img className={"depth4Frame0"} alt="Logo" src="/Figma_photoes/wandernest.svg" />
           <div className={"depth4Frame1"} onClick={goHome}>
             <b className={"wandernest"}>WanderNest</b>
           </div>

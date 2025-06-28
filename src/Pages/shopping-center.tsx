@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import "./page-styles.css"
+import "../Styles/page-styles.css"
 import Layout from "../App/Layout"
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -18,7 +18,7 @@ export default function ShoppingCenters() {
       location: "Panthapath,Dhaka",
       stores: "200+ stores",
       rating: 4.8,
-      image: "/Figma_photos/bashundara.jpeg",
+      image: "/Figma_photoes/bashundara.jpeg",
       features: ["Food Court", "Cinema", "Parking", "Kids Zone"],
       hours: "10 AM - 10 PM",
     },
@@ -30,7 +30,7 @@ export default function ShoppingCenters() {
       location: "Dhanmondi,Dhaka",
       stores: "50+ vendors",
       rating: 4.6,
-      image: "/Figma_photos/aarong.jpg",
+      image: "/Figma_photoes/aarong.jpg",
       features: ["Organic Food", "Local Crafts", "Outdoor", "Weekend Events"],
       hours: "8 AM - 6 PM",
     },
@@ -42,7 +42,7 @@ export default function ShoppingCenters() {
       location: "United City,Dhaka",
       stores: "75+ boutiques",
       rating: 4.7,
-      image: "/Figma_photos/unimart.jpeg",
+      image: "/Figma_photoes/unimart.jpeg",
       features: ["Daily Needs", "Cafes", "Products", "Parking"],
       hours: "11 AM - 9 PM",
     },
@@ -54,7 +54,7 @@ export default function ShoppingCenters() {
       location: "Agargaon,Dhaka",
       stores: "30+ tech stores",
       rating: 4.5,
-      image: "/Figma_photos/idb.jpeg",
+      image: "/Figma_photoes/idb.jpeg",
       features: ["Latest Tech", "Repair Services", "Gaming Zone", "Workshops"],
       hours: "10 AM - 8 PM",
     },
@@ -66,7 +66,7 @@ export default function ShoppingCenters() {
       location: "Azimpur,Dhaka",
       stores: "40+ artisans",
       rating: 4.9,
-      image: "/Figma_photos/newmarket.jpg",
+      image: "/Figma_photoes/newmarket.jpg",
       features: ["Handmade Items", "Cultural Tours", "Traditional Food", "Live Demos"],
       hours: "9 AM - 7 PM",
     },
@@ -78,7 +78,7 @@ export default function ShoppingCenters() {
       location: "Sylhet",
       stores: "120+ outlets",
       rating: 4.4,
-      image: "/Figma_photos/afmi-plaza-.jpg",
+      image: "/Figma_photoes/afmi-plaza-.jpg",
       features: ["Discounted Prices", "Brand Names", "Large Parking", "Family Friendly"],
       hours: "9 AM - 9 PM",
     },

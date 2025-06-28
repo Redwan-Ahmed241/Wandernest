@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FunctionComponent } from 'react';
-import styles from './ThingsToDo.module.css';
+import styles from '../Styles/ThingsToDo.module.css';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../App/Layout';
 

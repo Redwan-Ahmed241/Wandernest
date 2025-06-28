@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import "./page-styles.css"
+import "../Styles/page-styles.css"
 import Layout from "../App/Layout"
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all")
@@ -14,7 +14,7 @@ export default function PublicTransport() {
       route: "Dhaka to Chittagong",
       frequency: "Every 30+ minutes",
       price: "$2.50",
-      image: "/Figma_photos/greenline.jpeg",
+      image: "/Figma_photoes/greenline.jpeg",
       features: ["Air Conditioned", "WiFi", "Wheelchair Accessible"],
     },
     {
@@ -24,7 +24,7 @@ export default function PublicTransport() {
       route: "Shahbag to Uttara",
       frequency: "Every 10 minutes",
       price: "$3.00",
-      image: "/Figma_photos/metro.jpg",
+      image: "/Figma_photoes/metro.jpg",
       features: ["Over the roads", "Fast", "Multiple Stops"],
     },
     {
@@ -34,7 +34,7 @@ export default function PublicTransport() {
       route: "Dhaka to Chittagong",
       frequency: "Every 20 minutes",
       price: "$1.75",
-      image: "/Figma_photos/trains.jpg",
+      image: "/Figma_photoes/trains.jpg",
       features: ["Scenic Route", "Historic", "Tourist Friendly"],
     },
     {
@@ -44,7 +44,7 @@ export default function PublicTransport() {
       route: "Dhaka to Feni",
       frequency: "Every 10minutes",
       price: "$5.00",
-      image: "/Figma_photos/starline.png",
+      image: "/Figma_photoes/starline.png",
       features: ["24/7 Service", "Safe", "Well Lit Stops"],
     },
     {
@@ -54,7 +54,7 @@ export default function PublicTransport() {
       route: "Mawa to Barisal",
       frequency: "Every 30+ minutes",
       price: "$2.00",
-      image: "/Figma_photos/ferry.jpeg",
+      image: "/Figma_photoes/ferry.jpeg",
       features: ["Ocean Views", "Car Transport", "Restaurant Onboard"],
     },
     {
@@ -64,7 +64,7 @@ export default function PublicTransport() {
       route: "Banani to Vatara",
       frequency: "Every 20 minutes",
       price: "$4.50",
-      image: "/Figma_photos/gulshan_chaka.jpg",
+      image: "/Figma_photoes/gulshan_chaka.jpg",
       features: ["High Speed", "Comfortable Seating", "Luggage Space"],
     },
   ]

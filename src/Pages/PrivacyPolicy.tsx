@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './PrivacyPolicy.module.css';
+import styles from '../Styles/PrivacyPolicy.module.css';
 
 
 const PrivacyPolicy:FunctionComponent = () => {

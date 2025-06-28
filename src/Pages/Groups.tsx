@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from './Group.module.css';
+import styles from '../Styles/Group.module.css';
 
 
 const Groups:FunctionComponent = () => {

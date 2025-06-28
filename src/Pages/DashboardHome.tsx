@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import styles from './DashboardHome.module.css';
+import styles from '../Styles/DashboardHome.module.css';
 import Layout from '../App/Layout';
 
 // User data interface
