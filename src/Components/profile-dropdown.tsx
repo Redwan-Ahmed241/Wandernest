@@ -3,8 +3,8 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/auth-context"
-import styles from "../Styles/ProfileDropdown.module.css"
+import { useAuth } from "../Authentication/auth-context"
+import styles from "../styles/ProfileDropdown.module.css"
 
 const ProfileDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
