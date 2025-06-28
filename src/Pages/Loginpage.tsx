@@ -23,7 +23,7 @@ export default function TravelLogin() {
     setIsLoading(true)
 
     try {
-      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/auth/login", {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/auth/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function TravelLogin() {
       const data = await response.json()
       localStorage.setItem("token", data.token)
       setIsLoggedIn(true)
-      navigate('/dashboard') // Navigate to dashboard after successful login
+      navigate('/my-trips') // Navigate to dashboard after successful login
     } catch (err: any) {
       setError(err.message)
     } finally {

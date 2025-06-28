@@ -132,7 +132,7 @@ export default function SignupForm() {
       }
 
       // Replace this with your actual API call
-      const response = await fetch("/api/signup", {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/auth/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,6 +149,10 @@ export default function SignupForm() {
       console.log("Success:", result)
 
       setIsSuccess(true)
+      // Add this inside the try block after setIsSuccess(true)
+      setTimeout(() => {
+        navigate('/login'); // or whatever your login route is
+      }, 2000); // Wait 2 seconds then redirect
 
       // Reset form after successful submission
       setFormData({
