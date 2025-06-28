@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import Footer from "./Footer" 
+import Footer from "../Components/Footer" 
 import { useCallback } from "react"
 import { useState } from "react"
 import "./signup-form.css"

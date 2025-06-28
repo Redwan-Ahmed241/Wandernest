@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './restaurant.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 
 const FILTERS = [
   { label: 'Popular', value: 'popular' },

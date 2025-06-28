@@ -1,7 +1,7 @@
 import { FunctionComponent, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Packages.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 
 const FILTER_OPTIONS = {
   Destination: ['All', 'Sundarbans', "Cox's Bazar", 'Sylhet', 'Dhaka', 'Bandarban', "St. Martin's Island"],

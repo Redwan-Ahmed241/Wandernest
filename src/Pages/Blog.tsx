@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Blog.module.css';
-import Footer from './Footer';
+import Footer from '../Components/Footer';
 
 
 const Blogs:FunctionComponent = () => {

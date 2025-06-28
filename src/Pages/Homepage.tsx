@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './Homepage.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 
 const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();

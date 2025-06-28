@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './PlanATrip.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 import Sidebar from './Sidebar';
 
 const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];

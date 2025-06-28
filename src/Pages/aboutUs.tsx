@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './aboutUs.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 
 const teamMembers = [
   {

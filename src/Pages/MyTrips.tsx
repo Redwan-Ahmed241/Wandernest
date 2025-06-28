@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import styles from './MyTrips.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 

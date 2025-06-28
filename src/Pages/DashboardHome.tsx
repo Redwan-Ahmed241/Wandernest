@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import styles from './DashboardHome.module.css';
-import Layout from './Layout';
+import Layout from '../Components/Layout';
 
 // User data interface
 interface UserData {
