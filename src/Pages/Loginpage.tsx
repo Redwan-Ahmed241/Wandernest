@@ -39,6 +39,7 @@ export default function TravelLogin() {
       const data = await response.json()
       localStorage.setItem("token", data.token)
       setIsLoggedIn(true)
+      navigate('/dashboard') // Navigate to dashboard after successful login
     } catch (err: any) {
       setError(err.message)
     } finally {

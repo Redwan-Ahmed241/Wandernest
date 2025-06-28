@@ -353,7 +353,7 @@ const HotelsRooms: FunctionComponent = () => {
                       </div>
                     </div>
                   </div>
-                  <div className={styles.depth6Frame110} onClick={() => onAmenityClick("attractions")}>
+                  <div className={styles.depth6Frame110} onClick={() => navigate('/things-to-do')}>
                     <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/attraction.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
@@ -364,7 +364,7 @@ const HotelsRooms: FunctionComponent = () => {
                       </div>
                     </div>
                   </div>
-                  <div className={styles.depth6Frame110} onClick={() => onAmenityClick("transport")}>
+                  <div className={styles.depth6Frame110} onClick={() => navigate('/public-transport')}>
                     <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/transport.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>
@@ -375,7 +375,7 @@ const HotelsRooms: FunctionComponent = () => {
                       </div>
                     </div>
                   </div>
-                  <div className={styles.depth6Frame110} onClick={() => onAmenityClick("shopping")}>
+                  <div className={styles.depth6Frame110} onClick={() => navigate('/shopping-centers')}>
                     <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/shop.svg" />
                     <div className={styles.depth7Frame111}>
                       <div className={styles.depth8Frame018}>

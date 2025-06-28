@@ -1,9 +1,10 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useEffect, useCallback } from "react"
-import styles from "./Community.module.css"
+import React, { useState, useEffect, useCallback } from "react"
+import { useNavigate } from 'react-router-dom';
+import Layout from '../App/Layout';
+import Sidebar from './Sidebar';
+import styles from "../Styles/Community.module.css"
 
 // Types
 interface BlogPost {

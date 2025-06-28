@@ -15,7 +15,7 @@ const Community:FunctionComponent = () => {
         				<div className={styles.community1}>
           					<div className={styles.depth0Frame0}>
             						<div className={styles.depth1Frame0}>
-              							
+              						
               							<div className={styles.depth2Frame1}>
                 								<div className={styles.depth3Frame02}>
                   									<div className={styles.depth4Frame02}>

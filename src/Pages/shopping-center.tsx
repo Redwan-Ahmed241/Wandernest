@@ -19,7 +19,7 @@ export default function ShoppingCenters() {
       stores: "200+ stores",
       rating: 4.8,
       image: "/Figma_photoes/bashundara.jpeg",
-      features: ["Food Court", "Cinema", "Parking", "Kids Zone"],
+      features: ["Food Court", "Cinema", "Parking", "Kids Zone", "Paint Ball Fight"],
       hours: "10 AM - 10 PM",
     },
     {
@@ -43,7 +43,7 @@ export default function ShoppingCenters() {
       stores: "75+ boutiques",
       rating: 4.7,
       image: "/Figma_photoes/unimart.jpeg",
-      features: ["Daily Needs", "Cafes", "Products", "Parking"],
+      features: ["Daily Needs", "Cafes", "Products", "Parking", "Expensive"],
       hours: "11 AM - 9 PM",
     },
     {
