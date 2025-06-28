@@ -56,7 +56,7 @@ export default function TravelLogin() {
       <div className="container">
         <div className="card">
           <div className="cardHeader">
-            <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className="logo" />
+            <img src="/Figma_photos/wandernest.svg" alt="WanderNest Logo" className="logo" />
             <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
               WanderNest
             </button>
@@ -74,7 +74,7 @@ export default function TravelLogin() {
     <div className="container">
       <div className="card">
         <div className="cardHeader">
-          <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className="logo" />
+          <img src="/Figma_photos/wandernest.svg" alt="WanderNest Logo" className="logo" />
           <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
             WanderNest
           </button>

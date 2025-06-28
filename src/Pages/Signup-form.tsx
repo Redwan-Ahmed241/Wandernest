@@ -204,7 +204,7 @@ export default function SignupForm() {
   return (
     <>
       <div className={"depth3Frame0"}>
-          <img className={"depth4Frame0"} alt="Logo" src="/Figma_photoes/wandernest.svg" />
+          <img className={"depth4Frame0"} alt="Logo" src="/Figma_photos/wandernest.svg" />
           <div className={"depth4Frame1"} onClick={goHome}>
             <b className={"wandernest"}>WanderNest</b>
           </div>
