@@ -1,18 +1,19 @@
-import React, { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from '../Styles/Navbar.module.css';
+"use client"
+
+import type React from "react"
+import { useCallback } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../Authentication/auth-context"
+import ProfileDropdown from "./profile-dropdown"
+import styles from "../Styles/Navbar.module.css"
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { isAuthenticated, loading } = useAuth()
 
   const goHome = useCallback(() => {
-    navigate('/');
-  }, [navigate]);
-
-  const handleAuthClick = useCallback(() => {
-    navigate('/login'); // Or '/signup' based on context
-    navigate('/signup'); // Redirect to signup page
-  }, [navigate]);
+    navigate("/")
+  }, [navigate])
 
   return (
     <div className={styles.navbarWrapper}>
@@ -26,37 +27,49 @@ const Navbar: React.FC = () => {
 
         <div className={styles.depth3Frame1}>
           <div className={styles.depth4Frame01}>
-            <div className={styles.depth4Frame1} onClick={() => navigate('/destinations')}>
+            <div className={styles.depth4Frame1} onClick={() => navigate("/destinations")}>
               <div className={styles.destinations}>Destinations</div>
             </div>
-            <div className={styles.depth4Frame1} onClick={() => navigate('/hotels-rooms')}>
+            <div className={styles.depth4Frame1} onClick={() => navigate("/hotels-rooms")}>
               <div className={styles.destinations}>Hotels</div>
             </div>
-            <div className={styles.depth5Frame2}onClick={() => navigate('/flights')}>
-              <div className={styles.flights} >Flights</div>
+            <div className={styles.depth5Frame2} onClick={() => navigate("/flights")}>
+              <div className={styles.flights}>Flights</div>
             </div>
-            <div className={styles.depth4Frame1} onClick={() => navigate('/Packages')}>
+            <div className={styles.depth4Frame1} onClick={() => navigate("/Packages")}>
               <div className={styles.destinations}>Packages</div>
             </div>
           </div>
 
           <div className={styles.depth4Frame11}>
-            <div className={styles.depth5Frame01} onClick={() => navigate('/signup')}>
-              <div className={styles.depth6Frame0}>
-                <b className={styles.signUp}>Sign up</b>
-              </div>
-            </div>
-            <div className={styles.depth5Frame11} onClick={() => navigate('/login')}>
-              <div className={styles.depth6Frame0}>
-                <b className={styles.signUp}>Log in</b>
-              </div>
-            </div>
+            {!loading && (
+              <>
+                {isAuthenticated ? (
+                  // Show profile dropdown when authenticated
+                  <ProfileDropdown />
+                ) : (
+                  // Show login/signup buttons when not authenticated
+                  <>
+                    <div className={styles.depth5Frame01} onClick={() => navigate("/signup")}>
+                      <div className={styles.depth6Frame0}>
+                        <b className={styles.signUp}>Sign up</b>
+                      </div>
+                    </div>
+                    <div className={styles.depth5Frame11} onClick={() => navigate("/login")}>
+                      <div className={styles.depth6Frame0}>
+                        <b className={styles.signUp}>Log in</b>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
             <img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
