@@ -1,18 +1,73 @@
 "use client"
 
-import type React from "react"
-import styles from "./Loginpage.module.css"
+import React, { useState, useEffect } from "react"
+import styles from "./Loginpage.module.css
 
 export default function TravelLogin() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) setIsLoggedIn(true)
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle login logic here
-    console.log("Login submitted")
+    setError("")
+
+    try {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data?.message || "Login failed")
+      }
+
+      const data = await response.json()
+      localStorage.setItem("token", data.token)
+      setIsLoggedIn(true)
+    } catch (err: any) {
+      setError(err.message)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
+    setEmail("")
+    setPassword("")
   }
 
   const handleWanderNestClick = () => {
-    // Handle WanderNest button click (e.g., navigate to home page)
     console.log("WanderNest clicked")
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className="container">
+        <div className="card">
+          <div className="cardHeader">
+            <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className="logo" />
+            <button type="button" className="wanderNestButton" onClick={handleWanderNestClick}>
+              WanderNest
+            </button>
+          </div>
+          <h1 className="title">You're logged in!</h1>
+          <button className="button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -35,15 +90,31 @@ export default function TravelLogin() {
             <label htmlFor="email" className="label">
               Email or phone number
             </label>
-            <input id="email" type="text" className="input" required />
+            <input
+              id="email"
+              type="text"
+              className="input"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="field">
             <label htmlFor="password" className="label">
               Password
             </label>
-            <input id="password" type="password" className="input" required />
+            <input
+              id="password"
+              type="password"
+              className="input"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
+
+          {error && <div className="error">{error}</div>}
 
           <div className="forgotPassword">
             <a href="#" className="link">
