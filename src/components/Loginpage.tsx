@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import "./styles/login.css"
+import styles from "./Loginpage.module.css
 
 export default function TravelLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
