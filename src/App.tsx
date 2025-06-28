@@ -10,6 +10,7 @@ import Flights from './Pages/flights';
 import Groups from './Pages/Groups';
  import Guides from './Pages/hiringGuides';
 import LoginPage from './Pages/Loginpage';
+import Destination01 from './Pages/Destination_01';
 //import RegisterPage from './components/Registerpage';
 import HomePage from './Pages/Homepage';
 import RentVehicles from './Pages/rentVehicles';
@@ -44,6 +45,8 @@ function App() {
         <Route path="/groups" element={<Groups />} />
         <Route path="/hiring-guides" element={<Guides />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/destination-01" element={<Destination01 />} />
+        {/* Uncomment the following line if you have a RegisterPage component */}
         {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/rent-vehicles" element={<RentVehicles />} />
