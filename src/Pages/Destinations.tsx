@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './Destinations.module.css';
-import Layout from '../Components/Layout';
+import Layout from '../App/Layout';
 
 
 const Destinations:FunctionComponent = () => {

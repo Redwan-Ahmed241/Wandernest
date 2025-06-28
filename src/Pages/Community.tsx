@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from './Community.module.css';
-import Layout from '../Components/Layout';
+import Layout from '../App/Layout';
 
 const Community:FunctionComponent = () => {
   	

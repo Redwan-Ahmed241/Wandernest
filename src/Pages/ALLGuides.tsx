@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useState } from 'react';
 import styles from './ALLguides.module.css';
 import {useNavigate} from "react-router-dom";
-import Layout from '../Components/Layout';
+import Layout from '../App/Layout';
 const AllGuides:FunctionComponent = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();

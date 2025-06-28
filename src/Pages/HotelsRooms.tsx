@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './HotelsRooms.module.css';
-import Layout from '../Components/Layout';
+import Layout from '../App/Layout';
 
 const FILTERS = [
   {

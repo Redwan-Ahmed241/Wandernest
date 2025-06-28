@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import styles from './CreatePackage.module.css';
-import Layout from '../Components/Layout';
+import Layout from '../App/Layout';
 
 const CreatePackage: FunctionComponent = () => {
   const today = new Date();

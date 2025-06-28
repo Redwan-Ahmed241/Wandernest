@@ -18,7 +18,7 @@ import Support from './Pages/support';
 import VisaAssistance from './Pages/Visaassistance';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
-import Layout from './Components/Layout';
+import Layout from './App/Layout';
 import MyTrips from './Pages/MyTrips';
 import Community from './Pages/Community';
 import './global.css';
