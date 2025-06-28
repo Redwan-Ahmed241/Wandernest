@@ -590,6 +590,8 @@
     color: #0d1c1c;
     font-family: 'Plus Jakarta Sans';
     background-color: #fafafa;
+    margin-top: 24px;
+    min-height: 80vh;
 }
 
 /* Modern Search Bar */

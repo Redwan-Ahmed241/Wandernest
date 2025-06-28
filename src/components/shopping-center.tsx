@@ -2,91 +2,113 @@
 
 import { useState } from "react"
 import "./page-styles.css"
-
+import Layout from "./Layout"
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const [search, setSearch] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState("all");
+  const [selectedRating, setSelectedRating] = useState("all");
 
   const shoppingCenters = [
     {
       id: 1,
-      name: "Grand Plaza Mall",
+      name: "Bashundhara City Shopping Mall",
       category: "Mall",
       description: "Premium shopping destination with luxury brands",
-      location: "Downtown District",
+      location: "Panthapath,Dhaka",
       stores: "200+ stores",
       rating: 4.8,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/bashundara.jpeg",
       features: ["Food Court", "Cinema", "Parking", "Kids Zone"],
       hours: "10 AM - 10 PM",
     },
     {
       id: 2,
-      name: "Riverside Market",
+      name: "Aarong",
       category: "Market",
       description: "Fresh local produce and artisan goods",
-      location: "Riverside Quarter",
+      location: "Dhanmondi,Dhaka",
       stores: "50+ vendors",
       rating: 4.6,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/aarong.jpg",
       features: ["Organic Food", "Local Crafts", "Outdoor", "Weekend Events"],
       hours: "8 AM - 6 PM",
     },
     {
       id: 3,
-      name: "Fashion District",
-      category: "Street",
-      description: "Trendy boutiques and designer outlets",
-      location: "Fashion Avenue",
+      name: "Unimart",
+      category: "Outlet",
+      description: "All kind of products",
+      location: "United City,Dhaka",
       stores: "75+ boutiques",
       rating: 4.7,
-      image: "/placeholder.svg?height=200&width=300",
-      features: ["Designer Brands", "Cafes", "Street Art", "Pedestrian Only"],
+      image: "/Figma_photoes/unimart.jpeg",
+      features: ["Daily Needs", "Cafes", "Products", "Parking"],
       hours: "11 AM - 9 PM",
     },
     {
       id: 4,
-      name: "Tech Hub Center",
-      category: "Specialty",
+      name: "IDB Bhaban",
+      category: "Tech Hub",
       description: "Electronics and technology specialists",
-      location: "Innovation District",
+      location: "Agargaon,Dhaka",
       stores: "30+ tech stores",
       rating: 4.5,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/idb.jpeg",
       features: ["Latest Tech", "Repair Services", "Gaming Zone", "Workshops"],
       hours: "10 AM - 8 PM",
     },
     {
       id: 5,
-      name: "Heritage Bazaar",
-      category: "Market",
+      name: "Newmarket",
+      category: "Street",
       description: "Traditional crafts and cultural items",
-      location: "Old Town",
+      location: "Azimpur,Dhaka",
       stores: "40+ artisans",
       rating: 4.9,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/newmarket.jpg",
       features: ["Handmade Items", "Cultural Tours", "Traditional Food", "Live Demos"],
       hours: "9 AM - 7 PM",
     },
     {
       id: 6,
-      name: "Outlet Village",
+      name: "Afmi Plaza",
       category: "Outlet",
       description: "Brand name goods at discounted prices",
-      location: "Suburban Area",
+      location: "Sylhet",
       stores: "120+ outlets",
       rating: 4.4,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/afmi-plaza-.jpg",
       features: ["Discounted Prices", "Brand Names", "Large Parking", "Family Friendly"],
       hours: "9 AM - 9 PM",
     },
   ]
 
-  const filteredCenters =
-    selectedCategory === "all"
-      ? shoppingCenters
-      : shoppingCenters.filter((center) => center.category.toLowerCase() === selectedCategory)
+  const filteredCenters = shoppingCenters.filter((center) => {
+    // Category filter
+    const categoryMatch = selectedCategory === "all" || center.category.toLowerCase() === selectedCategory;
+    // Search filter
+    const searchMatch =
+      search.trim() === "" ||
+      center.name.toLowerCase().includes(search.toLowerCase()) ||
+      center.description.toLowerCase().includes(search.toLowerCase()) ||
+      center.location.toLowerCase().includes(search.toLowerCase());
+    // Place filter
+    const placeMatch =
+      selectedPlace === "all" ||
+      center.location.toLowerCase().includes(selectedPlace.toLowerCase());
+    // Rating filter
+    let ratingThreshold = 0;
+    if (selectedRating === "4.5") ratingThreshold = 4.5;
+    else if (selectedRating === "4.0") ratingThreshold = 4.0;
+    else if (selectedRating === "3.5") ratingThreshold = 3.5;
+    else ratingThreshold = 0;
+    const ratingMatch = center.rating >= ratingThreshold;
+    return categoryMatch && searchMatch && placeMatch && ratingMatch;
+  });
 
   return (
+    <Layout>
     <div className="page-container">
       <div className="page-content">
         {/* Header Section */}
@@ -106,7 +128,13 @@ export default function ShoppingCenters() {
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
-              <input type="text" placeholder="Search shopping centers, stores..." className="search-input" />
+              <input
+                type="text"
+                placeholder="Search shopping centers, stores..."
+                className="search-input"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
             </div>
           </div>
 
@@ -123,17 +151,31 @@ export default function ShoppingCenters() {
               <option value="outlet">Outlets</option>
               <option value="specialty">Specialty Stores</option>
             </select>
-            <select className="filter-dropdown">
-              <option>Location</option>
-              <option>Downtown</option>
-              <option>Suburban</option>
-              <option>Waterfront</option>
+            <select
+              className="filter-dropdown"
+              value={selectedPlace}
+              onChange={e => setSelectedPlace(e.target.value)}
+            >
+              <option value="all">All Places</option>
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chittagong">Chittagong</option>
+              <option value="Rajshahi">Rajshahi</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Sylhet">Sylhet</option>
+              <option value="Mymensingh">Mymensingh</option>
+              <option value="Barishal">Barishal</option>
+              <option value="Jessore">Jessore</option>
+              <option value="Comilla">Comilla</option>
             </select>
-            <select className="filter-dropdown">
-              <option>Rating</option>
-              <option>4.5+ Stars</option>
-              <option>4.0+ Stars</option>
-              <option>3.5+ Stars</option>
+            <select
+              className="filter-dropdown"
+              value={selectedRating}
+              onChange={e => setSelectedRating(e.target.value)}
+            >
+              <option value="all">All Ratings</option>
+              <option value="4.5">4.5+ Stars</option>
+              <option value="4.0">4.0+ Stars</option>
+              <option value="3.5">3.5+ Stars</option>
             </select>
           </div>
         </div>
@@ -203,5 +245,6 @@ export default function ShoppingCenters() {
         </div>
       </div>
     </div>
-  )
+    </Layout>
+    )
 }

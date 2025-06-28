@@ -27,6 +27,8 @@ import CreatePackage from './components/CreatePackages';
 import SignupForm from './components/Signup-form';
 import ShoppingCenters from './components/shopping-center';
 import PublicTransport from './components/public-transport';
+import DashboardHome from './components/DashboardHome';
+//import DashboardHome from './components/DashboardHome';
 function App() {
   return (
     <Router>
@@ -58,6 +60,9 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/shopping-centers" element={<ShoppingCenters />} />
         <Route path="/public-transport" element={<PublicTransport />} />
+        <Route path="/dashboard" element={<DashboardHome />} />
+        <Route path="/test" element={<div style={{padding: '20px'}}><h1>Test Route Working!</h1></div>} />
+        {/*<Route path="/dashboard-home" element={<DashboardHome />} />*/}
         {/* Uncomment the following line if you have a Packages component */}
         {/* <Route path="/packages" element={<Packages />} /> */}
         

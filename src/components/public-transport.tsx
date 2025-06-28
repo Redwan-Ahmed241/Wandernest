@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import "./page-styles.css"
-
+import Layout from "./Layout"
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all")
 
@@ -10,61 +10,61 @@ export default function PublicTransport() {
     {
       id: 1,
       type: "Bus",
-      name: "City Express Bus",
-      route: "Route 15 - Downtown to Airport",
-      frequency: "Every 15 minutes",
+      name: "Green Line",
+      route: "Dhaka to Chittagong",
+      frequency: "Every 30+ minutes",
       price: "$2.50",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/greenline.jpeg",
       features: ["Air Conditioned", "WiFi", "Wheelchair Accessible"],
     },
     {
       id: 2,
       type: "Metro",
-      name: "Metro Line A",
-      route: "Central Station to Beach District",
-      frequency: "Every 8 minutes",
+      name: "Metro Rail",
+      route: "Shahbag to Uttara",
+      frequency: "Every 10 minutes",
       price: "$3.00",
-      image: "/placeholder.svg?height=200&width=300",
-      features: ["Underground", "Fast", "Multiple Stops"],
+      image: "/Figma_photoes/metro.jpg",
+      features: ["Over the roads", "Fast", "Multiple Stops"],
     },
     {
       id: 3,
-      type: "Tram",
-      name: "Heritage Tram",
-      route: "Historic District Loop",
+      type: "Train",
+      name: "Train",
+      route: "Dhaka to Chittagong",
       frequency: "Every 20 minutes",
       price: "$1.75",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/trains.jpg",
       features: ["Scenic Route", "Historic", "Tourist Friendly"],
     },
     {
       id: 4,
-      type: "Ferry",
-      name: "Harbor Ferry",
-      route: "Main Port to Island Resort",
-      frequency: "Every 30 minutes",
-      price: "$5.00",
-      image: "/placeholder.svg?height=200&width=300",
-      features: ["Ocean Views", "Car Transport", "Restaurant Onboard"],
-    },
-    {
-      id: 5,
       type: "Bus",
-      name: "Night Owl Bus",
-      route: "24/7 City Circuit",
-      frequency: "Every 45 minutes",
-      price: "$2.00",
-      image: "/placeholder.svg?height=200&width=300",
+      name: "Star Line",
+      route: "Dhaka to Feni",
+      frequency: "Every 10minutes",
+      price: "$5.00",
+      image: "/Figma_photoes/starline.png",
       features: ["24/7 Service", "Safe", "Well Lit Stops"],
     },
     {
+      id: 5,
+      type: "Ferry",
+      name: "Ferry",
+      route: "Mawa to Barisal",
+      frequency: "Every 30+ minutes",
+      price: "$2.00",
+      image: "/Figma_photoes/ferry.jpeg",
+      features: ["Ocean Views", "Car Transport", "Restaurant Onboard"],
+    },
+    {
       id: 6,
-      type: "Train",
-      name: "Regional Express",
-      route: "City Center to Suburbs",
-      frequency: "Every 30 minutes",
+      type: "Bus",
+      name: "Gulshan Chaka",
+      route: "Banani to Vatara",
+      frequency: "Every 20 minutes",
       price: "$4.50",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/Figma_photoes/gulshan_chaka.jpg",
       features: ["High Speed", "Comfortable Seating", "Luggage Space"],
     },
   ]
@@ -75,6 +75,7 @@ export default function PublicTransport() {
       : transportOptions.filter((option) => option.type.toLowerCase() === selectedTransportType)
 
   return (
+    <Layout>
     <div className="page-container">
       <div className="page-content">
         {/* Header Section */}
@@ -184,5 +185,6 @@ export default function PublicTransport() {
         </div>
       </div>
     </div>
+    </Layout>
   )
 }
