@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import '../Styles/Destination01.css';
 import Footer from '../Components/Footer';
-
+import Layout from '../App/Layout';
 const Destination01:FunctionComponent = () => {
   	
   	const onDepth5FrameClick = useCallback(() => {
@@ -9,48 +9,13 @@ const Destination01:FunctionComponent = () => {
   	}, []);
   	
   	return (
+		<Layout>
     		<div className="destination-01">
       			<div className="destination-011">
         				<div className="depth-0-frame-0">
           					<div className="depth-1-frame-0">
             						<div className="depth-2-frame-0">
-              							<div className="depth-3-frame-0">
-                								<div className="depth-4-frame-0">
-                  									<img className="depth-5-frame-0" alt="" src="Depth 5, Frame 0.svg" />
-                  									<div className="depth-5-frame-1">
-                    										<b className="wandernest">WanderNest</b>
-                  									</div>
-                								</div>
-                								<div className="depth-4-frame-1">
-                  									<div className="depth-5-frame-01">
-                    										<img className="depth-6-frame-0" alt="" src="Depth 6, Frame 0.svg" />
-                    										<div className="depth-6-frame-1">
-                      											<div className="search">Search</div>
-                    										</div>
-                  									</div>
-                								</div>
-              							</div>
-              							<div className="depth-3-frame-1">
-                								<div className="depth-4-frame-01">
-                  									<div className="depth-5-frame-02" onClick={onDepth5FrameClick}>
-                    										<div className="things-to-do">Things to Do</div>
-                  									</div>
-                  									<div className="depth-5-frame-02" onClick={onDepth5FrameClick}>
-                    										<div className="things-to-do">Community</div>
-                  									</div>
-                  									<div className="depth-5-frame-1">
-                    										<div className="things-to-do">Saved</div>
-                  									</div>
-                  									<div className="depth-5-frame-1">
-                    										<div className="things-to-do">Trips</div>
-                  									</div>
-                								</div>
-                								<div className="depth-4-frame-11">
-                  									<img className="depth-5-frame-03" alt="" src="Depth 5, Frame 0.svg" />
-                  									<img className="depth-5-frame-03" alt="" src="Depth 5, Frame 1.svg" />
-                								</div>
-                								<img className="depth-4-frame-2" alt="" src="Depth 4, Frame 2.png" />
-              							</div>
+              							
             						</div>
             						<div className="depth-2-frame-1">
               							<div className="depth-3-frame-01">
@@ -255,8 +220,9 @@ const Destination01:FunctionComponent = () => {
                                         																				</div>
                                       																			</div>
                                     																		</div>
-                                    																		<Footer></Footer>
-                                    																		</div>);
+                                    																		
+                                    																		</div>
+																											</Layout>);
                                     																		};
                                     																		
                                     																		export default Destination01;

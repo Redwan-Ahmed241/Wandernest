@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback } from 'react';
 import styles from '../Styles/Group.module.css';
-
+import Footer from '../Components/Footer';
 
 const Groups:FunctionComponent = () => {
   	
@@ -17,6 +17,7 @@ const Groups:FunctionComponent = () => {
   	}, []);
   	
   	return (
+		<>
     		<div className={styles.groups}>
       			<div className={styles.groups1}>
         				<div className={styles.depth0Frame0}>
@@ -51,7 +52,7 @@ const Groups:FunctionComponent = () => {
                   									<img className={styles.depth5Frame12} alt="" src="Depth 5, Frame 1.svg" />
                   									<img className={styles.depth5Frame12} alt="" src="Depth 5, Frame 2.svg" />
                 								</div>
-                								<img className={styles.depth4Frame2} alt="" src="Depth 4, Frame 2.png" />
+                								<img className={styles.depth4Frame2} alt="" src="" />
               							</div>
             						</div>
             						<div className={styles.depth2Frame1} data-scroll-to="depth2Frame1">
@@ -253,35 +254,11 @@ const Groups:FunctionComponent = () => {
         				</div>
       			</div>
       			<div className={styles.post}>Post</div>
-      			<div className={styles.footer}>
-        				<div className={styles.depth3Frame02}>
-          					<div className={styles.depth4Frame04}>
-            						<div className={styles.depth5Frame09}>
-              							<div className={styles.depth6Frame011} onClick={onDepth5FrameClick}>
-                								<div className={styles.aboutUs}>About Us</div>
-              							</div>
-              							<div className={styles.depth6Frame18}>
-                								<div className={styles.aboutUs}>Contact</div>
-              							</div>
-              							<div className={styles.depth6Frame011} onClick={onDepth5FrameClick}>
-                								<div className={styles.aboutUs}>Terms of Service</div>
-              							</div>
-              							<div className={styles.depth6Frame011} onClick={onDepth5FrameClick}>
-                								<div className={styles.aboutUs}>Privacy Policy</div>
-              							</div>
-            						</div>
-            						<div className={styles.depth5Frame17}>
-              							<img className={styles.depth6Frame012} alt="" src="Depth 6, Frame 0.svg" />
-              							<img className={styles.depth6Frame012} alt="" src="Depth 6, Frame 1.svg" />
-              							<img className={styles.depth6Frame012} alt="" src="Depth 6, Frame 2.svg" />
-            						</div>
-            						<div className={styles.depth5Frame25}>
-              							<div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>);
+      		
+    		</div>
+			<Footer />
+		</>
+			);
 };
 
 export default Groups;
