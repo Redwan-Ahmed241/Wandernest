@@ -35,7 +35,7 @@ import ShoppingCenters from "./Pages/shopping-center"
 import PublicTransport from "./Pages/public-transport"
 import DashboardHome from "./Pages/DashboardHome"
 import ProfileDropdown from "./Components/profile-dropdown"
-import ApiServices from "./api-services"
+
 import "./global.css"
 
 // Protected Route Component
@@ -83,8 +83,7 @@ const AppRoutes: React.FC = () => {
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupForm />} />
-      {/* API Services Route (for testing purposes) */}
-      <Route path="/api-services" element={<ApiServices />} />
+    
       {/* Protected Routes */}
       <Route
         path="/dashboard"
