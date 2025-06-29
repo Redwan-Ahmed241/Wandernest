@@ -41,22 +41,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Check if user is logged in on app start
     const token = localStorage.getItem("token")
-    if (token) {
-      // You might want to verify token with your API here
-      setIsAuthenticated(true)
-      // Optionally fetch user data from API
+    const userData = localStorage.getItem("userData")
+    
+    if (token && userData) {
+      try {
+        const parsedUserData = JSON.parse(userData)
+        setUser(parsedUserData)
+        setIsAuthenticated(true)
+      } catch (error) {
+        console.error("Error parsing user data from localStorage:", error)
+        // Clear invalid data
+        localStorage.removeItem("token")
+        localStorage.removeItem("userData")
+      }
     }
     setLoading(false)
   }, [])
 
   const login = (token: string, userData: User) => {
     localStorage.setItem("token", token)
+    localStorage.setItem("userData", JSON.stringify(userData))
     setUser(userData)
     setIsAuthenticated(true)
   }
 
   const logout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("userData")
     setUser(null)
     setIsAuthenticated(false)
   }
