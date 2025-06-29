@@ -13,7 +13,7 @@ interface FormData {
   email: string
   phone: string
   country: string
-  age: string
+  age: number | null
   password: string
   confirm_password: string
 }
@@ -30,7 +30,7 @@ export default function SignupForm() {
     email: "",
     phone: "",
     country: "",
-    age: "",
+    age: null,
     password: "",
     confirm_password: "",
   })
@@ -43,10 +43,20 @@ export default function SignupForm() {
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    
+    // Special handling for age field to convert to number
+    if (name === 'age') {
+      const numValue = value === '' ? null : parseInt(value, 10)
+      setFormData((prev) => ({
+        ...prev,
+        [name]: numValue,
+      }))
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
 
     // Clear error when user starts typing
     if (errors[name]) {
@@ -95,8 +105,10 @@ export default function SignupForm() {
     }
 
     // Age validation (if provided)
-    if (formData.age && (Number.parseInt(formData.age) < 13 || Number.parseInt(formData.age) > 120)) {
-      newErrors.age = "Age must be between 13 and 120"
+    if (formData.age !== null) {
+      if (isNaN(formData.age) || formData.age < 13 || formData.age > 120) {
+        newErrors.age = "Age must be between 13 and 120"
+      }
     }
 
     setErrors(newErrors)
@@ -127,8 +139,9 @@ export default function SignupForm() {
         email: formData.email,
         phone: formData.phone,
         country: formData.country,
-        age: formData.age ? Number.parseInt(formData.age) : null,
+        age: formData.age || 0, // Send 0 if age is null
         password: formData.password,
+        confirm_password: formData.confirm_password, // Include confirm_password as required by API
       }
 
       // Replace this with your actual API call
@@ -141,8 +154,11 @@ export default function SignupForm() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || "Something went wrong")
+        const errorData = await response.json();
+        console.log("Full errorData:", errorData);
+        console.error("API Error Response:", errorData);
+        // Throw the whole error object so it can be displayed
+        throw errorData;
       }
 
       const result = await response.json()
@@ -162,13 +178,20 @@ export default function SignupForm() {
         email: "",
         phone: "",
         country: "",
-        age: "",
+        age: null,
         password: "",
         confirm_password: "",
       })
-    } catch (error) {
-      console.error("Error:", error)
-      setApiError(error instanceof Error ? error.message : "An unexpected error occurred")
+    } catch (error: any) {
+      console.error("Error:", error);
+      // Always show the error as a string, even if it's an object
+      if (typeof error === 'object' && error !== null) {
+        setApiError(JSON.stringify(error, null, 2));
+      } else if (error instanceof Error && error.message) {
+        setApiError(error.message);
+      } else {
+        setApiError("An unexpected error occurred");
+      }
     } finally {
       setIsLoading(false)
     }
@@ -290,18 +313,18 @@ export default function SignupForm() {
                         required
                       >
                         <option value="">Select your country</option>
-                        <option value="mx">Bangladesh</option>
-                        <option value="us">United States</option>
-                        <option value="ca">Canada</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="au">Australia</option>
-                        <option value="de">Germany</option>
-                        <option value="fr">France</option>
-                        <option value="jp">Japan</option>
-                        <option value="br">Brazil</option>
-                        <option value="in">India</option>
-                        <option value="mx">Mexico</option>
-                        <option value="other">Other</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="United States">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="France">France</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="India">India</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Other">Other</option>
                       </select>
                       {errors.country && <span className="field-error">{errors.country}</span>}
                     </div>
@@ -317,7 +340,7 @@ export default function SignupForm() {
                         max="120"
                         className={`input ${errors.age ? "input-error" : ""}`}
                         placeholder="Age"
-                        value={formData.age}
+                        value={formData.age || ""}
                         onChange={handleChange}
                       />
                       {errors.age && <span className="field-error">{errors.age}</span>}

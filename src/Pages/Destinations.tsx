@@ -40,7 +40,7 @@ const Destinations:FunctionComponent = () => {
               							</div>
               							<div className={styles.depth4Frame2}>
                 								<div className={styles.destinationsGrid}>
-                  									<div className={styles.destinationCard} onClick={() => navigate('/coxsbazar')}>
+                  									<div className={styles.destinationCard} onClick={() => navigate('/destination-01')}>
                     										<img className={styles.destinationImage} alt="Cox's Bazar" src="/Figma_photoes/cox.jpg" />
                     										<div className={styles.destinationContent}>
                       											<div className={styles.destinationTitle}>Cox's Bazar</div>
