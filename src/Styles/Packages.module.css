@@ -760,3 +760,10 @@
   margin: 12px 0 0 0;
 }
 
+.selected {
+  background: #e8f5e8 !important;
+  border: 1.5px solid #6ab187 !important;
+  color: #4e944f !important;
+  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12) !important;
+}
+

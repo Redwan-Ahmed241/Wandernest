@@ -4,58 +4,18 @@ import styles from '../Styles/Packages.module.css';
 import Layout from '../App/Layout';
 
 const FILTER_OPTIONS = {
-  Destination: ['All', 'Sundarbans', "Cox's Bazar", 'Sylhet', 'Dhaka', 'Bandarban', "St. Martin's Island"],
-  Duration: ['All', '1-3 days', '4-7 days', '8+ days'],
-  Budget: ['All', '<$200', '$200-$300', '$300+'],
-  Activity: ['All', 'Wildlife', 'Beach', 'Trekking', 'Culture', 'Adventure'],
+  Destination: ['All', 'Sundarbans', "Cox's Bazar", 'Srimangal', 'Rangamati', 'Bandarban'],
+  Budget: ['All', '< 4000৳', '4000–6000৳', '6000+৳'],
 };
 
 type FilterKey = keyof typeof FILTER_OPTIONS;
 
-const PACKAGES = [
-  {
-    name: 'Sundarbans Wildlife Expedition',
-    image: '/Figma_photoes/sundarban.jpg',
-    description: "Explore the world's largest mangrove forest, home to the Royal Bengal Tiger.",
-    price: '$250/person',
-    destination: 'Sundarbans',
-  },
-  {
-    name: "Cox's Bazar Beach Retreat",
-    image: '/Figma_photoes/coxsbazar.jpg',
-    description: "Relax on the world's longest natural sea beach with golden sands.",
-    price: '$150/person',
-    destination: "Cox's Bazar",
-  },
-  {
-    name: 'Sylhet Tea Garden & Hill Trek',
-    image: '/Figma_photoes/srimangal.png',
-    description: 'Discover lush tea gardens, rolling hills, and indigenous tribal cultures.',
-    price: '$300/person',
-    destination: 'Sylhet',
-  },
-  {
-    name: 'Dhaka Historical & Cultural Tour',
-    image: '/Figma_photoes/dh-hs.jpg',
-    description: "Immerse yourself in the rich history and vibrant culture of Bangladesh's capital.",
-    price: '$200/person',
-    destination: 'Dhaka',
-  },
-  {
-    name: 'Chittagong Hill Tracts Adventure',
-    image: '/Figma_photoes/bandorban.jpg',
-    description: 'Embark on an adventurous journey through breathtaking landscapes and remote villages.',
-    price: '$350/person',
-    destination: 'Bandarban',
-  },
-  {
-    name: "St. Martin's Island Escape",
-    image: '/Figma_photoes/Saint-Martin.jpg',
-    description: "Unwind on the only coral island of Bangladesh, surrounded by crystal-clear waters.",
-    price: '$180/person',
-    destination: "St. Martin's Island",
-  },
-];
+interface Package {
+  id: number;
+  title: string;
+  pic: string;
+  price: string;
+}
 
 const Packages: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -63,6 +23,28 @@ const Packages: FunctionComponent = () => {
   const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<{ [key in FilterKey]?: string }>({});
   const filterDropdownRef = useRef<HTMLDivElement>(null);
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // Fetch packages from API
+  useEffect(() => {
+    const fetchPackages = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const response = await fetch('https://wander-nest-ad3s.onrender.com/api/packages/all/');
+        const data = await response.json();
+        setPackages(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError('Failed to fetch packages');
+        setPackages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPackages();
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -100,12 +82,19 @@ const Packages: FunctionComponent = () => {
   };
 
   // Filter packages by search and selected filters
-  const filteredPackages = PACKAGES.filter(pkg => {
-    const matchesSearch = pkg.name.toLowerCase().includes(search.toLowerCase()) ||
-      pkg.destination.toLowerCase().includes(search.toLowerCase());
+  const filteredPackages = packages.filter(pkg => {
+    const matchesSearch = pkg.title.toLowerCase().includes(search.toLowerCase());
     const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
-      if (filter === 'Destination') return pkg.destination === value;
-      // Add more filter logic as needed
+      if (filter === 'Destination') {
+        return pkg.title === value || value === 'All';
+      }
+      if (filter === 'Budget') {
+        const price = Number(pkg.price);
+        if (value === '< 4000৳') return price < 4000;
+        if (value === '4000–6000৳') return price >= 4000 && price <= 6000;
+        if (value === '6000+৳') return price > 6000;
+        return true;
+      }
       return true;
     });
     return matchesSearch && matchesFilters;
@@ -148,7 +137,10 @@ const Packages: FunctionComponent = () => {
                         {Object.keys(FILTER_OPTIONS).map(filter => (
                           <div key={filter} className={styles.depth5Frame03}>
                             <div
-                              className={styles.depth6Frame03}
+                              className={
+                                styles.depth6Frame03 +
+                                (selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All' ? ' ' + styles.selected : '')
+                              }
                               onClick={() => handleFilterClick(filter as FilterKey)}
                               style={{ cursor: 'pointer', position: 'relative' }}
                             >
@@ -180,25 +172,35 @@ const Packages: FunctionComponent = () => {
                       </div>
                       <div className={styles.depth4Frame3}>
                         <div className={styles.depth5Frame04}>
-                          {filteredPackages.map(pkg => (
+                          {loading && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                              Loading packages...
+                            </div>
+                          )}
+                          {error && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                              {error}
+                            </div>
+                          )}
+                          {!loading && !error && filteredPackages.map(pkg => (
                             <div
                               className={styles.depth6Frame07}
-                              key={pkg.name}
-                              onClick={() => navigate(`/packages/${encodeURIComponent(pkg.name)}`)}
+                              key={pkg.id}
+                              onClick={() => navigate(`/packages/${encodeURIComponent(pkg.title)}`)}
                               style={{ cursor: 'pointer' }}
                             >
-                              <img className={styles.depth7Frame01} alt="" src={pkg.image} />
+                              <img className={styles.depth7Frame01} alt="" src={pkg.pic} />
                               <div className={styles.depth7Frame11}>
                                 <div className={styles.depth7Frame11}>
-                                  <div className={styles.sundarbansWildlifeExpedition}>{pkg.name}</div>
+                                  <div className={styles.sundarbansWildlifeExpedition}>{pkg.title}</div>
                                 </div>
                                 <div className={styles.depth8Frame1}>
-                                  <div className={styles.exploreTheWorlds}>{pkg.description}</div>
+                                  <div className={styles.exploreTheWorlds}>Experience the beauty of {pkg.title}</div>
                                 </div>
-                                <div className={styles.cardPrice}>{pkg.price}</div>
+                                <div className={styles.cardPrice}>৳{Number(pkg.price).toLocaleString()}</div>
                                 <button
-                                  className={styles.bookButton}
-                                  onClick={e => { e.stopPropagation(); alert(`Booking for ${pkg.name}`); }}
+                                  className={styles.createCustomPackage}
+                                  onClick={e => { e.stopPropagation(); alert(`Booking for ${pkg.title}`); }}
                                   type="button"
                                 >
                                   Book Now
@@ -207,7 +209,11 @@ const Packages: FunctionComponent = () => {
                             </div>
                           ))}
                         </div>
-                        {/* St. Martin's Island Escape is already included above */}
+                        {!loading && !error && filteredPackages.length === 0 && (
+                          <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                            No packages found matching your criteria.
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

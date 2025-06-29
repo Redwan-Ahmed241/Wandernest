@@ -14,6 +14,7 @@ import {
 } from "../App/api-services"
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import packageStyles from '../Styles/Packages.module.css';
 
 const API_KEY = 'f69a050e081bb4a7910484976126421e';
 const defaultCities = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi'];
@@ -30,6 +31,8 @@ interface WeatherData {
   humidity: number;
   windSpeed: number;
 }
+
+const DEFAULT_CURRENCIES = ['EUR', 'USD', 'CAD'];
 
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate()
@@ -59,6 +62,10 @@ const Flights: FunctionComponent = () => {
   // New states for weather search
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
+
+  // New states for currency search
+  const [currencySearch, setCurrencySearch] = useState('');
+  const [activeCurrencies, setActiveCurrencies] = useState(DEFAULT_CURRENCIES);
 
   // Load initial data on component mount
   useEffect(() => {
@@ -202,15 +209,16 @@ const Flights: FunctionComponent = () => {
     }
   };
 
-  // Fetch currency rates (only use fetch, not getCurrencyRates)
+  // Fetch currency rates (with dynamic currencies)
   useEffect(() => {
     const fetchCurrencyRates = async () => {
       setCurrencyLoading(true);
       setCurrencyError('');
       try {
-        const response = await fetch(CURRENCY_API_URL);
+        const currencies = activeCurrencies.join(',');
+        const url = `https://api.currencyapi.com/v3/latest?apikey=${CURRENCY_API_KEY}&currencies=${currencies}&base_currency=BDT`;
+        const response = await fetch(url);
         const data = await response.json();
-        console.log('Currency API data:', data); // Debug log
         if (data && data.data) {
           const ratesArr = Object.values(data.data).map((item: any) => ({
             currency: item.code,
@@ -224,13 +232,28 @@ const Flights: FunctionComponent = () => {
       } catch (err) {
         setCurrencyError('Failed to fetch currency rates.');
         setCurrencyRates([]);
-        console.error('Currency API error:', err);
       } finally {
         setCurrencyLoading(false);
       }
     };
     fetchCurrencyRates();
-  }, []);
+  }, [activeCurrencies]);
+
+  // Handle currency search submit
+  const handleCurrencySearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = currencySearch.trim().toUpperCase();
+    if (!code) {
+      setActiveCurrencies(DEFAULT_CURRENCIES);
+      return;
+    }
+    // Add searched currency to the default list (if not already present)
+    if (!DEFAULT_CURRENCIES.includes(code)) {
+      setActiveCurrencies([...DEFAULT_CURRENCIES, code]);
+    } else {
+      setActiveCurrencies(DEFAULT_CURRENCIES);
+    }
+  };
 
   return (
     <Layout>
@@ -323,7 +346,7 @@ const Flights: FunctionComponent = () => {
                       <span className={styles.price}>
                         {flight.currency} {flight.price}
                       </span>
-                      <button className={styles.bookButton}>Book Now</button>
+                      <button className={packageStyles.createCustomPackage}>Book Now</button>
                     </div>
                   </div>
                 ))}
@@ -395,9 +418,30 @@ const Flights: FunctionComponent = () => {
           {/* Currency Exchange Section */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Real-Time Currency Exchange Rates</h2>
+            {/* Currency Search Bar */}
+            <form onSubmit={handleCurrencySearch} style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+              <input
+                type="text"
+                value={currencySearch}
+                onChange={e => setCurrencySearch(e.target.value)}
+                placeholder="Search currency code (e.g. GBP, INR, AUD)"
+                style={{ padding: '0.5rem 1rem', fontSize: '1rem', borderRadius: '8px', border: '1px solid #ccc', minWidth: '200px' }}
+              />
+              <button type="submit" style={{ padding: '0.5rem 1.5rem', fontSize: '1rem', borderRadius: '8px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>
+                Search
+              </button>
+              {activeCurrencies.length > DEFAULT_CURRENCIES.length && (
+                <button
+                  type="button"
+                  onClick={() => { setCurrencySearch(''); setActiveCurrencies(DEFAULT_CURRENCIES); }}
+                  style={{ padding: '0.5rem 1rem', fontSize: '1rem', borderRadius: '8px', background: '#eee', color: '#333', border: 'none', cursor: 'pointer' }}
+                >
+                  Reset
+                </button>
+              )}
+            </form>
             {currencyLoading && <div className={styles.loading}>Loading currency rates...</div>}
             {currencyError && <div className={styles.errorMessage}>{currencyError}</div>}
-
             {currencyRates.length > 0 && (
               <div className={styles.currencyContainer}>
                 <div className={styles.currencyRates}>

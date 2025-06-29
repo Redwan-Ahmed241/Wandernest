@@ -1063,6 +1063,7 @@
   margin-bottom: 10px;
 }
 
+/*
 .bookButton {
   background: #2c5aa0;
   color: white;
@@ -1073,9 +1074,10 @@
   font-weight: bold;
 }
 
-.bookButton:hover {
+.bookButton:hover, .bookButton:focus {
   background: #1e3d6f;
 }
+*/
 
 .negativeChange {
   color: #c33;
