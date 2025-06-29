@@ -133,6 +133,7 @@
   align-items: center;
 }
 .navbarWrapper {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -986,5 +987,102 @@
   }
 }
 
+/* Add these to your existing flight.module.css */
+
+.errorMessage {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  border: 1px solid #fcc;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.flightResults {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.flightCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flightInfo {
+  flex: 1;
+}
+
+.flightRoute {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.flightCity {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.flightArrow {
+  color: #666;
+  font-size: 16px;
+}
+
+.flightDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #666;
+  font-size: 14px;
+}
+
+.flightPrice {
+  text-align: right;
+}
+
+.price {
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c5aa0;
+  margin-bottom: 10px;
+}
+
+.bookButton {
+  background: #2c5aa0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.bookButton:hover {
+  background: #1e3d6f;
+}
+
+.negativeChange {
+  color: #c33;
+}
+
+.positiveChange {
+  color: #3c3;
+}
 
 
