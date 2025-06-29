@@ -1,79 +1,14 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { FunctionComponent, useCallback, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from '../Styles/HotelsRooms.module.css';
 import Layout from '../App/Layout';
 
-const FILTERS = [
-  {
-    label: 'Price Range',
-    key: 'price',
-    options: ['$0 - $50', '$50 - $100', '$100 - $200', '$200+']
-  },
-  {
-    label: 'Star Rating',
-    key: 'rating',
-    options: ['5 stars', '4 stars', '3 stars', '2 stars', '1 star']
-  },
-  {
-    label: 'Amenities',
-    key: 'amenities',
-    options: ['WiFi', 'Pool', 'Gym', 'Spa', 'Restaurant']
-  },
-  {
-    label: 'Location',
-    key: 'location',
-    options: ['City Center', 'Beachfront', 'Mountain View', 'Countryside']
-  },
-  {
-    label: 'Room Type',
-    key: 'roomType',
-    options: ['Single', 'Double', 'Suite', 'Family']
-  }
-];
-
-const HOTELS = [
-  {
-    id: 'six-seasons',
-    name: 'Luxury Hotel',
-    description: '5-star luxury experience',
-    location: 'City Center',
-    image: '/Figma_photoes/six-seasons-hotel.jpg',
-  },
-  {
-    id: 'budget-inn',
-    name: 'Budget Inn',
-    description: 'Affordable and cozy',
-    location: 'City Center',
-    image: '/Figma_photoes/inn.jpg',
-  },
-  {
-    id: 'beachside-resort',
-    name: 'Beachside Resort',
-    description: 'Relax by the sea',
-    location: 'Beachfront',
-    image: '/Figma_photoes/swimming-pool.jpg',
-  },
-  {
-    id: 'mountain-retreat',
-    name: 'Mountain Retreat',
-    description: 'Breathtaking mountain views',
-    location: 'Mountain View',
-    image: '/Figma_photoes/hillside-resort.jpg',
-  },
-  {
-    id: 'city-center',
-    name: 'City Center Hotel',
-    description: 'Stay in the heart of the city',
-    location: 'City Center',
-    image: '/Figma_photoes/city_center_hotel.png',
-  },
-  {
-    id: 'countryside-lodge',
-    name: 'Countryside Lodge',
-    description: 'Peaceful countryside escape',
-    location: 'Countryside',
-    image: '/Figma_photoes/c_lodge.jpeg',
-  }
+const FILTERS: { key: string; label: string; options: string[] }[] = [
+  { key: 'price', label: 'Price Range', options: ['Any', 'Under 3000', '3000-7000', '7000+'] },
+  { key: 'rating', label: 'Star Rating', options: ['Any', '5 Star', '4 Star', '3 Star'] },
+  { key: 'amenities', label: 'Amenities', options: ['Any', 'Pool', 'WiFi', 'Breakfast', 'Parking'] },
+  { key: 'location', label: 'Location', options: ['Any', 'Dhaka', 'Beachfront', 'Mountain View', 'Countryside'] },
+  { key: 'roomType', label: 'Room Type', options: ['Any', 'Single', 'Double', 'Suite', 'Family'] },
 ];
 
 const HotelsRooms: FunctionComponent = () => {
@@ -97,6 +32,28 @@ const HotelsRooms: FunctionComponent = () => {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [openFilter, setOpenFilter] = useState<string | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
+  const [hotels, setHotels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const response = await fetch('https://wander-nest-ad3s.onrender.com/api/hotels/');
+        const data = await response.json();
+        setHotels(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError('Failed to fetch hotels.');
+        setHotels([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHotels();
+  }, []);
+
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
       setCalendarMonth(11);
@@ -177,7 +134,7 @@ const HotelsRooms: FunctionComponent = () => {
     }
   };
 
-  const filteredHotels = HOTELS.filter(hotel => {
+  const filteredHotels = hotels.filter(hotel => {
     const query = hotelQuery.toLowerCase();
     return (
       hotel.name.toLowerCase().includes(query) ||
