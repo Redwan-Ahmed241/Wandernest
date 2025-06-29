@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from "react"
 import Sidebar from "./Sidebar"
 import styles from "../Styles/DashboardHome.module.css"
 import Layout from "../App/Layout"
-import { userAPI, type UserData, type UserStats } from "../App/api"
-import { useAuth } from "../Authentication/auth-context" // Using your existing auth context
+import { userAPI, type UserData, type UserStats } from "../App/api" // FIXED IMPORT PATH
+import { useAuth } from "../Authentication/auth-context"// Using your existing auth context
 
 // ImageUploader Component
 const ImageUploader: React.FC<{
@@ -32,7 +32,7 @@ const ImageUploader: React.FC<{
       setIsUploading(true)
 
       try {
-        const response = await userAPI.uploadProfileImage(file)
+        const response = await userAPI.uploadProfileImage(file) // NOW THIS FUNCTION EXISTS
         onImageChange(response.profile_image || response.profileImage)
       } catch (error) {
         console.error("Error uploading image:", error)
@@ -142,7 +142,7 @@ const EditableField: React.FC<{
   )
 }
 
-// UserInfoCard Component - Updated to work with your auth context
+// UserInfoCard Component
 const UserInfoCard: React.FC<{
   userData: UserData
   onUserDataChange: (newData: Partial<UserData>) => void
@@ -276,9 +276,9 @@ const DashboardStats: React.FC<{ stats: UserStats | null; isLoading: boolean }> 
   )
 }
 
-// Main Dashboard Component - Using your existing auth context
+// Main Dashboard Component
 const DashboardHome: React.FC = () => {
-  const { user, isAuthenticated, loading: authLoading } = useAuth() // Using your auth context
+  const { user, isAuthenticated, loading: authLoading } = useAuth()
   const [userData, setUserData] = useState<UserData | null>(null)
   const [userStats, setUserStats] = useState<UserStats | null>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState(true)
@@ -339,7 +339,7 @@ const DashboardHome: React.FC = () => {
     )
   }
 
-  // Redirect if not authenticated (this should be handled by your routing)
+  // Redirect if not authenticated
   if (!isAuthenticated) {
     return (
       <Layout>

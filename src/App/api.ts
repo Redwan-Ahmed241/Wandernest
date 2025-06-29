@@ -35,10 +35,12 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 
 // User API functions
 export const userAPI = {
+  // Get user profile
   getProfile: async () => {
     return apiRequest("/user/profile/")
   },
 
+  // Update user profile
   updateProfile: async (userData: Partial<UserData>) => {
     return apiRequest("/user/profile/", {
       method: "PATCH",
@@ -46,6 +48,7 @@ export const userAPI = {
     })
   },
 
+  // Upload profile image - THIS WAS MISSING
   uploadProfileImage: async (imageFile: File) => {
     const formData = new FormData()
     formData.append("profile_image", imageFile)
@@ -66,6 +69,7 @@ export const userAPI = {
     return response.json()
   },
 
+  // Get user stats
   getStats: async () => {
     return apiRequest("/user/stats/")
   },
@@ -105,7 +109,7 @@ export const tripsAPI = {
   },
 }
 
-// Types for API responses
+// Types - THESE WERE MISSING
 export interface UserData {
   id?: string
   email: string

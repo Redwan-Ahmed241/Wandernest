@@ -1,314 +1,365 @@
-import { FunctionComponent, useCallback } from 'react';
-import styles from '../Styles/Visaassistance.module.css';
-import { useNavigate } from 'react-router-dom';
+"use client"
 
-const VisaAssistance:FunctionComponent = () => {
-  	
-  	const onDepth4FrameClick = useCallback(() => {
-    		// Add your code here
-  	}, []);
-	 const navigate = useNavigate(); 
-  	
-  	return (
-    		<div className={styles.visaAssistance}>
-      			<div className={styles.visaAssistance1}>
-        				<div className={styles.depth0Frame0}>
-          					<div className={styles.depth1Frame0}>
-            						<div className={styles.navbar}>
-              							<div className={styles.depth3Frame0}>
-                								<img className={styles.depth4Frame0} alt="" src="/Figma_photoes/wandernest.svg" />
-                								<div className={styles.depth4Frame1} onClick={() => navigate('/homepage')}>
-                  									<b className={styles.wandernest}>WanderNest</b>
-                								</div>
-              							</div>
-              							<div className={styles.depth3Frame1}>
-                								<div className={styles.depth4Frame01}>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Destinations</div>
-                  									</div>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Hotels</div>
-                  									</div>
-                  									<div className={styles.depth5Frame2}>
-                    										<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                  									</div>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Packages</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame11}>
-                  									<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
-                    										<div className={styles.depth6Frame0}>
-                      											<b className={styles.signUp}>Sign up</b>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth5Frame11} onClick={onDepth4FrameClick}>
-                    										<div className={styles.depth6Frame0}>
-                      											<b className={styles.signUp}>Log in</b>
-                    										</div>
-                  									</div>
-                  									<img className={styles.depth5Frame21} alt=""  src="/Figma_photoes/world.svg" />
-                								</div>
-              							</div>
-            						</div>
-            						<div className={styles.depth2Frame1}>
-              							<div className={styles.depth3Frame01}>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt="" src="/Figma_photoes/c.jpg" />
-                    										<div className={styles.depth6Frame1}>
-                      											<div className={styles.depth7Frame0}>
-                        												<b className={styles.wandernest}>Currency Rate Monitor</b>
-                      											</div>
-                      											<div className={styles.depth7Frame1}>
-                        												<div className={styles.depth8Frame0}>
-                          													<div className={styles.depth9Frame0}>
-                            														<div className={styles.updatedDaily}>Updated daily</div>
-                          													</div>
-                          													<div className={styles.depth5Frame2}>
-                            														<div className={styles.updatedDaily}>1 USD = 110 BDT</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt=""  src="\Figma_photoes\safety-logo-design-concept-hard-hats-design-vector_137499-12.jpg" />
-                    										<div className={styles.depth6Frame1}>
-                      											<div className={styles.depth7Frame0}>
-                        												<b className={styles.wandernest}>Safety Tips</b>
-                      											</div>
-                      											<div className={styles.depth7Frame1}>
-                        												<div className={styles.depth8Frame0}>
-                          													<div className={styles.depth9Frame01}>
-                            														<div className={styles.updatedDaily}>Travel safely</div>
-                          													</div>
-                          													<div className={styles.depth5Frame2}>
-                            														<div className={styles.updatedDaily}>Keep your documents secure.</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame02}>
-                    										<img className={styles.depth6Frame02} alt="" src="/Figma_photoes/20230619-113454-8m20-links.png" />
-                    										<div className={styles.depth6Frame1}>
-                      											<div className={styles.depth7Frame0}>
-                        												<b className={styles.wandernest}>Quick Links</b>
-                      											</div>
-                      											<div className={styles.depth7Frame1}>
-                        												<div className={styles.depth8Frame0}>
-                          													<div className={styles.depth9Frame02}>
-                            														<div className={styles.updatedDaily}>Helpful resources</div>
-                          													</div>
-                          													<div className={styles.depth5Frame2}>
-                            														<div className={styles.updatedDaily}>Visa FAQs, Embassy Contacts</div>
-                          													</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-              							</div>
-              							<div className={styles.depth3Frame11}>
-                								<div className={styles.depth4Frame03}>
-                  									<div className={styles.depth5Frame05}>
-                    										<div className={styles.depth6Frame05}>
-                      											<div className={styles.depth7Frame03}>
-                        												<div className={styles.depth8Frame03}>
-                          													<div className={styles.applyForBangladesh}>Apply for Bangladesh Visa</div>
-                        												</div>
-                        												<div className={styles.depth8Frame1}>
-                          													<div className={styles.updatedDaily}>Easily apply for a visa to explore the beauty of Bangladesh.</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth7Frame13}>
-                        												<div className={styles.depth6Frame0}>
-                          													<b className={styles.startApplication}>Start Application</b>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame13}>
-                  									<div className={styles.depth5Frame06}>
-                    										<div className={styles.depth6Frame06}>
-                      											<div className={styles.citizenship}>Citizenship</div>
-                    										</div>
-                    										<div className={styles.depth6Frame13}>
-                      											<img className={styles.vector0} alt="" src="Vector - 0.svg" />
-                      											<div className={styles.selectYour}>Select  your  country</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame13}>
-                  									<div className={styles.depth5Frame06}>
-                    										<div className={styles.depth6Frame06}>
-                      											<div className={styles.citizenship}>Purpose of Visit</div>
-                    										</div>
-                    										<div className={styles.depth6Frame13}>
-                      											<img className={styles.vector0} alt="" src="Vector - 0.svg" />
-                      											<div className={styles.selectYour}>Select  purpose</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame08}>
-                    										<div className={styles.depth6Frame08}>
-                      											<div className={styles.depth1Frame0}>
-                        												<b className={styles.visaFree}>Visa-Free</b>
-                      											</div>
-                      											<div className={styles.depth7Frame14}>
-                        												<div className={styles.noVisaRequired}>No visa required for selected citizenship.</div>
-                      											</div>
-                    										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\WhatsApp Image 2025-05-06 at 22.04.17_fcc6cfad.jpg" />
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame08}>
-                    										<div className={styles.depth6Frame08}>
-                      											<div className={styles.depth1Frame0}>
-                        												<b className={styles.visaFree}>Visa-on-Arrival</b>
-                      											</div>
-                      											<div className={styles.depth7Frame14}>
-                        												<div className={styles.noVisaRequired}>Get your visa upon arrival in Bangladesh.</div>
-                      											</div>
-                    										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\OIP (2).jpeg" />
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame08}>
-                    										<div className={styles.depth6Frame08}>
-                      											<div className={styles.depth7Frame06}>
-                        												<b className={styles.visaFree}>eVisa Required</b>
-                      											</div>
-                      											<div className={styles.depth7Frame14}>
-                        												<div className={styles.noVisaRequired}>Apply online for an electronic visa.</div>
-                      											</div>
-                    										</div>
-                    										<img className={styles.depth6Frame15} alt="" src="\Figma_photoes\visa-bangladesh.png" />
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame6}>
-                  									<b className={styles.howToApply}>How to Apply</b>
-                								</div>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame011}>
-                    										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\fill.svg" />
-                      											<div className={styles.depth7Frame17}>
-                        												<b className={styles.visaFree}>Fill Form</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\up.svg" />
-                      											<div className={styles.depth7Frame17}>
-                        												<b className={styles.visaFree}>Upload Documents</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame011}>
-                      											<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\submit.svg" />
-                      											<div className={styles.depth7Frame17}>
-                        												<b className={styles.visaFree}>{`Submit & Track`}</b>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame8}>
-                  									<div className={styles.depth5Frame012}>
-                    										<div className={styles.depth6Frame0}>
-                      											<b className={styles.startApplication}>Start Application</b>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame6}>
-                  									<b className={styles.howToApply}>Emergency Support</b>
-                								</div>
-                								<div className={styles.depth4Frame10}>
-                  									<div className={styles.depth5Frame013}>
-                    										<div className={styles.depth6Frame013}>
-                      											<div className={styles.depth7Frame010}>
-                        												<div className={styles.depth8Frame05}>
-                          													<div className={styles.noVisaRequired}>Embassy Contacts</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth7Frame110}>
-                        												<div className={styles.depth8Frame05}>
-                          													<div className={styles.noVisaRequired}>Find your nearest embassy.</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame19}>
-                      											<div className={styles.depth7Frame011}>
-                        												<div className={styles.depth8Frame07}>
-                          													<div className={styles.noVisaRequired}>Travel FAQs</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth7Frame111}>
-                        												<div className={styles.depth8Frame07}>
-                          													<div className={styles.noVisaRequired}>Answers to common questions.</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth7Frame011}>
-                    										<div className={styles.depth6Frame013}>
-                      											<div className={styles.depth7Frame011}>
-                        												<div className={styles.depth8Frame09}>
-                          													<div className={styles.noVisaRequired}>Tourist Helplines</div>
-                        												</div>
-                      											</div>
-                      											<div className={styles.depth7Frame111}>
-                        												<div className={styles.depth8Frame09}>
-                          													<div className={styles.noVisaRequired}>24/7 helpline for tourists.</div>
-                        												</div>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-              							</div>
-              							<div className={styles.depth3Frame2}>
-                								<div className={styles.depth4Frame04} />
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-      			<div className={styles.depth2Frame3}>
-        				<div className={styles.depth3Frame02}>
-          					<div className={styles.depth4Frame05}>
-            						<div className={styles.depth5Frame014}>
-              							<div className={styles.depth6Frame015} onClick={onDepth4FrameClick}>
-                								<div className={styles.updatedDaily}>About Us</div>
-              							</div>
-              							<div className={styles.depth6Frame110}>
-                								<div className={styles.updatedDaily}>Contact</div>
-              							</div>
-              							<div className={styles.depth6Frame015} onClick={onDepth4FrameClick}>
-                								<div className={styles.updatedDaily}>Terms of Service</div>
-              							</div>
-              							<div className={styles.depth6Frame015} onClick={onDepth4FrameClick}>
-                								<div className={styles.updatedDaily}>Privacy Policy</div>
-              							</div>
-            						</div>
-            						<div className={styles.depth5Frame13}>
-              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\facebook.svg" />
-              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\twitter.svg" />
-              							<img className={styles.depth7Frame07} alt="" src="\Figma_photoes\insta.svg" />
-            						</div>
-            						<div className={styles.depth5Frame22}>
-              							<div className={styles.updatedDaily}>@2025 WanderNest, All rights reserved.</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>);
-};
+import type { FunctionComponent } from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import Layout from "../App/Layout"
+import Sidebar from "./Sidebar"
+import styles from "../Styles/Visaassistance.module.css"
+import { visaAPI, type Country, type VisaPurpose, type VisaRequirement, type CurrencyRate } from "../App/api"
+import { useAuth } from "../Authentication/auth-context"
 
-export default VisaAssistance;
+const VisaAssistance: FunctionComponent = () => {
+  const navigate = useNavigate()
+  const { isAuthenticated, loading: authLoading } = useAuth()
+
+  // State management
+  const [countries, setCountries] = useState<Country[]>([])
+  const [purposes, setPurposes] = useState<VisaPurpose[]>([])
+  const [selectedCountry, setSelectedCountry] = useState<string>("")
+  const [selectedPurpose, setSelectedPurpose] = useState<string>("")
+  const [visaRequirement, setVisaRequirement] = useState<VisaRequirement | null>(null)
+  const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([])
+
+  // Loading states
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true)
+  const [isLoadingPurposes, setIsLoadingPurposes] = useState(true)
+  const [isLoadingRequirements, setIsLoadingRequirements] = useState(false)
+  const [isLoadingRates, setIsLoadingRates] = useState(true)
+
+  // Error states
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch initial data
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      fetchCountries()
+      fetchPurposes()
+      fetchCurrencyRates()
+    }
+  }, [authLoading, isAuthenticated])
+
+  // Fetch visa requirements when country and purpose are selected
+  useEffect(() => {
+    if (selectedCountry && selectedPurpose) {
+      fetchVisaRequirements(selectedCountry, selectedPurpose)
+    }
+  }, [selectedCountry, selectedPurpose])
+
+  const fetchCountries = async () => {
+    try {
+      setIsLoadingCountries(true)
+      const data = await visaAPI.getCountries()
+      setCountries(data.results || data)
+    } catch (error) {
+      console.error("Error fetching countries:", error)
+      setError("Failed to load countries")
+    } finally {
+      setIsLoadingCountries(false)
+    }
+  }
+
+  const fetchPurposes = async () => {
+    try {
+      setIsLoadingPurposes(true)
+      const data = await visaAPI.getVisaPurposes()
+      setPurposes(data.results || data)
+    } catch (error) {
+      console.error("Error fetching purposes:", error)
+      setError("Failed to load visa purposes")
+    } finally {
+      setIsLoadingPurposes(false)
+    }
+  }
+
+  const fetchVisaRequirements = async (countryCode: string, purpose: string) => {
+    try {
+      setIsLoadingRequirements(true)
+      const data = await visaAPI.getVisaRequirements(countryCode, purpose)
+      setVisaRequirement(data)
+    } catch (error) {
+      console.error("Error fetching visa requirements:", error)
+      setVisaRequirement(null)
+    } finally {
+      setIsLoadingRequirements(false)
+    }
+  }
+
+  const fetchCurrencyRates = async () => {
+    try {
+      setIsLoadingRates(true)
+      const data = await visaAPI.getCurrencyRates()
+      setCurrencyRates(data.results || data)
+    } catch (error) {
+      console.error("Error fetching currency rates:", error)
+    } finally {
+      setIsLoadingRates(false)
+    }
+  }
+
+  const handleStartApplication = () => {
+    if (selectedCountry && selectedPurpose) {
+      navigate(`/visa-application?country=${selectedCountry}&purpose=${selectedPurpose}`)
+    } else {
+      alert("Please select your country and purpose of visit first.")
+    }
+  }
+
+  const getVisaTypeInfo = (type: string) => {
+    switch (type) {
+      case "visa_free":
+        return {
+          title: "Visa-Free",
+          description: "No visa required for selected citizenship.",
+          icon: "🆓",
+          color: "#27ae60",
+        }
+      case "visa_on_arrival":
+        return {
+          title: "Visa-on-Arrival",
+          description: "Get your visa upon arrival in Bangladesh.",
+          icon: "✈️",
+          color: "#f39c12",
+        }
+      case "evisa_required":
+        return {
+          title: "eVisa Required",
+          description: "Apply online for an electronic visa.",
+          icon: "💻",
+          color: "#3498db",
+        }
+      case "visa_required":
+        return {
+          title: "Visa Required",
+          description: "Apply at embassy or consulate.",
+          icon: "📋",
+          color: "#e74c3c",
+        }
+      default:
+        return {
+          title: "Unknown",
+          description: "Please select country and purpose.",
+          icon: "❓",
+          color: "#95a5a6",
+        }
+    }
+  }
+
+  // Show loading while auth is loading
+  if (authLoading) {
+    return (
+      <Layout>
+        <div className={styles.container}>
+          <Sidebar />
+          <div className={styles.content}>
+            <div className={styles.loading}>Loading...</div>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    navigate("/login")
+    return null
+  }
+
+  const usdToBdt = currencyRates.find((rate) => rate.from_currency === "USD" && rate.to_currency === "BDT")
+
+  return (
+    <Layout>
+      <div className={styles.container}>
+        <Sidebar />
+        <div className={styles.content}>
+          <div className={styles.visaAssistance}>
+            {/* Header */}
+            <div className={styles.header}>
+              <h1 className={styles.title}>Visa Assistance</h1>
+              <p className={styles.subtitle}>Get help with your visa application process</p>
+            </div>
+
+            {/* Info Cards */}
+            <div className={styles.infoCards}>
+              <div className={styles.infoCard}>
+                <div className={styles.cardIcon}>💱</div>
+                <div className={styles.cardContent}>
+                  <h3>Currency Rate Monitor</h3>
+                  <p>Updated daily</p>
+                  <div className={styles.rate}>
+                    {isLoadingRates
+                      ? "Loading..."
+                      : usdToBdt
+                        ? `1 USD = ${usdToBdt.rate.toFixed(2)} BDT`
+                        : "Rate unavailable"}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.infoCard}>
+                <div className={styles.cardIcon}>🛡️</div>
+                <div className={styles.cardContent}>
+                  <h3>Safety Tips</h3>
+                  <p>Travel safely</p>
+                  <div className={styles.rate}>Keep your documents secure.</div>
+                </div>
+              </div>
+
+              <div className={styles.infoCard}>
+                <div className={styles.cardIcon}>🔗</div>
+                <div className={styles.cardContent}>
+                  <h3>Quick Links</h3>
+                  <p>Helpful resources</p>
+                  <div className={styles.rate}>Visa FAQs, Embassy Contacts</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Application Section */}
+            <div className={styles.applicationSection}>
+              <div className={styles.applicationHeader}>
+                <h2>Apply for Bangladesh Visa</h2>
+                <p>Easily apply for a visa to explore the beauty of Bangladesh.</p>
+              </div>
+
+              {/* Country Selection */}
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Citizenship</label>
+                <select
+                  className={styles.select}
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  disabled={isLoadingCountries}
+                >
+                  <option value="">{isLoadingCountries ? "Loading countries..." : "Select your country"}</option>
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.flag} {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Purpose Selection */}
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Purpose of Visit</label>
+                <select
+                  className={styles.select}
+                  value={selectedPurpose}
+                  onChange={(e) => setSelectedPurpose(e.target.value)}
+                  disabled={isLoadingPurposes}
+                >
+                  <option value="">{isLoadingPurposes ? "Loading purposes..." : "Select purpose"}</option>
+                  {purposes.map((purpose) => (
+                    <option key={purpose.id} value={purpose.id}>
+                      {purpose.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Visa Requirement Result */}
+              {isLoadingRequirements ? (
+                <div className={styles.loading}>Loading visa requirements...</div>
+              ) : visaRequirement ? (
+                <div className={styles.visaResult}>
+                  <div
+                    className={styles.visaTypeCard}
+                    style={{ borderColor: getVisaTypeInfo(visaRequirement.type).color }}
+                  >
+                    <div className={styles.visaTypeHeader}>
+                      <span className={styles.visaTypeIcon}>{getVisaTypeInfo(visaRequirement.type).icon}</span>
+                      <div>
+                        <h3 style={{ color: getVisaTypeInfo(visaRequirement.type).color }}>
+                          {getVisaTypeInfo(visaRequirement.type).title}
+                        </h3>
+                        <p>{getVisaTypeInfo(visaRequirement.type).description}</p>
+                      </div>
+                    </div>
+
+                    {visaRequirement.type !== "visa_free" && (
+                      <div className={styles.requirementDetails}>
+                        <div className={styles.detailItem}>
+                          <strong>Duration:</strong> {visaRequirement.duration}
+                        </div>
+                        <div className={styles.detailItem}>
+                          <strong>Processing Time:</strong> {visaRequirement.processing_time}
+                        </div>
+                        <div className={styles.detailItem}>
+                          <strong>Fee:</strong> {visaRequirement.fee}
+                        </div>
+                        {visaRequirement.requirements.length > 0 && (
+                          <div className={styles.detailItem}>
+                            <strong>Requirements:</strong>
+                            <ul className={styles.requirementsList}>
+                              {visaRequirement.requirements.map((req, index) => (
+                                <li key={index}>{req}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : selectedCountry && selectedPurpose ? (
+                <div className={styles.noResult}>
+                  <p>No visa information found for the selected combination.</p>
+                </div>
+              ) : null}
+
+              {/* How to Apply Section */}
+              <div className={styles.howToApply}>
+                <h3>How to Apply</h3>
+                <div className={styles.steps}>
+                  <div className={styles.step}>
+                    <div className={styles.stepIcon}>📝</div>
+                    <div className={styles.stepTitle}>Fill Form</div>
+                  </div>
+                  <div className={styles.step}>
+                    <div className={styles.stepIcon}>📤</div>
+                    <div className={styles.stepTitle}>Upload Documents</div>
+                  </div>
+                  <div className={styles.step}>
+                    <div className={styles.stepIcon}>✅</div>
+                    <div className={styles.stepTitle}>Submit & Track</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Start Application Button */}
+              <button
+                className={styles.startButton}
+                onClick={handleStartApplication}
+                disabled={!selectedCountry || !selectedPurpose}
+              >
+                Start Application
+              </button>
+            </div>
+
+            {/* Emergency Support */}
+            <div className={styles.emergencySupport}>
+              <h3>Emergency Support</h3>
+              <div className={styles.supportGrid}>
+                <div className={styles.supportCard} onClick={() => navigate("/embassy-contacts")}>
+                  <h4>Embassy Contacts</h4>
+                  <p>Find your nearest embassy.</p>
+                </div>
+                <div className={styles.supportCard} onClick={() => navigate("/travel-faqs")}>
+                  <h4>Travel FAQs</h4>
+                  <p>Answers to common questions.</p>
+                </div>
+                <div className={styles.supportCard} onClick={() => navigate("/tourist-helplines")}>
+                  <h4>Tourist Helplines</h4>
+                  <p>24/7 helpline for tourists.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  )
+}
+
+export default VisaAssistance
