@@ -1,466 +1,475 @@
-import React, { FunctionComponent, useCallback, useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import styles from '../Styles/HotelsRooms.module.css';
-import Layout from '../App/Layout';
+"use client"
+import type { FunctionComponent } from "react"
+import { useCallback, useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import styles from "../Styles/HotelsRooms.module.css"
+import Layout from "../App/Layout"
 
-const FILTERS: { key: string; label: string; options: string[] }[] = [
-  { key: 'price', label: 'Price Range', options: ['Any', 'Under 3000', '3000-7000', '7000+'] },
-  { key: 'rating', label: 'Star Rating', options: ['Any', '5 Star', '4 Star', '3 Star'] },
-  { key: 'amenities', label: 'Amenities', options: ['Any', 'Pool', 'WiFi', 'Breakfast', 'Parking'] },
-  { key: 'location', label: 'Location', options: ['Any', 'Dhaka', 'Beachfront', 'Mountain View', 'Countryside'] },
-  { key: 'roomType', label: 'Room Type', options: ['Any', 'Single', 'Double', 'Suite', 'Family'] },
-];
+// Define interfaces
+interface Hotel {
+  id: string
+  name: string
+  description: string
+  location: string
+  image: string
+  price: number
+  rating: number
+  amenities: string[]
+  roomTypes: string[]
+}
+
+interface Review {
+  id: string
+  userName: string
+  date: string
+  rating: number
+  comment: string
+  likes: number
+  dislikes: number
+}
+
+interface FilterOptions {
+  price: string
+  rating: string
+  amenities: string
+  location: string
+  roomType: string
+}
+
+const FILTERS: { key: keyof FilterOptions; label: string; options: string[] }[] = [
+  { key: "price", label: "Price Range", options: ["Any", "Under 3000", "3000-7000", "7000+"] },
+  { key: "rating", label: "Star Rating", options: ["Any", "5 Star", "4 Star", "3 Star"] },
+  { key: "amenities", label: "Amenities", options: ["Any", "Pool", "WiFi", "Breakfast", "Parking"] },
+  { key: "location", label: "Location", options: ["Any", "Dhaka", "Beachfront", "Mountain View", "Countryside"] },
+  { key: "roomType", label: "Room Type", options: ["Any", "Single", "Double", "Suite", "Family"] },
+]
+
+const AMENITY_LINKS = [
+  {
+    key: "restaurants",
+    title: "Local Restaurants",
+    description: "Discover popular dining spots",
+    icon: "/Figma_photoes/loc_res.svg",
+    route: "/restaurant",
+  },
+  {
+    key: "attractions",
+    title: "Tourist Attractions",
+    description: "Explore nearby places of interest",
+    icon: "/Figma_photoes/attraction.svg",
+    route: "/things-to-do",
+  },
+  {
+    key: "transport",
+    title: "Public Transport",
+    description: "Find transport options",
+    icon: "/Figma_photoes/transport.svg",
+    route: "/public-transport",
+  },
+  {
+    key: "shopping",
+    title: "Shopping Centers",
+    description: "Shop at the best locations",
+    icon: "/Figma_photoes/shop.svg",
+    route: "/shopping-centers",
+  },
+]
+
+const MOCK_REVIEWS: Review[] = [
+  {
+    id: "1",
+    userName: "Ratul",
+    date: "Nov 1, 2025",
+    rating: 5,
+    comment: "Amazing stay with great amenities.",
+    likes: 12,
+    dislikes: 0,
+  },
+  {
+    id: "2",
+    userName: "Kashem",
+    date: "Oct 28, 2025",
+    rating: 5,
+    comment: "Affordable and convenient location.",
+    likes: 8,
+    dislikes: 2,
+  },
+  {
+    id: "3",
+    userName: "Anonna",
+    date: "Oct 25, 2025",
+    rating: 4,
+    comment: "Decent experience but room for improvement.",
+    likes: 5,
+    dislikes: 3,
+  },
+]
 
 const HotelsRooms: FunctionComponent = () => {
-  const navigate = useNavigate();
-  const [hotelQuery, setHotelQuery] = useState('');
-  const [showPriceRange, setShowPriceRange] = useState(false);
-  const [showStarRating, setShowStarRating] = useState(false);
-  const [showAmenities, setShowAmenities] = useState(false);
-  const [showLocation, setShowLocation] = useState(false);
-  const [showRoomType, setShowRoomType] = useState(false);
-  // Calendar state
-  const today = new Date();
-  const [calendarMonth, setCalendarMonth] = useState(today.getMonth());
-  const [calendarYear, setCalendarYear] = useState(today.getFullYear());
-  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
-  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [openFilter, setOpenFilter] = useState<string | null>(null);
-  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
-  const [hotels, setHotels] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const navigate = useNavigate()
 
+  // Search and filter states
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedFilters, setSelectedFilters] = useState<FilterOptions>({
+    price: "Any",
+    rating: "Any",
+    amenities: "Any",
+    location: "Any",
+    roomType: "Any",
+  })
+  const [openFilter, setOpenFilter] = useState<string | null>(null)
+
+  // Calendar states
+  const today = new Date()
+  const [calendarMonth, setCalendarMonth] = useState(today.getMonth())
+  const [calendarYear, setCalendarYear] = useState(today.getFullYear())
+  const [selectedDate, setSelectedDate] = useState<{ day: number; month: number; year: number } | null>(null)
+
+  // Data states
+  const [hotels, setHotels] = useState<Hotel[]>([])
+  const [reviews] = useState<Review[]>(MOCK_REVIEWS)
+
+  // Loading states
+  const [isLoadingHotels, setIsLoadingHotels] = useState(true)
+  const [searchError, setSearchError] = useState("")
+
+  // Load hotels on component mount
   useEffect(() => {
-    const fetchHotels = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const response = await fetch('https://wander-nest-ad3s.onrender.com/api/hotels/');
-        const data = await response.json();
-        setHotels(Array.isArray(data) ? data : []);
-      } catch (err) {
-        setError('Failed to fetch hotels.');
-        setHotels([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchHotels();
-  }, []);
+    fetchHotels()
+  }, [])
 
+  // Fetch hotels from API
+  const fetchHotels = async () => {
+    setIsLoadingHotels(true)
+    setSearchError("")
+    try {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/hotels/")
+      if (!response.ok) throw new Error("Failed to fetch hotels")
+
+      const data = await response.json()
+      const hotelsData = Array.isArray(data) ? data : []
+
+      // Transform API data to match our interface
+      const transformedHotels: Hotel[] = hotelsData.map((hotel: any) => ({
+        id: hotel.id || hotel._id || Math.random().toString(),
+        name: hotel.name || "Unknown Hotel",
+        description: hotel.description || "No description available",
+        location: hotel.location || "Unknown Location",
+        image: hotel.image || "/placeholder.svg?height=200&width=300",
+        price: hotel.price || 0,
+        rating: hotel.rating || 0,
+        amenities: hotel.amenities || [],
+        roomTypes: hotel.roomTypes || [],
+      }))
+
+      setHotels(transformedHotels)
+    } catch (err) {
+      setSearchError("Failed to fetch hotels. Please try again.")
+      setHotels([])
+      console.error("Hotel fetch error:", err)
+    } finally {
+      setIsLoadingHotels(false)
+    }
+  }
+
+  // Calendar functions
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
-      setCalendarMonth(11);
-      setCalendarYear(calendarYear - 1);
+      setCalendarMonth(11)
+      setCalendarYear(calendarYear - 1)
     } else {
-      setCalendarMonth(calendarMonth - 1);
+      setCalendarMonth(calendarMonth - 1)
     }
-  };
+  }
+
   const handleNextMonth = () => {
     if (calendarMonth === 11) {
-      setCalendarMonth(0);
-      setCalendarYear(calendarYear + 1);
+      setCalendarMonth(0)
+      setCalendarYear(calendarYear + 1)
     } else {
-      setCalendarMonth(calendarMonth + 1);
+      setCalendarMonth(calendarMonth + 1)
     }
-  };
+  }
 
-  const onLogoClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+  const handleDateSelect = (day: number) => {
+    setSelectedDate({
+      day,
+      month: calendarMonth,
+      year: calendarYear,
+    })
+  }
 
-  const onHotelClick = (hotelId: string) => {
-    navigate(`/hotel/${hotelId}`);
-  };
+  // Filter functions
+  const handleFilterChange = (filterKey: keyof FilterOptions, value: string) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filterKey]: value,
+    }))
+    setOpenFilter(null)
+  }
 
-  const onAmenityClick = (amenityType: string) => {
-    navigate(`/amenities/${amenityType}`);
-  };
+  const toggleFilter = (filterKey: string) => {
+    setOpenFilter(openFilter === filterKey ? null : filterKey)
+  }
 
-  const onViewAllClick = useCallback(() => {
-    navigate("/hotels");
-  }, [navigate]);
-
-  const handleHotelSearch = () => {
-    console.log('Searching for hotels:', hotelQuery);
-    // Add your hotel search logic here (API call/filtering)
-  };
-
-  const toggleFilter = (filterType: string) => {
-    switch (filterType) {
-      case 'price':
-        setShowPriceRange(!showPriceRange);
-        setShowStarRating(false);
-        setShowAmenities(false);
-        setShowLocation(false);
-        setShowRoomType(false);
-        break;
-      case 'rating':
-        setShowStarRating(!showStarRating);
-        setShowPriceRange(false);
-        setShowAmenities(false);
-        setShowLocation(false);
-        setShowRoomType(false);
-        break;
-      case 'amenities':
-        setShowAmenities(!showAmenities);
-        setShowPriceRange(false);
-        setShowStarRating(false);
-        setShowLocation(false);
-        setShowRoomType(false);
-        break;
-      case 'location':
-        setShowLocation(!showLocation);
-        setShowPriceRange(false);
-        setShowStarRating(false);
-        setShowAmenities(false);
-        setShowRoomType(false);
-        break;
-      case 'roomType':
-        setShowRoomType(!showRoomType);
-        setShowPriceRange(false);
-        setShowStarRating(false);
-        setShowAmenities(false);
-        setShowLocation(false);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const filteredHotels = hotels.filter(hotel => {
-    const query = hotelQuery.toLowerCase();
-    return (
+  // Search and filter hotels
+  const filteredHotels = hotels.filter((hotel) => {
+    const query = searchQuery.toLowerCase()
+    const matchesSearch =
+      !query ||
       hotel.name.toLowerCase().includes(query) ||
       hotel.description.toLowerCase().includes(query) ||
       hotel.location.toLowerCase().includes(query)
-    );
-  });
+
+    // Add filter logic here based on selectedFilters
+    const matchesPrice = selectedFilters.price === "Any" || checkPriceRange(hotel.price, selectedFilters.price)
+    const matchesRating = selectedFilters.rating === "Any" || checkRatingMatch(hotel.rating, selectedFilters.rating)
+    const matchesAmenities = selectedFilters.amenities === "Any" || hotel.amenities.includes(selectedFilters.amenities)
+    const matchesLocation = selectedFilters.location === "Any" || hotel.location.includes(selectedFilters.location)
+    const matchesRoomType = selectedFilters.roomType === "Any" || hotel.roomTypes.includes(selectedFilters.roomType)
+
+    return matchesSearch && matchesPrice && matchesRating && matchesAmenities && matchesLocation && matchesRoomType
+  })
+
+  // Helper functions for filtering
+  const checkPriceRange = (price: number, range: string): boolean => {
+    switch (range) {
+      case "Under 3000":
+        return price < 3000
+      case "3000-7000":
+        return price >= 3000 && price <= 7000
+      case "7000+":
+        return price > 7000
+      default:
+        return true
+    }
+  }
+
+  const checkRatingMatch = (rating: number, filterRating: string): boolean => {
+    const starCount = Number.parseInt(filterRating.charAt(0))
+    return rating >= starCount
+  }
+
+  // Navigation functions
+  const onHotelClick = useCallback(
+    (hotelId: string) => {
+      navigate(`/hotel/${hotelId}`)
+    },
+    [navigate],
+  )
+
+  const onViewAllClick = useCallback(() => {
+    navigate("/hotels")
+  }, [navigate])
+
+  // Calendar helper functions
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate()
+  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1)
+  const weekDays = ["S", "M", "T", "W", "T", "F", "S"]
+  const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay()
 
   return (
     <Layout>
-    <div className={styles.hotelsRooms}>
-      {/* Navbar */}
-      <div className={styles.depth0Frame0}>
-        <div className={styles.depth1Frame0}>
-         
-
-          {/* Main Content */}
-          <div className={styles.depth2Frame1}>
-            {/* Filters Sidebar */}
-            <div className={styles.depth3Frame01}>
-              <div className={styles.depth4Frame02}>
-                {/* Updated Search Input */}
-                <div className={styles.depth5Frame02}>
-                  <div className={styles.searchBarContainer}>
-                    <img
-                      src="/Figma_photoes/search.svg"
-                      alt="search"
-                      className={styles.searchIconInside}
-                    />
-                    <input
-                      type="text"
-                      value={hotelQuery}
-                      onChange={e => setHotelQuery(e.target.value)}
-                      placeholder="Search hotels, rooms..."
-                      className={styles.searchInput}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.depth4Frame12}>
-                {/* Modern Filters Row */}
-                <div className={styles.filtersRow}>
-                  {FILTERS.map(filter => (
-                    <div key={filter.key} className="relative">
-                      <button
-                        className={`${styles.filterButton} ${openFilter === filter.key ? styles.selected : ''}`}
-                        onClick={() => setOpenFilter(openFilter === filter.key ? null : filter.key)}
-                        type="button"
-                      >
-                        {selectedOptions[filter.key] || filter.label}
-                        <img 
-                          src="/Figma_photoes/darrow.svg" 
-                          alt="▼" 
-                          className={styles.filterDropdownArrow}
-                        />
-                      </button>
-                      {openFilter === filter.key && (
-                        <div className={styles.filterDropdown}>
-                          {filter.options.map(option => (
-                            <div
-                              key={option}
-                              className={`${styles.filterDropdownOption} ${selectedOptions[filter.key] === option ? styles.selected : ''}`}
-                              onClick={() => {
-                                setSelectedOptions({ ...selectedOptions, [filter.key]: option });
-                                setOpenFilter(null);
-                              }}
-                            >
-                              {option}
-                  </div>
-                          ))}
-                    </div>
-                  )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className={styles.depth4Frame2}>
-                <div className={styles.depth5Frame04}>
-                  <div className={styles.depth6Frame08}>
-                    <div className={styles.calendarContainer}>
-                      <div className={styles.calendarHeaderRow}>
-                        <button onClick={handlePrevMonth} className={styles.calendarNavBtn}>{'<'}</button>
-                        <span className={styles.calendarMonthLabel}>
-                          {new Date(calendarYear, calendarMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}
-                        </span>
-                        <button onClick={handleNextMonth} className={styles.calendarNavBtn}>{'>'}</button>
-                      </div>
-                      <div className={styles.calendarWeekdays}>
-                        {weekDays.map((d, i) => (
-                          <span key={i} className={styles.calendarWeekday}>{d}</span>
-                        ))}
-                      </div>
-                      <div className={styles.calendarGrid}>
-                        {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                          <span key={'empty-' + i} className={styles.calendarDayEmpty}></span>
-                        ))}
-                        {daysArray.map(day => (
-                          <span
-                            key={day}
-                            className={
-                              styles.calendarDay +
-                              (selectedDay === day && selectedMonth === calendarMonth && selectedYear === calendarYear ? ' ' + styles.selectedCalendarDay : '')
-                            }
-                            onClick={() => {
-                              setSelectedDay(day);
-                              setSelectedMonth(calendarMonth);
-                              setSelectedYear(calendarYear);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {day}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div className={styles.hotelsContainer}>
+        {/* Main Content */}
+        <div className={styles.mainContent}>
+          {/* Filters Sidebar */}
+          <div className={styles.sidebar}>
+            {/* Search Bar */}
+            <div className={styles.searchSection}>
+              <div className={styles.searchBarContainer}>
+                <img src="/Figma_photoes/search.svg" alt="search" className={styles.searchIcon} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search hotels, rooms..."
+                  className={styles.searchInput}
+                />
               </div>
             </div>
 
-            {/* Hotel Listings */}
-            <div className={styles.depth3Frame11}>
-              <div className={styles.depth4Frame03}>
-                <div className={styles.depth5Frame05}>
-                  <div className={styles.depth5Frame2}>
-                    <div className={styles.exploreHotelsAnd}>Explore Hotels and Rooms</div>
-                  </div>
-                  <div className={styles.depth6Frame17}>
-                    <div className={styles.findThePerfect}>Find the perfect stay for your travel needs.</div>
-                  </div>
-                </div>
-                <div className={styles.depth5Frame14} onClick={onViewAllClick}>
-                  <div className={styles.depth6Frame0}>
-                    <b className={styles.signUp}>View All</b>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.depth4Frame13}>
-                <div className={styles.depth5Frame06}>
-                  {filteredHotels.map(hotel => (
-                    <div
-                      className={styles.depth6Frame012}
-                      key={hotel.id}
-                      onClick={() => onHotelClick(hotel.id)}
+            {/* Filters */}
+            <div className={styles.filtersSection}>
+              <div className={styles.filtersRow}>
+                {FILTERS.map((filter) => (
+                  <div key={filter.key} className={styles.filterContainer}>
+                    <button
+                      className={`${styles.filterButton} ${openFilter === filter.key ? styles.active : ""}`}
+                      onClick={() => toggleFilter(filter.key)}
+                      type="button"
                     >
-                      <img className={styles.depth7Frame05} alt="" src={hotel.image} />
-                      <div className={styles.depth1Frame0}>
-                    <div className={styles.depth1Frame0}>
-                          <div className={styles.luxuryHotel}>{hotel.name}</div>
+                      {selectedFilters[filter.key] || filter.label}
+                      <img src="/Figma_photoes/darrow.svg" alt="▼" className={styles.filterArrow} />
+                    </button>
+                    {openFilter === filter.key && (
+                      <div className={styles.filterDropdown}>
+                        {filter.options.map((option) => (
+                          <div
+                            key={option}
+                            className={`${styles.filterOption} ${selectedFilters[filter.key] === option ? styles.selected : ""}`}
+                            onClick={() => handleFilterChange(filter.key, option)}
+                          >
+                            {option}
+                          </div>
+                        ))}
                       </div>
-                      <div className={styles.depth8Frame112}>
-                          <div className={styles.starLuxuryExperience}>{hotel.description}</div>
-                      </div>
-                      </div>
-                    </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Calendar */}
+            <div className={styles.calendarSection}>
+              <div className={styles.calendarContainer}>
+                <div className={styles.calendarHeader}>
+                  <button onClick={handlePrevMonth} className={styles.calendarNavBtn}>
+                    {"<"}
+                  </button>
+                  <span className={styles.calendarTitle}>
+                    {new Date(calendarYear, calendarMonth).toLocaleString("default", {
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <button onClick={handleNextMonth} className={styles.calendarNavBtn}>
+                    {">"}
+                  </button>
+                </div>
+
+                <div className={styles.calendarWeekdays}>
+                  {weekDays.map((day, i) => (
+                    <span key={i} className={styles.weekday}>
+                      {day}
+                    </span>
                   ))}
                 </div>
-             
-              </div>
-              <div className={styles.depth4Frame21}>
-                <b className={styles.localAmenitiesAnd}>Local Amenities and Guides</b>
-              </div>
-              <div className={styles.depth4Frame3}>
-                <div className={styles.depth5Frame06}>
-                  <div className={styles.depth6Frame014} onClick={() => navigate('/restaurant')}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/loc_res.svg" />
-                    <div className={styles.depth7Frame111}>
-                      <div className={styles.depth8Frame018}>
-                        <b className={styles.localRestaurants}>Local Restaurants</b>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Discover popular dining spots</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame110} onClick={() => navigate('/things-to-do')}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/attraction.svg" />
-                    <div className={styles.depth7Frame111}>
-                      <div className={styles.depth8Frame018}>
-                        <b className={styles.localRestaurants}>Tourist Attractions</b>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Explore nearby places of interest</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame110} onClick={() => navigate('/public-transport')}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/transport.svg" />
-                    <div className={styles.depth7Frame111}>
-                      <div className={styles.depth8Frame018}>
-                        <b className={styles.localRestaurants}>Public Transport</b>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Find transport options</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame110} onClick={() => navigate('/shopping-centers')}>
-                    <img className={styles.depth7Frame011} alt="" src="/Figma_photoes/shop.svg" />
-                    <div className={styles.depth7Frame111}>
-                      <div className={styles.depth8Frame018}>
-                        <b className={styles.localRestaurants}>Shopping Centers</b>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Shop at the best locations</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.depth4Frame21}>
-                <b className={styles.localAmenitiesAnd}>Forum and Reviews</b>
-              </div>
-              <div className={styles.depth4Frame5}>
-                <div className={styles.depth5Frame08}>
-                  <div className={styles.depth6Frame015}>
-                    <div className={styles.depth7Frame115}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Ratul</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Nov 1, 2025</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                  </div>
-                  <div className={styles.depth1Frame0}>
-                    <div className={styles.findThePerfect}>Amazing stay with great amenities.</div>
-                  </div>
-                  <div className={styles.depth6Frame32}>
-                    <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
-                      <div className={styles.depth6Frame03}>
-                        <div className={styles.findThePerfect}>12</div>
-                      </div>
-                    </div>
-                    <img className={styles.depth7Frame117} alt="" src="/Figma_photoes/dislike.svg" />
-                  </div>
-                </div>
-                <div className={styles.depth5Frame08}>
-                  <div className={styles.depth6Frame015}>
-                    <div className={styles.depth7Frame115}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Kashem</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Oct 28, 2025</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                  </div>
-                  <div className={styles.depth1Frame0}>
-                    <div className={styles.findThePerfect}>Affordable and convenient location.</div>
-                  </div>
-                  <div className={styles.depth6Frame32}>
-                    <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
-                      <div className={styles.depth6Frame03}>
-                        <div className={styles.findThePerfect}>8</div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/dislike.svg" />
-                      <div className={styles.findThePerfect}>2</div>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.depth5Frame08}>
-                  <div className={styles.depth6Frame015}>
-                    <div className={styles.depth7Frame115}>
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.luxuryHotel}>Anonna</div>
-                      </div>
-                      <div className={styles.depth8Frame112}>
-                        <div className={styles.starLuxuryExperience}>Oct 25, 2025</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.depth6Frame111}>
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                    <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/star.svg" />
-                  </div>
-                  <div className={styles.depth1Frame0}>
-                    <div className={styles.findThePerfect}>Decent experience but room for improvement.</div>
-                  </div>
-                  <div className={styles.depth6Frame32}>
-                    <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/like.svg" />
-                      <div className={styles.depth6Frame03}>
-                        <div className={styles.findThePerfect}>5</div>
-                      </div>
-                    </div>
-                    <div className={styles.depth7Frame016}>
-                      <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/dislike.svg" />
-                      <div className={styles.depth6Frame03}>
-                        <div className={styles.findThePerfect}>3</div>
-                      </div>
-                    </div>
-                  </div>
+
+                <div className={styles.calendarGrid}>
+                  {Array.from({ length: firstDayOfWeek }).map((_, i) => (
+                    <span key={`empty-${i}`} className={styles.emptyDay}></span>
+                  ))}
+                  {daysArray.map((day) => (
+                    <span
+                      key={day}
+                      className={`${styles.calendarDay} ${
+                        selectedDate?.day === day &&
+                        selectedDate?.month === calendarMonth &&
+                        selectedDate?.year === calendarYear
+                          ? styles.selectedDay
+                          : ""
+                      }`}
+                      onClick={() => handleDateSelect(day)}
+                    >
+                      {day}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className={styles.depth3Frame2}>
-              <div className={styles.depth4Frame04} />
+          </div>
+
+          {/* Hotel Listings */}
+          <div className={styles.contentArea}>
+            {/* Header */}
+            <div className={styles.contentHeader}>
+              <div className={styles.headerText}>
+                <h1 className={styles.title}>Explore Hotels and Rooms</h1>
+                <p className={styles.subtitle}>Find the perfect stay for your travel needs.</p>
+              </div>
+              <button className={styles.viewAllButton} onClick={onViewAllClick}>
+                View All
+              </button>
+            </div>
+
+            {/* Error Message */}
+            {searchError && <div className={styles.errorMessage}>{searchError}</div>}
+
+            {/* Loading State */}
+            {isLoadingHotels && <div className={styles.loadingText}>Loading hotels...</div>}
+
+            {/* Hotels Grid */}
+            {!isLoadingHotels && (
+              <div className={styles.hotelsGrid}>
+                {filteredHotels.length > 0 ? (
+                  filteredHotels.map((hotel) => (
+                    <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
+                      <img src={hotel.image || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
+                      <div className={styles.hotelInfo}>
+                        <h3 className={styles.hotelName}>{hotel.name}</h3>
+                        <p className={styles.hotelDescription}>{hotel.description}</p>
+                        <div className={styles.hotelMeta}>
+                          <span className={styles.hotelLocation}>{hotel.location}</span>
+                          {hotel.price > 0 && <span className={styles.hotelPrice}>৳{hotel.price}/night</span>}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.noResults}>No hotels found matching your criteria.</div>
+                )}
+              </div>
+            )}
+
+            {/* Local Amenities */}
+            <div className={styles.amenitiesSection}>
+              <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
+              <div className={styles.amenitiesGrid}>
+                {AMENITY_LINKS.map((amenity) => (
+                  <div key={amenity.key} className={styles.amenityCard} onClick={() => navigate(amenity.route)}>
+                    <img src={amenity.icon || "/placeholder.svg"} alt={amenity.title} className={styles.amenityIcon} />
+                    <div className={styles.amenityInfo}>
+                      <h3 className={styles.amenityTitle}>{amenity.title}</h3>
+                      <p className={styles.amenityDescription}>{amenity.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className={styles.reviewsSection}>
+              <h2 className={styles.sectionTitle}>Forum and Reviews</h2>
+              <div className={styles.reviewsList}>
+                {reviews.map((review) => (
+                  <div key={review.id} className={styles.reviewCard}>
+                    <div className={styles.reviewHeader}>
+                      <div className={styles.reviewUser}>
+                        <h4 className={styles.userName}>{review.userName}</h4>
+                        <span className={styles.reviewDate}>{review.date}</span>
+                      </div>
+                      <div className={styles.reviewRating}>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <img
+                            key={i}
+                            src="/Figma_photoes/star.svg"
+                            alt="star"
+                            className={`${styles.star} ${i < review.rating ? styles.filled : ""}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className={styles.reviewComment}>{review.comment}</p>
+                    <div className={styles.reviewActions}>
+                      <div className={styles.reviewAction}>
+                        <img src="/Figma_photoes/like.svg" alt="like" className={styles.actionIcon} />
+                        <span>{review.likes}</span>
+                      </div>
+                      <div className={styles.reviewAction}>
+                        <img src="/Figma_photoes/dislike.svg" alt="dislike" className={styles.actionIcon} />
+                        <span>{review.dislikes}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default HotelsRooms;
+export default HotelsRooms
