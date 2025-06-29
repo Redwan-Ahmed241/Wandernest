@@ -75,6 +75,99 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
+/* Add these new styles to your existing MyTrips.module.css */
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.loadingSpinner {
+  font-size: 18px;
+  color: #666;
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.retryButton {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.retryButton:hover {
+  background: #2980b9;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.emptyState h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.emptyState p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.planTripButton {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.planTripButton:hover {
+  background: #229954;
+}
+
+.tripSelector {
+  margin-bottom: 20px;
+}
+
+.tripSelect {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background: white;
+}
+
+.emptyItinerary {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+/* Keep all your existing styles */
 
 .tab:hover {
   background-color: #f8f9fa;

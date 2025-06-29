@@ -1,98 +1,129 @@
-import { FunctionComponent, useState } from 'react';
-import styles from '../Styles/MyTrips.module.css';
-import Layout from '../App/Layout';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from './Sidebar';
+"use client"
+
+import type { FunctionComponent } from "react"
+import { useState, useEffect } from "react"
+import styles from "../Styles/MyTrips.module.css"
+import Layout from "../App/Layout"
+import { useNavigate } from "react-router-dom"
+import Sidebar from "./Sidebar"
+import { tripsAPI, type Trip, type ItineraryItem } from "../App/api"
+import { useAuth } from "../Authentication/auth-context"
 
 const MyTrips: FunctionComponent = () => {
-  const [activeTab, setActiveTab] = useState('upcoming');
-  const [activeView, setActiveView] = useState('overview');
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "cancelled">("upcoming")
+  const [activeView, setActiveView] = useState("overview")
+  const [trips, setTrips] = useState<Trip[]>([])
+  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null)
+  const [itinerary, setItinerary] = useState<ItineraryItem[]>([])
+  const [isLoadingTrips, setIsLoadingTrips] = useState(true)
+  const [isLoadingItinerary, setIsLoadingItinerary] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const tripData = {
-    title: "Your trip to Bangladesh",
-    dates: "Dec 10 - Dec 17, 2024",
-    duration: "7 days",
-    location: "Dhaka, Cox's Bazar, Chittagong",
-    activities: 12,
-    checkIn: "3:00 PM",
-    weather: "25°C, Sunny",
-    currency: "BDT (৳)",
-    status: "upcoming"
-  };
+  const { isAuthenticated, loading: authLoading } = useAuth()
+  const navigate = useNavigate()
 
-  const itinerary = [
-    {
-      id: 1,
-      type: 'arrival',
-      title: 'Arrive at Hazrat Shahjalal International Airport',
-      time: 'Dec 10, 8:00 AM',
-      icon: '✈️',
-      description: 'International arrival'
-    },
-    {
-      id: 2,
-      type: 'hotel',
-      title: 'Check-in to Pan Pacific Sonargaon Dhaka',
-      time: 'Dec 10, 10:00 AM',
-      icon: '🏨',
-      description: 'Luxury hotel in city center'
-    },
-    {
-      id: 3,
-      type: 'dining',
-      title: 'Dinner at Dhaka Regency Hotel',
-      time: 'Dec 10, 7:00 PM',
-      icon: '🍽️',
-      description: 'Traditional Bengali cuisine'
-    },
-    {
-      id: 4,
-      type: 'sightseeing',
-      title: 'Visit Lalbagh Fort',
-      time: 'Dec 11, 9:00 AM',
-      icon: '🏛️',
-      description: 'Historic Mughal fort'
-    },
-    {
-      id: 5,
-      type: 'dining',
-      title: 'Lunch at Star Kabab & Restaurant',
-      time: 'Dec 11, 12:00 PM',
-      icon: '🍽️',
-      description: 'Local street food experience'
-    },
-    {
-      id: 6,
-      type: 'sightseeing',
-      title: 'Explore Ahsan Manzil',
-      time: 'Dec 11, 3:00 PM',
-      icon: '🏛️',
-      description: 'Pink Palace of Dhaka'
-    },
-    {
-      id: 7,
-      type: 'excursion',
-      title: 'Day trip to Cox\'s Bazar',
-      time: 'Dec 12, 9:00 AM',
-      icon: '🏖️',
-      description: 'World\'s longest natural beach'
-    },
-    {
-      id: 8,
-      type: 'shopping',
-      title: 'Shopping at Aarong',
-      time: 'Dec 12, 7:00 PM',
-      icon: '🛍️',
-      description: 'Traditional crafts and clothing'
+  // Fetch trips when tab changes or component mounts
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      fetchTrips(activeTab)
     }
-  ];
+  }, [activeTab, authLoading, isAuthenticated])
+
+  // Select first trip when trips load
+  useEffect(() => {
+    if (trips.length > 0 && !selectedTrip) {
+      setSelectedTrip(trips[0])
+    }
+  }, [trips, selectedTrip])
+
+  // Fetch itinerary when selected trip changes
+  useEffect(() => {
+    if (selectedTrip && activeView === "itinerary") {
+      fetchItinerary(selectedTrip.id)
+    }
+  }, [selectedTrip, activeView])
+
+  const fetchTrips = async (status: "upcoming" | "past" | "cancelled") => {
+    try {
+      setIsLoadingTrips(true)
+      setError(null)
+      const tripsData = await tripsAPI.getTrips(status)
+      setTrips(tripsData.results || tripsData) // Handle paginated or direct array response
+
+      // Reset selected trip when changing tabs
+      setSelectedTrip(null)
+    } catch (error) {
+      console.error("Error fetching trips:", error)
+      setError("Failed to load trips")
+      setTrips([])
+    } finally {
+      setIsLoadingTrips(false)
+    }
+  }
+
+  const fetchItinerary = async (tripId: string) => {
+    try {
+      setIsLoadingItinerary(true)
+      const itineraryData = await tripsAPI.getTripItinerary(tripId)
+      setItinerary(itineraryData.results || itineraryData)
+    } catch (error) {
+      console.error("Error fetching itinerary:", error)
+      setItinerary([])
+    } finally {
+      setIsLoadingItinerary(false)
+    }
+  }
+
+  const handleTabChange = (tab: "upcoming" | "past" | "cancelled") => {
+    setActiveTab(tab)
+    setActiveView("overview") // Reset to overview when changing tabs
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+
+  const formatDateTime = (dateTimeString: string) => {
+    return new Date(dateTimeString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    })
+  }
+
+  // Show loading while auth is loading
+  if (authLoading) {
+    return (
+      <Layout>
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          <Sidebar />
+          <div style={{ flex: 1 }}>
+            <div className={styles.loadingContainer}>
+              <div className={styles.loadingSpinner}>Loading...</div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    navigate("/login")
+    return null
+  }
 
   return (
     <Layout>
-      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <div style={{ display: "flex", alignItems: "flex-start" }}>
         <Sidebar />
         <div style={{ flex: 1 }}>
-    		<div className={styles.myTrips}>
+          <div className={styles.myTrips}>
             <div className={styles.container}>
               {/* Header Section */}
               <div className={styles.header}>
@@ -100,142 +131,201 @@ const MyTrips: FunctionComponent = () => {
                   <span className={styles.breadcrumbItem}>Trips</span>
                   <span className={styles.breadcrumbSeparator}>/</span>
                   <span className={styles.breadcrumbActive}>My Trips</span>
-              							</div>
+                </div>
                 <h1 className={styles.pageTitle}>My Trips</h1>
-            						</div>
+              </div>
 
               {/* Trip Status Tabs */}
               <div className={styles.tabContainer}>
-                <button 
-                  className={`${styles.tab} ${activeTab === 'upcoming' ? styles.activeTab : ''}`}
-                  onClick={() => setActiveTab('upcoming')}
+                <button
+                  className={`${styles.tab} ${activeTab === "upcoming" ? styles.activeTab : ""}`}
+                  onClick={() => handleTabChange("upcoming")}
                 >
                   Upcoming
                 </button>
-                <button 
-                  className={`${styles.tab} ${activeTab === 'past' ? styles.activeTab : ''}`}
-                  onClick={() => setActiveTab('past')}
+                <button
+                  className={`${styles.tab} ${activeTab === "past" ? styles.activeTab : ""}`}
+                  onClick={() => handleTabChange("past")}
                 >
                   Past
                 </button>
-                <button 
-                  className={`${styles.tab} ${activeTab === 'cancelled' ? styles.activeTab : ''}`}
-                  onClick={() => setActiveTab('cancelled')}
+                <button
+                  className={`${styles.tab} ${activeTab === "cancelled" ? styles.activeTab : ""}`}
+                  onClick={() => handleTabChange("cancelled")}
                 >
                   Cancelled
                 </button>
-                								</div>
+              </div>
 
-              {/* Trip Card */}
-              <div className={styles.tripCard}>
-                <div className={styles.tripHeader}>
-                  <div className={styles.tripInfo}>
-                    <h2 className={styles.tripTitle}>{tripData.title}</h2>
-                    <p className={styles.tripDates}>{tripData.dates}</p>
-                								</div>
-                  <div className={styles.tripStatus}>
-                    <span className={`${styles.statusBadge} ${styles[tripData.status]}`}>
-                      {tripData.status.charAt(0).toUpperCase() + tripData.status.slice(1)}
-                    </span>
-                								</div>
-              							</div>
-
-                {/* View Toggle */}
-                <div className={styles.viewToggle}>
-                  <button 
-                    className={`${styles.viewButton} ${activeView === 'overview' ? styles.activeView : ''}`}
-                    onClick={() => setActiveView('overview')}
-                  >
-                    Overview
+              {/* Loading State */}
+              {isLoadingTrips ? (
+                <div className={styles.loadingContainer}>
+                  <div className={styles.loadingSpinner}>Loading trips...</div>
+                </div>
+              ) : error ? (
+                <div className={styles.errorContainer}>
+                  <p className={styles.errorMessage}>{error}</p>
+                  <button className={styles.retryButton} onClick={() => fetchTrips(activeTab)}>
+                    Try Again
                   </button>
-                  <button 
-                    className={`${styles.viewButton} ${activeView === 'itinerary' ? styles.activeView : ''}`}
-                    onClick={() => setActiveView('itinerary')}
-                  >
-                    Itinerary
-                  </button>
-            						</div>
-
-                {/* Content Area */}
-                <div className={styles.contentArea}>
-                  {activeView === 'overview' ? (
-                    <div className={styles.overview}>
-                      <div className={styles.overviewGrid}>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>📅</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Duration</h3>
-                            <p>{tripData.duration}</p>
-                    										</div>
-                  									</div>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>📍</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Location</h3>
-                            <p>{tripData.location}</p>
-                    										</div>
-                  									</div>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>🎯</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Activities</h3>
-                            <p>{tripData.activities} planned</p>
-                    										</div>
-                  									</div>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>🏨</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Check-in</h3>
-                            <p>{tripData.checkIn}</p>
-                    										</div>
-                  									</div>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>🌤️</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Weather</h3>
-                            <p>{tripData.weather}</p>
-                    										</div>
-                  									</div>
-                        <div className={styles.overviewCard}>
-                          <div className={styles.overviewIcon}>💰</div>
-                          <div className={styles.overviewContent}>
-                            <h3>Currency</h3>
-                            <p>{tripData.currency}</p>
-                  									</div>
-                								</div>
-              							</div>
-            						</div>
-                  ) : (
-                    <div className={styles.itinerary}>
-                      <div className={styles.timeline}>
-                        {itinerary.map((item, index) => (
-                          <div key={item.id} className={styles.timelineItem}>
-                            <div className={styles.timelineIcon}>
-                              <span className={styles.icon}>{item.icon}</span>
-                              {index < itinerary.length - 1 && <div className={styles.timelineLine} />}
-                								</div>
-                            <div className={styles.timelineContent}>
-                              <div className={styles.activityCard}>
-                                <div className={styles.activityHeader}>
-                                  <h3 className={styles.activityTitle}>{item.title}</h3>
-                                  <span className={styles.activityTime}>{item.time}</span>
-                								</div>
-                                <p className={styles.activityDescription}>{item.description}</p>
-                  									</div>
-                								</div>
-              							</div>
-                        ))}
-                    										</div>
-                  									</div>
+                </div>
+              ) : trips.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyIcon}>✈️</div>
+                  <h3>No {activeTab} trips found</h3>
+                  <p>You don't have any {activeTab} trips yet.</p>
+                  {activeTab === "upcoming" && (
+                    <button className={styles.planTripButton} onClick={() => navigate("/plan-a-trip")}>
+                      Plan a Trip
+                    </button>
                   )}
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-              							</div>
-            						</div>
+                </div>
+              ) : (
+                <>
+                  {/* Trip Selection */}
+                  {trips.length > 1 && (
+                    <div className={styles.tripSelector}>
+                      <select
+                        value={selectedTrip?.id || ""}
+                        onChange={(e) => {
+                          const trip = trips.find((t) => t.id === e.target.value)
+                          setSelectedTrip(trip || null)
+                        }}
+                        className={styles.tripSelect}
+                      >
+                        {trips.map((trip) => (
+                          <option key={trip.id} value={trip.id}>
+                            {trip.title} - {formatDate(trip.start_date)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Trip Card */}
+                  {selectedTrip && (
+                    <div className={styles.tripCard}>
+                      <div className={styles.tripHeader}>
+                        <div className={styles.tripInfo}>
+                          <h2 className={styles.tripTitle}>{selectedTrip.title}</h2>
+                          <p className={styles.tripDates}>
+                            {formatDate(selectedTrip.start_date)} - {formatDate(selectedTrip.end_date)}
+                          </p>
+                        </div>
+                        <div className={styles.tripStatus}>
+                          <span className={`${styles.statusBadge} ${styles[selectedTrip.status]}`}>
+                            {selectedTrip.status.charAt(0).toUpperCase() + selectedTrip.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* View Toggle */}
+                      <div className={styles.viewToggle}>
+                        <button
+                          className={`${styles.viewButton} ${activeView === "overview" ? styles.activeView : ""}`}
+                          onClick={() => setActiveView("overview")}
+                        >
+                          Overview
+                        </button>
+                        <button
+                          className={`${styles.viewButton} ${activeView === "itinerary" ? styles.activeView : ""}`}
+                          onClick={() => setActiveView("itinerary")}
+                        >
+                          Itinerary
+                        </button>
+                      </div>
+
+                      {/* Content Area */}
+                      <div className={styles.contentArea}>
+                        {activeView === "overview" ? (
+                          <div className={styles.overview}>
+                            <div className={styles.overviewGrid}>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>📅</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Duration</h3>
+                                  <p>{selectedTrip.duration}</p>
+                                </div>
+                              </div>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>📍</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Location</h3>
+                                  <p>{selectedTrip.location}</p>
+                                </div>
+                              </div>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>🎯</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Activities</h3>
+                                  <p>{selectedTrip.activities_count} planned</p>
+                                </div>
+                              </div>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>🏨</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Check-in</h3>
+                                  <p>{selectedTrip.check_in_time}</p>
+                                </div>
+                              </div>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>🌤️</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Weather</h3>
+                                  <p>{selectedTrip.weather}</p>
+                                </div>
+                              </div>
+                              <div className={styles.overviewCard}>
+                                <div className={styles.overviewIcon}>💰</div>
+                                <div className={styles.overviewContent}>
+                                  <h3>Currency</h3>
+                                  <p>{selectedTrip.currency}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className={styles.itinerary}>
+                            {isLoadingItinerary ? (
+                              <div className={styles.loadingSpinner}>Loading itinerary...</div>
+                            ) : itinerary.length === 0 ? (
+                              <div className={styles.emptyItinerary}>
+                                <p>No itinerary items found for this trip.</p>
+                              </div>
+                            ) : (
+                              <div className={styles.timeline}>
+                                {itinerary.map((item, index) => (
+                                  <div key={item.id} className={styles.timelineItem}>
+                                    <div className={styles.timelineIcon}>
+                                      <span className={styles.icon}>{item.icon}</span>
+                                      {index < itinerary.length - 1 && <div className={styles.timelineLine} />}
+                                    </div>
+                                    <div className={styles.timelineContent}>
+                                      <div className={styles.activityCard}>
+                                        <div className={styles.activityHeader}>
+                                          <h3 className={styles.activityTitle}>{item.title}</h3>
+                                          <span className={styles.activityTime}>{formatDateTime(item.date_time)}</span>
+                                        </div>
+                                        <p className={styles.activityDescription}>{item.description}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout>
-  );
-      			};
-      			
-      			export default MyTrips;
+  )
+}
+
+export default MyTrips

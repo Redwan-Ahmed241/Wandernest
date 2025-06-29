@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api
 
 // Get auth token from localStorage (matching your existing auth setup)
 const getAuthToken = (): string | null => {
-  return localStorage.getItem("token") // Using "token" to match your AuthProvider
+  return localStorage.getItem("token")
 }
 
 // Generic API request function
@@ -23,7 +23,6 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 
   if (!response.ok) {
     if (response.status === 401) {
-      // Handle unauthorized - this will trigger your AuthProvider's logout
       localStorage.removeItem("token")
       window.location.href = "/login"
       throw new Error("Unauthorized")
@@ -36,12 +35,10 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 
 // User API functions
 export const userAPI = {
-  // Get user profile
   getProfile: async () => {
     return apiRequest("/user/profile/")
   },
 
-  // Update user profile
   updateProfile: async (userData: Partial<UserData>) => {
     return apiRequest("/user/profile/", {
       method: "PATCH",
@@ -49,7 +46,6 @@ export const userAPI = {
     })
   },
 
-  // Upload profile image
   uploadProfileImage: async (imageFile: File) => {
     const formData = new FormData()
     formData.append("profile_image", imageFile)
@@ -70,13 +66,46 @@ export const userAPI = {
     return response.json()
   },
 
-  // Get user stats
   getStats: async () => {
     return apiRequest("/user/stats/")
   },
 }
 
-// Updated UserData interface to match your Django backend structure
+// Trips API functions
+export const tripsAPI = {
+  // Get all trips for the user
+  getTrips: async (status?: "upcoming" | "past" | "cancelled") => {
+    const endpoint = status ? `/trips/?status=${status}` : "/trips/"
+    return apiRequest(endpoint)
+  },
+
+  // Get specific trip details
+  getTripDetails: async (tripId: string) => {
+    return apiRequest(`/trips/${tripId}/`)
+  },
+
+  // Get trip itinerary
+  getTripItinerary: async (tripId: string) => {
+    return apiRequest(`/trips/${tripId}/itinerary/`)
+  },
+
+  // Update trip
+  updateTrip: async (tripId: string, tripData: Partial<Trip>) => {
+    return apiRequest(`/trips/${tripId}/`, {
+      method: "PATCH",
+      body: JSON.stringify(tripData),
+    })
+  },
+
+  // Cancel trip
+  cancelTrip: async (tripId: string) => {
+    return apiRequest(`/trips/${tripId}/cancel/`, {
+      method: "POST",
+    })
+  },
+}
+
+// Types for API responses
 export interface UserData {
   id?: string
   email: string
@@ -94,4 +123,31 @@ export interface UserStats {
   hotels_booked: number
   cars_rented: number
   average_rating: number
+}
+
+export interface Trip {
+  id: string
+  title: string
+  start_date: string
+  end_date: string
+  duration: string
+  location: string
+  activities_count: number
+  check_in_time: string
+  weather: string
+  currency: string
+  status: "upcoming" | "past" | "cancelled"
+  created_at: string
+  updated_at: string
+}
+
+export interface ItineraryItem {
+  id: string
+  trip_id: string
+  type: "arrival" | "hotel" | "dining" | "sightseeing" | "excursion" | "shopping"
+  title: string
+  date_time: string
+  icon: string
+  description: string
+  order: number
 }
