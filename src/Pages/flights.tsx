@@ -10,9 +10,26 @@ import {
   getWeatherData,
   getCurrencyRates,
   type Flight,
-  type WeatherData,
   type CurrencyRate,
 } from "../App/api-services"
+import { MapContainer, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+const API_KEY = 'f69a050e081bb4a7910484976126421e';
+const defaultCities = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi'];
+
+const CURRENCY_API_KEY = 'cur_live_NahZXQETwnQiASxfRTbOTU12huYdGMOpECnjSwxf';
+const CURRENCY_API_URL = 'https://api.currencyapi.com/v3/latest?apikey=cur_live_NahZXQETwnQiASxfRTbOTU12huYdGMOpECnjSwxf&currencies=EUR,USD,CAD&base_currency=BDT';
+
+// Define the correct WeatherData interface here
+interface WeatherData {
+  city: string;
+  temperature: number;
+  condition: string;
+  description: string;
+  humidity: number;
+  windSpeed: number;
+}
 
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate()
@@ -26,7 +43,9 @@ const Flights: FunctionComponent = () => {
   // API data states
   const [flights, setFlights] = useState<Flight[]>([])
   const [weatherData, setWeatherData] = useState<WeatherData[]>([])
-  const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([])
+  const [currencyRates, setCurrencyRates] = useState<any[]>([])
+  const [currencyLoading, setCurrencyLoading] = useState(true)
+  const [currencyError, setCurrencyError] = useState('')
 
   // Loading states
   const [isSearchingFlights, setIsSearchingFlights] = useState(false)
@@ -36,41 +55,48 @@ const Flights: FunctionComponent = () => {
   // Error states
   const [searchError, setSearchError] = useState("")
   const [weatherError, setWeatherError] = useState("")
-  const [currencyError, setCurrencyError] = useState("")
+
+  // New states for weather search
+  const [search, setSearch] = useState('');
+  const [searching, setSearching] = useState(false);
 
   // Load initial data on component mount
   useEffect(() => {
-    loadWeatherData()
-    loadCurrencyRates()
+    fetchWeatherForCities(defaultCities);
   }, [])
 
-  const loadWeatherData = async () => {
-    try {
+  useEffect(() => {
+    const fetchWeather = async () => {
       setIsLoadingWeather(true)
       setWeatherError("")
-      const data = await getWeatherData()
-      setWeatherData(data)
-    } catch (error) {
-      setWeatherError("Failed to load weather data")
-      console.error("Weather loading error:", error)
-    } finally {
-      setIsLoadingWeather(false)
+      try {
+        const results = await Promise.all(
+          defaultCities.map(async (city) => {
+            const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+            const response = await fetch(url)
+            if (!response.ok) throw new Error(`Failed to fetch weather for ${city}`)
+            const data = await response.json()
+            // Use the first forecast entry (current or next 3-hour block)
+            const first = data.list[0]
+            return {
+              city: data.city.name,
+              temperature: first.main.temp,
+              condition: first.weather[0].main,
+              description: first.weather[0].description,
+              humidity: first.main.humidity,
+              windSpeed: first.wind.speed,
+            }
+          })
+        )
+        setWeatherData(results)
+      } catch (err) {
+        setWeatherError("Failed to fetch weather data.")
+      } finally {
+        setIsLoadingWeather(false)
+      }
     }
-  }
-
-  const loadCurrencyRates = async () => {
-    try {
-      setIsLoadingCurrency(true)
-      setCurrencyError("")
-      const data = await getCurrencyRates()
-      setCurrencyRates(data)
-    } catch (error) {
-      setCurrencyError("Failed to load currency rates")
-      console.error("Currency loading error:", error)
-    } finally {
-      setIsLoadingCurrency(false)
-    }
-  }
+    fetchWeather()
+  }, [])
 
   const handleSearchFlights = async () => {
     if (!from || !to || !departure) {
@@ -108,6 +134,103 @@ const Flights: FunctionComponent = () => {
   const onFlightsTextClick = useCallback(() => {
     navigate("/")
   }, [navigate])
+
+  // Fetch weather for a list of cities
+  const fetchWeatherForCities = async (cities: string[]) => {
+    setIsLoadingWeather(true);
+    setWeatherError("");
+    try {
+      const results = await Promise.all(
+        cities.map(async (city) => {
+          const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Failed to fetch weather for ${city}`);
+          const data = await response.json();
+          const first = data.list[0];
+          return {
+            city: data.city.name,
+            temperature: first.main.temp,
+            condition: first.weather[0].main,
+            description: first.weather[0].description,
+            humidity: first.main.humidity,
+            windSpeed: first.wind.speed,
+          };
+        })
+      );
+      setWeatherData(results);
+    } catch (err) {
+      setWeatherError("Failed to fetch weather data.");
+      setWeatherData([]);
+    } finally {
+      setIsLoadingWeather(false);
+    }
+  };
+
+  // Handle search submit
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!search.trim()) {
+      // If search is empty, show default cities
+      setSearching(false);
+      fetchWeatherForCities(defaultCities);
+      return;
+    }
+    setSearching(true);
+    setIsLoadingWeather(true);
+    setWeatherError('');
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${search.trim()}&appid=${API_KEY}&units=metric`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Failed to fetch weather for ${search.trim()}`);
+      const data = await response.json();
+      const first = data.list[0];
+      setWeatherData([
+        {
+          city: data.city.name,
+          temperature: first.main.temp,
+          condition: first.weather[0].main,
+          description: first.weather[0].description,
+          humidity: first.main.humidity,
+          windSpeed: first.wind.speed,
+        },
+      ]);
+    } catch (err) {
+      setWeatherError('Failed to fetch weather data.');
+      setWeatherData([]);
+    } finally {
+      setIsLoadingWeather(false);
+    }
+  };
+
+  // Fetch currency rates (only use fetch, not getCurrencyRates)
+  useEffect(() => {
+    const fetchCurrencyRates = async () => {
+      setCurrencyLoading(true);
+      setCurrencyError('');
+      try {
+        const response = await fetch(CURRENCY_API_URL);
+        const data = await response.json();
+        console.log('Currency API data:', data); // Debug log
+        if (data && data.data) {
+          const ratesArr = Object.values(data.data).map((item: any) => ({
+            currency: item.code,
+            rate: item.value,
+            change: 'N/A',
+          }));
+          setCurrencyRates(ratesArr);
+        } else {
+          setCurrencyRates([]);
+        }
+      } catch (err) {
+        setCurrencyError('Failed to fetch currency rates.');
+        setCurrencyRates([]);
+        console.error('Currency API error:', err);
+      } finally {
+        setCurrencyLoading(false);
+      }
+    };
+    fetchCurrencyRates();
+  }, []);
 
   return (
     <Layout>
@@ -211,72 +334,99 @@ const Flights: FunctionComponent = () => {
           {/* Weather Forecast Section */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Real-Time Weather Forecast for Bangladesh</h2>
-            {weatherError && <div className={styles.errorMessage}>{weatherError}</div>}
-
-            <div className={styles.weatherContainer}>
-              <div className={styles.weatherMap}>
-                <img src="/Figma_photoes/weather.png" alt="Bangladesh Map" className={styles.mapImage} />
-              </div>
-              <div className={styles.weatherDetails}>
-                {isLoadingWeather ? (
-                  <div className={styles.loading}>Loading weather data...</div>
-                ) : (
-                  weatherData.map((weather) => (
-                    <div key={weather.city} className={styles.weatherCard}>
-                      <h3>{weather.city}</h3>
-                      <div className={styles.weatherInfo}>
-                        <span className={styles.temperature}>{weather.temperature}°C</span>
-                        <span className={styles.condition}>{weather.condition}</span>
-                      </div>
-                      <div className={styles.weatherStats}>
-                        <div>Humidity: {weather.humidity}%</div>
-                        <div>Wind: {weather.windSpeed} km/h</div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+            {/* Weather Map */}
+            <div style={{ marginBottom: '2rem', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px #eee', maxWidth: '700px', marginLeft: '150px' }}>
+              <MapContainer center={[23.685, 90.3563]} zoom={6} style={{ height: '400px', width: '100%' }}>
+                {/* Base map */}
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; OpenStreetMap contributors"
+                />
+                {/* Weather overlay */}
+                <TileLayer
+                  url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
+                  attribution="&copy; OpenWeatherMap"
+                />
+              </MapContainer>
+            </div>
+            {/* Search Bar - always visible */}
+            <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'flex-start' }}>
+              <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search city..."
+                  style={{ padding: '0.5rem 1rem', fontSize: '1rem', borderRadius: '8px', border: '1px solid #ccc', minWidth: '200px' }}
+                />
+                <button type="submit" style={{ padding: '0.5rem 1.5rem', fontSize: '1rem', borderRadius: '8px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>
+                  Search
+                </button>
+              </form>
+              {searching && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    setSearching(false);
+                    fetchWeatherForCities(defaultCities);
+                  }}
+                  style={{ padding: '0.5rem 1rem', fontSize: '1rem', borderRadius: '8px', background: '#eee', color: '#333', border: 'none', cursor: 'pointer' }}
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            {isLoadingWeather && <p>Loading weather...</p>}
+            {weatherError && <p style={{ color: 'red' }}>{weatherError}</p>}
+            <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+              {weatherData.map((weather, idx) => (
+                <div key={idx} style={{ background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px #eee', padding: '2rem', minWidth: '220px' }}>
+                  <h2>{weather.city}</h2>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{Math.round(weather.temperature)}°C</div>
+                  <div style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>{weather.condition} <span style={{ fontSize: '1rem', color: '#888' }}>({weather.description})</span></div>
+                  <div>Humidity: {weather.humidity}%</div>
+                  <div>Wind: {weather.windSpeed} km/h</div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Currency Exchange Section */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Real-Time Currency Exchange Rates</h2>
+            {currencyLoading && <div className={styles.loading}>Loading currency rates...</div>}
             {currencyError && <div className={styles.errorMessage}>{currencyError}</div>}
 
-            <div className={styles.currencyContainer}>
-              <div className={styles.currencyRates}>
-                {isLoadingCurrency ? (
-                  <div className={styles.loading}>Loading currency rates...</div>
-                ) : (
+            {currencyRates.length > 0 && (
+              <div className={styles.currencyContainer}>
+                <div className={styles.currencyRates}>
                   <table className={styles.currencyTable}>
                     <thead>
-                      <tr>
-                        <th>Currency</th>
-                        <th>Rate (BDT)</th>
-                        <th>Change</th>
+                      <tr style={{ background: '#faf6ef', color: '#222' }}>
+                        <th style={{ textAlign: 'left', padding: '0.75rem' }}>Currency</th>
+                        <th style={{ textAlign: 'left', padding: '0.75rem' }}>Rate (BDT)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {currencyRates.map((rate) => (
-                        <tr key={rate.currency}>
-                          <td>{rate.currency}</td>
-                          <td>{rate.rate.toFixed(2)}</td>
-                          <td className={rate.change >= 0 ? styles.positiveChange : styles.negativeChange}>
-                            {rate.change >= 0 ? "+" : ""}
-                            {rate.change.toFixed(2)}%
-                          </td>
+                      {currencyRates.map((row) => (
+                        <tr key={row.currency} style={{ borderBottom: '1px solid #f0e9df' }}>
+                          <td style={{ padding: '0.75rem' }}>{row.currency}</td>
+                          <td style={{ padding: '0.75rem' }}>{(1 / Number(row.rate)).toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                )}
+                </div>
+                <div className={styles.currencyChart}>
+                  <img src="/Figma_photoes/chart.png" alt="Currency Exchange Chart" className={styles.chartImage} />
+                  <div className={styles.chartCaption}>Last 7 days exchange rate trend</div>
+                </div>
               </div>
-              <div className={styles.currencyChart}>
-                <img src="/Figma_photoes/chart.png" alt="Currency Exchange Chart" className={styles.chartImage} />
-                <div className={styles.chartCaption}>Last 7 days exchange rate trend</div>
-              </div>
-            </div>
+            )}
+            {!currencyLoading && !currencyError && currencyRates.length === 0 && (
+              <p style={{ color: 'red' }}>No currency data available.</p>
+            )}
           </div>
         </div>
       </div>

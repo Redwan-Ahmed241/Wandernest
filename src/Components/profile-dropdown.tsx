@@ -25,18 +25,32 @@ const ProfileDropdown: React.FC = () => {
   }, [])
 
   const handleLogout = async () => {
+    // Show confirmation dialog
+    const confirmLogout = window.confirm("Do you want to logout?");
+    if (!confirmLogout) return;
     try {
-      // Call logout API
-      await fetch("https://wander-nest-ad3s.onrender.com/api/auth/logout/", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      })
+      // Check if this is a mock token (starts with "mock-jwt-token-")
+      const token = localStorage.getItem("token")
+      const isMockToken = token && token.startsWith("mock-jwt-token-")
+      
+      if (!isMockToken) {
+        // Only call logout API for real tokens
+        console.log("Calling logout API for real authentication")
+        await fetch("https://wander-nest-ad3s.onrender.com/api/auth/logout/", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+      } else {
+        console.log("Mock logout - skipping API call")
+      }
     } catch (error) {
       console.error("Logout error:", error)
+      // Continue with logout even if API call fails
     } finally {
+      console.log("Logging out user and redirecting to home")
       logout()
       navigate("/")
     }

@@ -1,44 +1,38 @@
-import { FunctionComponent } from 'react';
-import { useNavigate } from "react-router-dom";
+import { FunctionComponent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../Styles/Homepage.module.css';
 import Layout from '../App/Layout';
 
+const API_URL = 'https://wander-nest-ad3s.onrender.com/api/home/features/';
+const MEDIA_BASE = 'https://wander-nest-ad3s.onrender.com';
+
 const HomePage: FunctionComponent = () => {
+  const [destinations, setDestinations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const Destinations = [
-    {
-      name: 'Srimangal',
-      image: '/Figma_photoes/srimangal.png',
-      description: 'Explore lush tea gardens',
-   
-    },
-    {
-      name: "Cox's Bazar",
-      image: '/Figma_photoes/cox.jpg',
-      description: "Enjoy the world's longest sea beach"},
-    
-    {
-      name: 'Sundarbans',
-      image: '/Figma_photoes/deer.jpg',
-      description: 'Discover the mangrove forest',
-    
-    },
-    {
-      name: 'Rangamati',
-      image: '/Figma_photoes/rangamati01-1.jpg',
-      description: 'Discover the lavish landscapes between hills and lakes'
-  
-    },
-    {
-      name: 'Bandarban',
-      image: '/Figma_photoes/bandorban.jpg',
-      description: 'Discover the Hills'
-     
-    },
-  ];
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch destinations");
+        const data = await response.json();
+        setDestinations(Array.isArray(data) ? data : []);
+      } catch (err: any) {
+        setError(err.message || "Error fetching destinations");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDestinations();
+  }, []);
 
-
+  const handleCardClick = () => {
+    navigate('/destination-01');
+  };
 
   return (
     <Layout>
@@ -58,31 +52,27 @@ const HomePage: FunctionComponent = () => {
 
         <div className={styles.Destinations}>
           <h2 className={styles.sectionTitle}>Featured Destinations</h2>
+          {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
           <div className={styles.destinationsGrid}>
-            {Destinations.map((place, index) => (
+            {destinations.map((place, index) => (
               <div
-                key={index}
+                key={place.id || index}
                 className={styles.destinationCard}
-               // onClick={() => handleCardClick(place.destination)}
+                onClick={handleCardClick}
+                style={{ cursor: 'pointer' }}
               >
                 <img
-                  src={place.image}
-                  alt={place.name}
+                  src={place.pic.startsWith('http') ? place.pic : MEDIA_BASE + place.pic}
+                  alt={place.title}
                   className={styles.destinationImage}
                 />
                 <div className={styles.destinationContent}>
-                  <div className={styles.destinationTitle}>
-                    {place.name}
-                  
-                  </div>
-                  <div className={styles.destinationDescription}>
-                    {place.description}
-                  </div>
-                 
-             
+                  <div className={styles.destinationTitle}>{place.title}</div>
+                  <div className={styles.destinationDescription}>{place.subtitle}</div>
                 </div>
               </div>
             ))}
+            {loading && <div style={{ gridColumn: '1/-1', textAlign: 'center' }}>Loading destinations...</div>}
           </div>
         </div>
 
