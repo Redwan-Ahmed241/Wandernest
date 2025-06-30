@@ -35,12 +35,10 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 
 // User API functions
 export const userAPI = {
-  // Get user profile
   getProfile: async () => {
     return apiRequest("/user/profile/")
   },
 
-  // Update user profile
   updateProfile: async (userData: Partial<UserData>) => {
     return apiRequest("/user/profile/", {
       method: "PATCH",
@@ -48,7 +46,6 @@ export const userAPI = {
     })
   },
 
-  // Upload profile image - THIS WAS MISSING
   uploadProfileImage: async (imageFile: File) => {
     const formData = new FormData()
     formData.append("profile_image", imageFile)
@@ -69,7 +66,6 @@ export const userAPI = {
     return response.json()
   },
 
-  // Get user stats
   getStats: async () => {
     return apiRequest("/user/stats/")
   },
@@ -77,23 +73,19 @@ export const userAPI = {
 
 // Trips API functions
 export const tripsAPI = {
-  // Get all trips for the user
   getTrips: async (status?: "upcoming" | "past" | "cancelled") => {
     const endpoint = status ? `/trips/?status=${status}` : "/trips/"
     return apiRequest(endpoint)
   },
 
-  // Get specific trip details
   getTripDetails: async (tripId: string) => {
     return apiRequest(`/trips/${tripId}/`)
   },
 
-  // Get trip itinerary
   getTripItinerary: async (tripId: string) => {
     return apiRequest(`/trips/${tripId}/itinerary/`)
   },
 
-  // Update trip
   updateTrip: async (tripId: string, tripData: Partial<Trip>) => {
     return apiRequest(`/trips/${tripId}/`, {
       method: "PATCH",
@@ -101,7 +93,6 @@ export const tripsAPI = {
     })
   },
 
-  // Cancel trip
   cancelTrip: async (tripId: string) => {
     return apiRequest(`/trips/${tripId}/cancel/`, {
       method: "POST",
@@ -109,7 +100,42 @@ export const tripsAPI = {
   },
 }
 
-// Types - THESE WERE MISSING
+// NEW: Visa API functions - THIS WAS MISSING
+export const visaAPI = {
+  getVisaRequirements: async (countryCode: string, purpose: string) => {
+    return apiRequest(`/visa/requirements/?country=${countryCode}&purpose=${purpose}`)
+  },
+
+  getCountries: async () => {
+    return apiRequest("/visa/countries/")
+  },
+
+  getVisaPurposes: async () => {
+    return apiRequest("/visa/purposes/")
+  },
+
+  submitVisaApplication: async (applicationData: VisaApplicationData) => {
+    return apiRequest("/visa/applications/", {
+      method: "POST",
+      body: JSON.stringify(applicationData),
+    })
+  },
+
+  getCurrencyRates: async () => {
+    return apiRequest("/visa/currency-rates/")
+  },
+
+  getEmbassyContacts: async (countryCode?: string) => {
+    const endpoint = countryCode ? `/visa/embassies/?country=${countryCode}` : "/visa/embassies/"
+    return apiRequest(endpoint)
+  },
+
+  getTravelFAQs: async () => {
+    return apiRequest("/visa/faqs/")
+  },
+}
+
+// Types
 export interface UserData {
   id?: string
   email: string
@@ -154,4 +180,59 @@ export interface ItineraryItem {
   icon: string
   description: string
   order: number
+}
+
+// NEW: Visa-related types - THESE WERE MISSING
+export interface Country {
+  code: string
+  name: string
+  flag: string
+}
+
+export interface VisaPurpose {
+  id: string
+  name: string
+  description: string
+}
+
+export interface VisaRequirement {
+  country: string
+  purpose: string
+  type: "visa_free" | "visa_on_arrival" | "evisa_required" | "visa_required"
+  duration: string
+  requirements: string[]
+  processing_time: string
+  fee: string
+}
+
+export interface VisaApplicationData {
+  country: string
+  purpose: string
+  personal_info: {
+    full_name: string
+    passport_number: string
+    nationality: string
+    date_of_birth: string
+  }
+  travel_info: {
+    arrival_date: string
+    departure_date: string
+    purpose_details: string
+  }
+}
+
+export interface CurrencyRate {
+  from_currency: string
+  to_currency: string
+  rate: number
+  last_updated: string
+}
+
+export interface EmbassyContact {
+  country: string
+  embassy_name: string
+  address: string
+  phone: string
+  email: string
+  website: string
 }
