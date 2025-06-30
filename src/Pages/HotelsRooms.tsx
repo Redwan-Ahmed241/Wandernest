@@ -427,44 +427,6 @@ const HotelsRooms: FunctionComponent = () => {
                 ))}
               </div>
             </div>
-
-            {/* Reviews Section */}
-            <div className={styles.reviewsSection}>
-              <h2 className={styles.sectionTitle}>Forum and Reviews</h2>
-              <div className={styles.reviewsList}>
-                {reviews.map((review) => (
-                  <div key={review.id} className={styles.reviewCard}>
-                    <div className={styles.reviewHeader}>
-                      <div className={styles.reviewUser}>
-                        <h4 className={styles.userName}>{review.userName}</h4>
-                        <span className={styles.reviewDate}>{review.date}</span>
-                      </div>
-                      <div className={styles.reviewRating}>
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <img
-                            key={i}
-                            src="/Figma_photoes/star.svg"
-                            alt="star"
-                            className={`${styles.star} ${i < review.rating ? styles.filled : ""}`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className={styles.reviewComment}>{review.comment}</p>
-                    <div className={styles.reviewActions}>
-                      <div className={styles.reviewAction}>
-                        <img src="/Figma_photoes/like.svg" alt="like" className={styles.actionIcon} />
-                        <span>{review.likes}</span>
-                      </div>
-                      <div className={styles.reviewAction}>
-                        <img src="/Figma_photoes/dislike.svg" alt="dislike" className={styles.actionIcon} />
-                        <span>{review.dislikes}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
