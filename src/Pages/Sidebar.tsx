@@ -67,13 +67,7 @@ const Sidebar: FunctionComponent = () => {
           <span className={styles.icon}>N</span> Plan a Trip
         </button>
 
-        <button className={styles.navItem} onClick={() => navigate("/flights")}>
-          <span className={styles.icon}>✈️</span> Flights
-        </button>
-
-        <button className={styles.navItem} onClick={() => navigate("/hotels-rooms")}>
-          <span className={styles.icon}>🛏️</span> Hotels
-        </button>
+       
 
         <button className={styles.navItem} onClick={() => navigate("/rent-vehicles")}>
           <span className={styles.icon}>🚗</span> Cars
