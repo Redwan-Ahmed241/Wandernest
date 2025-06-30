@@ -1,47 +1,48 @@
-import { FunctionComponent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from '../Styles/Homepage.module.css';
-import Layout from '../App/Layout';
+"use client"
 
-const API_URL = 'https://wander-nest-ad3s.onrender.com/api/home/features/';
-const MEDIA_BASE = 'https://wander-nest-ad3s.onrender.com';
+import { type FunctionComponent, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import styles from "../Styles/Homepage.module.css"
+import Layout from "../App/Layout"
+
+const API_URL = "https://wander-nest-ad3s.onrender.com/api/home/features/"
+const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
 const HomePage: FunctionComponent = () => {
-  const [destinations, setDestinations] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [destinations, setDestinations] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchDestinations = async () => {
-      setLoading(true);
-      setError("");
+      setLoading(true)
+      setError("")
       try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error("Failed to fetch destinations");
-        const data = await response.json();
-        setDestinations(Array.isArray(data) ? data : []);
+        const response = await fetch(API_URL)
+        if (!response.ok) throw new Error("Failed to fetch destinations")
+        const data = await response.json()
+        setDestinations(Array.isArray(data) ? data : [])
       } catch (err: any) {
-        setError(err.message || "Error fetching destinations");
+        setError(err.message || "Error fetching destinations")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    fetchDestinations();
-  }, []);
+    }
+
+    fetchDestinations()
+  }, [])
 
   const handleCardClick = () => {
-    navigate('/destination-01');
-  };
+    navigate("/destination-01")
+  }
 
   return (
     <Layout>
       <main className={styles.homePage}>
         <div className={styles.depth6Frame02}>
           <div className={styles.heroContentWrapper}>
-            <div className={styles.exploreBangladeshWith}>
-              Explore Bangladesh with WanderNest
-            </div>
+            <div className={styles.exploreBangladeshWith}>Explore Bangladesh with WanderNest</div>
             <div className={styles.depth7Frame0}>
               <div className={styles.discoverTheBeauty}>
                 Discover the beauty and culture of Bangladesh with our tailored travel services.
@@ -52,17 +53,18 @@ const HomePage: FunctionComponent = () => {
 
         <div className={styles.Destinations}>
           <h2 className={styles.sectionTitle}>Featured Destinations</h2>
-          {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
+          {error && <div style={{ color: "red", marginBottom: 12 }}>{error}</div>}
           <div className={styles.destinationsGrid}>
-            {destinations.map((place, index) => (
+            {/* Show only first 6 destinations - no "View All" button */}
+            {destinations.slice(0, 6).map((place, index) => (
               <div
                 key={place.id || index}
                 className={styles.destinationCard}
                 onClick={handleCardClick}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <img
-                  src={place.pic.startsWith('http') ? place.pic : MEDIA_BASE + place.pic}
+                  src={place.pic.startsWith("http") ? place.pic : MEDIA_BASE + place.pic}
                   alt={place.title}
                   className={styles.destinationImage}
                 />
@@ -72,7 +74,7 @@ const HomePage: FunctionComponent = () => {
                 </div>
               </div>
             ))}
-            {loading && <div style={{ gridColumn: '1/-1', textAlign: 'center' }}>Loading destinations...</div>}
+            {loading && <div style={{ gridColumn: "1/-1", textAlign: "center" }}>Loading destinations...</div>}
           </div>
         </div>
 
@@ -117,12 +119,11 @@ const HomePage: FunctionComponent = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </main>
     </Layout>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
