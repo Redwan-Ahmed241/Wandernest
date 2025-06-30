@@ -1145,3 +1145,59 @@
     }
 }
 
+.errorMessage {
+  background: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #fcc;
+}
+
+.loadingSection {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 18px;
+}
+
+.calendarNavButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.calendarNavButton:hover {
+  background: #f0f0f0;
+}
+
+.cardPrice {
+  font-weight: bold;
+  color: #27ae60;
+  margin-top: 8px;
+  font-size: 1.1em;
+}
+
+.cardTitle {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.cardDescription {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.confirmPackage:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.confirmPackage:disabled:hover {
+  background: #bdc3c7;
+}
