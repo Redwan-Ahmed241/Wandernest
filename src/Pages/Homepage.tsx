@@ -85,7 +85,7 @@ const HomePage: FunctionComponent = () => {
         <div className={styles.depth4Frame4}>
           <div className={styles.depth5Frame04}>
             <div className={styles.depth6Frame04}>
-              <img className={styles.depth7Frame05} alt="Visa" src="/Figma_photoes/visa.svg" />
+              <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/visa.svg" />
               <div className={styles.depth7Frame14}>
                 <div className={styles.depth8Frame04}>
                   <b className={styles.visaAssistance}>Visa Assistance</b>
@@ -97,7 +97,7 @@ const HomePage: FunctionComponent = () => {
             </div>
 
             <div className={styles.depth6Frame04}>
-              <img className={styles.depth7Frame05} alt="Travel Planner" src="/Figma_photoes/tp.svg" />
+              <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/tp.svg" />
               <div className={styles.depth7Frame14}>
                 <div className={styles.depth8Frame04}>
                   <b className={styles.visaAssistance}>Travel Planner</b>
@@ -109,7 +109,7 @@ const HomePage: FunctionComponent = () => {
             </div>
 
             <div className={styles.depth6Frame04}>
-              <img className={styles.depth7Frame05} alt="Emergency Support" src="/Figma_photoes/em.svg" />
+              <img className={styles.depth7Frame05} alt="" src="/Figma_photoes/em.svg" />
               <div className={styles.depth7Frame14}>
                 <div className={styles.depth8Frame04}>
                   <b className={styles.visaAssistance}>Emergency Support</b>
