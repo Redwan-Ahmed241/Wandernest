@@ -47,16 +47,6 @@ interface CurrencyRate {
   change: string
 }
 
-interface HistoricalRate {
-  date: string
-  rate: number
-}
-
-interface CurrencyHistory {
-  currency: string
-  history: HistoricalRate[]
-}
-
 // Booking Modal Component
 const BookingModal: React.FC<{
   flight: Flight
@@ -87,7 +77,6 @@ const BookingModal: React.FC<{
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
     // Validate required fields
     const isValid =
       passengerDetails.every((p) => p.firstName.trim() && p.lastName.trim() && p.email.trim()) &&
@@ -121,7 +110,6 @@ const BookingModal: React.FC<{
             ×
           </button>
         </div>
-
         <div className={styles.flightSummary}>
           <h3>Flight Details</h3>
           <div className={styles.summaryGrid}>
@@ -257,123 +245,6 @@ const BookingModal: React.FC<{
   )
 }
 
-// Simple Chart Component (keeping your existing chart)
-const CurrencyChart: React.FC<{
-  currencyHistory: CurrencyHistory[]
-  selectedCurrency: string
-  onCurrencySelect: (currency: string) => void
-}> = ({ currencyHistory, selectedCurrency, onCurrencySelect }) => {
-  const currentHistory = currencyHistory.find((h) => h.currency === selectedCurrency)
-
-  if (!currentHistory || currentHistory.history.length === 0) {
-    return (
-      <div className={styles.chartContainer}>
-        <div className={styles.chartHeader}>
-          <h4>7-Day Exchange Rate Trend</h4>
-          <select
-            value={selectedCurrency}
-            onChange={(e) => onCurrencySelect(e.target.value)}
-            className={styles.currencySelect}
-          >
-            {currencyHistory.map((h) => (
-              <option key={h.currency} value={h.currency}>
-                {h.currency}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={styles.noChartData}>
-          <p>Building chart data... Check back in a few minutes for trends.</p>
-        </div>
-      </div>
-    )
-  }
-
-  const maxRate = Math.max(...currentHistory.history.map((h) => h.rate))
-  const minRate = Math.min(...currentHistory.history.map((h) => h.rate))
-  const range = maxRate - minRate || 1
-
-  return (
-    <div className={styles.chartContainer}>
-      <div className={styles.chartHeader}>
-        <h4>7-Day {selectedCurrency} Exchange Rate Trend</h4>
-        <select
-          value={selectedCurrency}
-          onChange={(e) => onCurrencySelect(e.target.value)}
-          className={styles.currencySelect}
-        >
-          {currencyHistory.map((h) => (
-            <option key={h.currency} value={h.currency}>
-              {h.currency}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={styles.chart}>
-        <div className={styles.chartArea}>
-          <svg width="100%" height="200" viewBox="0 0 400 200">
-            {/* Grid lines */}
-            {[0, 1, 2, 3, 4].map((i) => (
-              <line key={i} x1="0" y1={i * 40} x2="400" y2={i * 40} stroke="#f0f0f0" strokeWidth="1" />
-            ))}
-
-            {/* Chart line */}
-            <polyline
-              fill="none"
-              stroke="#667eea"
-              strokeWidth="3"
-              points={currentHistory.history
-                .map((point, index) => {
-                  const x = (index / (currentHistory.history.length - 1)) * 380 + 10
-                  const y = 180 - ((point.rate - minRate) / range) * 160
-                  return `${x},${y}`
-                })
-                .join(" ")}
-            />
-
-            {/* Data points */}
-            {currentHistory.history.map((point, index) => {
-              const x = (index / (currentHistory.history.length - 1)) * 380 + 10
-              const y = 180 - ((point.rate - minRate) / range) * 160
-              return (
-                <circle key={index} cx={x} cy={y} r="4" fill="#667eea" className={styles.chartPoint}>
-                  <title>{`${point.date}: ${point.rate.toFixed(2)} BDT`}</title>
-                </circle>
-              )
-            })}
-          </svg>
-        </div>
-
-        <div className={styles.chartLabels}>
-          {currentHistory.history.map((point, index) => (
-            <span key={index} className={styles.chartLabel}>
-              {new Date(point.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-            </span>
-          ))}
-        </div>
-
-        <div className={styles.chartStats}>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>Current:</span>
-            <span className={styles.statValue}>
-              {(1 / currentHistory.history[currentHistory.history.length - 1]?.rate || 0).toFixed(2)} BDT
-            </span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>7-day High:</span>
-            <span className={styles.statValue}>{(1 / minRate).toFixed(2)} BDT</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>7-day Low:</span>
-            <span className={styles.statValue}>{(1 / maxRate).toFixed(2)} BDT</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate()
   const { isAuthenticated, loading: authLoading, user } = useAuth()
@@ -388,8 +259,6 @@ const Flights: FunctionComponent = () => {
   const [flights, setFlights] = useState<Flight[]>([])
   const [weatherData, setWeatherData] = useState<WeatherData[]>([])
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([])
-  const [currencyHistory, setCurrencyHistory] = useState<CurrencyHistory[]>([])
-  const [selectedChartCurrency, setSelectedChartCurrency] = useState("USD")
 
   // Booking states
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
@@ -419,83 +288,7 @@ const Flights: FunctionComponent = () => {
   useEffect(() => {
     fetchWeatherForCities(defaultCities)
     fetchCurrencyRates()
-    loadCurrencyHistory()
   }, [])
-
-  // Load currency history from localStorage or initialize
-  const loadCurrencyHistory = () => {
-    const stored = localStorage.getItem("currencyHistory")
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored)
-        setCurrencyHistory(parsed)
-      } catch (e) {
-        console.error("Error parsing stored currency history:", e)
-        initializeCurrencyHistory()
-      }
-    } else {
-      initializeCurrencyHistory()
-    }
-  }
-
-  // Initialize currency history with mock data for demonstration
-  const initializeCurrencyHistory = () => {
-    const today = new Date()
-    const mockHistory: CurrencyHistory[] = DEFAULT_CURRENCIES.map((currency) => ({
-      currency,
-      history: Array.from({ length: 7 }, (_, i) => {
-        const date = new Date(today)
-        date.setDate(date.getDate() - (6 - i))
-
-        // Generate realistic mock rates with small variations
-        const baseRate = currency === "USD" ? 0.0082 : currency === "EUR" ? 0.0072 : 0.0112
-        const variation = (Math.random() - 0.5) * 0.0004 // Small random variation
-
-        return {
-          date: date.toISOString().split("T")[0],
-          rate: baseRate + variation,
-        }
-      }),
-    }))
-
-    setCurrencyHistory(mockHistory)
-    localStorage.setItem("currencyHistory", JSON.stringify(mockHistory))
-  }
-
-  // Store current rates for historical tracking
-  const storeCurrencyRate = (rates: CurrencyRate[]) => {
-    const today = new Date().toISOString().split("T")[0]
-
-    setCurrencyHistory((prevHistory) => {
-      const newHistory = prevHistory.map((currencyHist) => {
-        const currentRate = rates.find((r) => r.currency === currencyHist.currency)
-        if (!currentRate) return currencyHist
-
-        const updatedHistory = [...currencyHist.history]
-
-        // Check if today's rate already exists
-        const todayIndex = updatedHistory.findIndex((h) => h.date === today)
-        if (todayIndex >= 0) {
-          updatedHistory[todayIndex] = { date: today, rate: currentRate.rate }
-        } else {
-          updatedHistory.push({ date: today, rate: currentRate.rate })
-          // Keep only last 7 days
-          if (updatedHistory.length > 7) {
-            updatedHistory.shift()
-          }
-        }
-
-        return {
-          ...currencyHist,
-          history: updatedHistory,
-        }
-      })
-
-      // Save to localStorage
-      localStorage.setItem("currencyHistory", JSON.stringify(newHistory))
-      return newHistory
-    })
-  }
 
   // Fetch weather for a list of cities
   const fetchWeatherForCities = async (cities: string[]) => {
@@ -507,8 +300,10 @@ const Flights: FunctionComponent = () => {
           const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
           const response = await fetch(url)
           if (!response.ok) throw new Error(`Failed to fetch weather for ${city}`)
+
           const data = await response.json()
           const first = data.list[0]
+
           return {
             city: data.city.name,
             temperature: first.main.temp,
@@ -519,6 +314,7 @@ const Flights: FunctionComponent = () => {
           }
         }),
       )
+
       setWeatherData(results)
     } catch (err) {
       setWeatherError("Failed to fetch weather data.")
@@ -537,6 +333,7 @@ const Flights: FunctionComponent = () => {
       const url = `https://api.currencyapi.com/v3/latest?apikey=${CURRENCY_API_KEY}&currencies=${currencies}&base_currency=BDT`
       const response = await fetch(url)
       const data = await response.json()
+
       if (data && data.data) {
         const ratesArr = Object.values(data.data).map((item: any) => ({
           currency: item.code,
@@ -544,9 +341,6 @@ const Flights: FunctionComponent = () => {
           change: "N/A",
         }))
         setCurrencyRates(ratesArr)
-
-        // Store rates for historical tracking
-        storeCurrencyRate(ratesArr)
       } else {
         setCurrencyRates([])
       }
@@ -705,12 +499,15 @@ const Flights: FunctionComponent = () => {
     setSearching(true)
     setIsLoadingWeather(true)
     setWeatherError("")
+
     try {
       const url = `https://api.openweathermap.org/data/2.5/forecast?q=${search.trim()}&appid=${API_KEY}&units=metric`
       const response = await fetch(url)
       if (!response.ok) throw new Error(`Failed to fetch weather for ${search.trim()}`)
+
       const data = await response.json()
       const first = data.list[0]
+
       setWeatherData([
         {
           city: data.city.name,
@@ -809,6 +606,7 @@ const Flights: FunctionComponent = () => {
                   />
                 </div>
               </div>
+
               <div className={styles.formRow}>
                 <div className={styles.inputGroup}>
                   <label>Departure</label>
@@ -831,6 +629,7 @@ const Flights: FunctionComponent = () => {
                   </select>
                 </div>
               </div>
+
               <button className={styles.searchButton} onClick={handleSearchFlights} disabled={isSearchingFlights}>
                 {isSearchingFlights ? "Searching..." : "Search Flights"}
               </button>
@@ -854,6 +653,7 @@ const Flights: FunctionComponent = () => {
                       </div>
                       <div className={styles.flightNumber}>{flight.flightNumber}</div>
                     </div>
+
                     <div className={styles.flightDetails}>
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Airline:</span>
@@ -885,6 +685,7 @@ const Flights: FunctionComponent = () => {
                       )}
                     </div>
                   </div>
+
                   <div className={styles.flightPrice}>
                     <div className={styles.priceInfo}>
                       <span className={styles.price}>
@@ -897,6 +698,7 @@ const Flights: FunctionComponent = () => {
                         </span>
                       )}
                     </div>
+
                     <button className={styles.bookButton} onClick={() => handleBookFlight(flight)}>
                       {isAuthenticated ? "Book Now" : "Login to Book"}
                     </button>
@@ -936,6 +738,7 @@ const Flights: FunctionComponent = () => {
                 {showMap ? "Hide Map" : "Show Weather Map"}
               </button>
             </div>
+
             {showMap && (
               <div className={styles.fixedMap}>
                 <div className={styles.mapHeader}>
@@ -944,6 +747,7 @@ const Flights: FunctionComponent = () => {
                     ×
                   </button>
                 </div>
+
                 <MapContainer center={[23.685, 90.3563]} zoom={6} style={{ height: "400px", width: "100%" }}>
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -989,6 +793,7 @@ const Flights: FunctionComponent = () => {
 
           {isLoadingWeather && <p className={styles.loadingText}>Loading weather...</p>}
           {weatherError && <p className={styles.errorText}>{weatherError}</p>}
+
           <div className={styles.weatherGrid}>
             {weatherData.map((weather, idx) => (
               <div key={idx} className={styles.weatherCard}>
@@ -1005,21 +810,21 @@ const Flights: FunctionComponent = () => {
           </div>
         </div>
 
-        {/* Currency Exchange Section */}
-        <div className={styles.contentSection}>
-          <h2 className={styles.sectionTitle}>Real-Time Currency Exchange Rates</h2>
+        {/* Currency Exchange Section - Simplified */}
+        <div className={styles.currencySection}>
+          <h2 className={styles.currencyTitle}>Real-Time Currency Exchange Rates</h2>
 
           {/* Currency Search Bar */}
-          <div className={styles.searchContainer}>
-            <form onSubmit={handleCurrencySearch} className={styles.searchFormInline}>
+          <div className={styles.currencySearchContainer}>
+            <form onSubmit={handleCurrencySearch} className={styles.currencySearchForm}>
               <input
                 type="text"
                 value={currencySearch}
                 onChange={(e) => setCurrencySearch(e.target.value)}
                 placeholder="Search currency code (e.g. GBP, INR, AUD)"
-                className={styles.searchInputWide}
+                className={styles.currencySearchInput}
               />
-              <button type="submit" className={styles.searchButtonInline}>
+              <button type="submit" className={styles.currencySearchButton}>
                 Search
               </button>
               {activeCurrencies.length > DEFAULT_CURRENCIES.length && (
@@ -1037,12 +842,12 @@ const Flights: FunctionComponent = () => {
             </form>
           </div>
 
-          {currencyLoading && <div className={styles.loadingText}>Loading currency rates...</div>}
-          {currencyError && <div className={styles.errorText}>{currencyError}</div>}
+          {currencyLoading && <div className={styles.currencyLoading}>Loading currency rates...</div>}
+          {currencyError && <div className={styles.currencyError}>{currencyError}</div>}
 
           {currencyRates.length > 0 && (
-            <div className={styles.currencyContainer}>
-              <div className={styles.currencyRates}>
+            <div className={styles.currencyContent}>
+              <div className={styles.currencyRatesSection}>
                 <table className={styles.currencyTable}>
                   <thead>
                     <tr>
@@ -1060,18 +865,11 @@ const Flights: FunctionComponent = () => {
                   </tbody>
                 </table>
               </div>
-
-              {/* Dynamic Currency Chart */}
-              <CurrencyChart
-                currencyHistory={currencyHistory}
-                selectedCurrency={selectedChartCurrency}
-                onCurrencySelect={setSelectedChartCurrency}
-              />
             </div>
           )}
 
           {!currencyLoading && !currencyError && currencyRates.length === 0 && (
-            <p className={styles.errorText}>No currency data available.</p>
+            <p className={styles.currencyError}>No currency data available.</p>
           )}
         </div>
       </div>
