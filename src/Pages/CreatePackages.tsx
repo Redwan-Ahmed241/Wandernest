@@ -6,7 +6,7 @@ import styles from "../Styles/CreatePackage.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { packageAPI, type PackageOption, type CreatePackageData } from "../App/api"
-import { useAuth } from "../Authentication/AuthContext"
+import { useAuth } from "../Authentication/auth-context" // Using your auth context
 
 const CreatePackage: FunctionComponent = () => {
   const navigate = useNavigate()

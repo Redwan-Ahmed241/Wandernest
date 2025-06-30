@@ -135,6 +135,62 @@ export const visaAPI = {
   },
 }
 
+// Package API functions - ADD THESE TO YOUR EXISTING API FILE
+export const packageAPI = {
+  // Get available transport options
+  getTransportOptions: async () => {
+    return apiRequest("/packages/transport-options/")
+  },
+
+  // Get available hotel options
+  getHotelOptions: async () => {
+    return apiRequest("/packages/hotel-options/")
+  },
+
+  // Get available vehicle options
+  getVehicleOptions: async () => {
+    return apiRequest("/packages/vehicle-options/")
+  },
+
+  // Get available guide options
+  getGuideOptions: async () => {
+    return apiRequest("/packages/guide-options/")
+  },
+
+  // Create a new package
+  createPackage: async (packageData: CreatePackageData) => {
+    return apiRequest("/packages/", {
+      method: "POST",
+      body: JSON.stringify(packageData),
+    })
+  },
+
+  // Get user's packages
+  getUserPackages: async () => {
+    return apiRequest("/packages/my-packages/")
+  },
+
+  // Get package details
+  getPackageDetails: async (packageId: string) => {
+    return apiRequest(`/packages/${packageId}/`)
+  },
+
+  // Update package
+  updatePackage: async (packageId: string, packageData: Partial<CreatePackageData>) => {
+    return apiRequest(`/packages/${packageId}/`, {
+      method: "PATCH",
+      body: JSON.stringify(packageData),
+    })
+  },
+
+  // Delete package
+  deletePackage: async (packageId: string) => {
+    return apiRequest(`/packages/${packageId}/`, {
+      method: "DELETE",
+    })
+  },
+}
+
 // Types
 export interface UserData {
   id?: string
@@ -235,4 +291,55 @@ export interface EmbassyContact {
   phone: string
   email: string
   website: string
+}
+
+// Package-related types - ADD THESE TO YOUR EXISTING TYPES
+export interface PackageOption {
+  id: string
+  name: string
+  description: string
+  price: number
+  image?: string
+  rating?: number
+  features?: string[]
+  availability: boolean
+}
+
+export interface CreatePackageData {
+  title: string
+  from_location: string
+  to_location: string
+  start_date: string
+  end_date: string
+  travelers_count: number
+  budget: number
+  transport_id?: string | null
+  hotel_id?: string | null
+  vehicle_id?: string | null
+  guide_id?: string | null
+  preferences: {
+    skip_transport: boolean
+    skip_hotel: boolean
+    skip_vehicle: boolean
+    skip_guide: boolean
+  }
+}
+
+export interface TravelPackage {
+  id: string
+  title: string
+  from_location: string
+  to_location: string
+  start_date: string
+  end_date: string
+  travelers_count: number
+  budget: number
+  total_cost: number
+  status: "draft" | "confirmed" | "cancelled"
+  transport?: PackageOption
+  hotel?: PackageOption
+  vehicle?: PackageOption
+  guide?: PackageOption
+  created_at: string
+  updated_at: string
 }
