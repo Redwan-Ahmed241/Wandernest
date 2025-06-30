@@ -252,14 +252,20 @@
   min-width: 300px;
 }
 
+/* Updated search button inline to match map toggle button color */
 .searchButtonInline {
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
   border-radius: 8px;
-  background: #007bff;
+  background: #abb79a;
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.searchButtonInline:hover {
+  background: #8a9a7a;
 }
 
 .resetButton {
@@ -552,13 +558,14 @@
     font-size: 14px;
   }
 }
+
 /* Currency Exchange Section - Fixed Layout */
 .currencySection {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 20px 80px 20px; /* Added bottom padding to prevent footer overlap */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  min-height: calc(100vh - 200px); /* Ensure minimum height */
+  padding: 60px 20px 80px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: calc(100vh - 200px);
   box-sizing: border-box;
 }
 
@@ -599,7 +606,7 @@
 
 .currencySearchInput:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: #abb79a;
 }
 
 .currencySearchInput::placeholder {
@@ -607,8 +614,9 @@
   font-size: 16px;
 }
 
+/* Updated currency search button to match map toggle button color */
 .currencySearchButton {
-  background: #3498db;
+  background: #abb79a;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -620,7 +628,7 @@
 }
 
 .currencySearchButton:hover {
-  background: #2980b9;
+  background: #8a9a7a;
 }
 
 /* Main Content Layout - Fixed Grid */
@@ -630,7 +638,7 @@
   gap: 60px;
   align-items: start;
   max-width: 100%;
-  overflow: hidden; /* Prevent overflow */
+  overflow: hidden;
 }
 
 /* Currency Rates Table - Matching Your Design */
@@ -650,7 +658,7 @@
 
 /* Dark Header Styling */
 .currencyTable thead th {
-  background: #5a6c7d; /* Dark blue-gray header */
+  background: #5a6c7d;
   color: white;
   font-weight: 600;
   padding: 16px 20px;
@@ -694,8 +702,8 @@
 /* Green Rate Values */
 .currencyTable tbody td:last-child {
   font-weight: 700;
-  color: #4e944f; /* Your specified light green color */
-  font-family: 'SF Mono', Monaco, monospace;
+  color: #4e944f;
+  font-family: "SF Mono", Monaco, monospace;
 }
 
 /* Chart Section - Fixed Width */
@@ -707,7 +715,7 @@
   border: 1px solid #e2e8f0;
   min-height: 400px;
   max-width: 100%;
-  overflow: hidden; /* Prevent chart overflow */
+  overflow: hidden;
 }
 
 .chartHeader {
@@ -739,7 +747,7 @@
 
 .currencySelector:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: #abb79a;
 }
 
 /* Chart Container - Fixed Dimensions */
@@ -768,13 +776,13 @@
 
 /* Chart Styling */
 .chartLine {
-  stroke: #3498db;
+  stroke: #abb79a;
   stroke-width: 2;
   fill: none;
 }
 
 .chartPoint {
-  fill: #3498db;
+  fill: #abb79a;
   stroke: #ffffff;
   stroke-width: 2;
   cursor: pointer;
@@ -782,7 +790,7 @@
 }
 
 .chartPoint:hover {
-  fill: #2980b9;
+  fill: #8a9a7a;
   r: 5;
 }
 
@@ -839,7 +847,7 @@
   font-size: 14px;
   font-weight: 700;
   color: #1f2937;
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: "SF Mono", Monaco, monospace;
 }
 
 /* Loading and Error States */
@@ -893,12 +901,12 @@
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   .currencyRatesSection {
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .chartStats {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -908,40 +916,40 @@
   .currencySection {
     padding: 40px 16px 60px 16px;
   }
-  
+
   .currencyTitle {
     font-size: 2rem;
     margin-bottom: 30px;
   }
-  
+
   .currencySearchForm {
     flex-direction: column;
     gap: 16px;
   }
-  
+
   .currencySearchInput,
   .currencySearchButton {
     width: 100%;
   }
-  
+
   .currencyContent {
     gap: 30px;
   }
-  
+
   .chartHeader {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
-  
+
   .currencySelector {
     width: 100%;
   }
-  
+
   .chartContainer {
     height: 200px;
   }
-  
+
   .chartStats {
     grid-template-columns: 1fr;
     gap: 8px;
@@ -952,21 +960,21 @@
   .currencySection {
     padding: 30px 12px 50px 12px;
   }
-  
+
   .currencyTitle {
     font-size: 1.75rem;
   }
-  
+
   .currencyTable thead th,
   .currencyTable tbody td {
     padding: 12px 16px;
     font-size: 14px;
   }
-  
+
   .chartSection {
     padding: 20px;
   }
-  
+
   .chartContainer {
     height: 180px;
   }
@@ -974,9 +982,9 @@
 
 /* Prevent Footer Overlap */
 .currencySection::after {
-  content: '';
+  content: "";
   display: block;
-  height: 60px; /* Extra space before footer */
+  height: 60px;
 }
 
 /* Container Constraints */
