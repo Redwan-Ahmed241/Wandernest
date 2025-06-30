@@ -100,7 +100,7 @@ export const tripsAPI = {
   },
 }
 
-// NEW: Visa API functions - THIS WAS MISSING
+// Visa API functions
 export const visaAPI = {
   getVisaRequirements: async (countryCode: string, purpose: string) => {
     return apiRequest(`/visa/requirements/?country=${countryCode}&purpose=${purpose}`)
@@ -135,7 +135,7 @@ export const visaAPI = {
   },
 }
 
-// Package API functions - ADD THESE TO YOUR EXISTING API FILE
+// Package API functions
 export const packageAPI = {
   // Get available transport options
   getTransportOptions: async () => {
@@ -191,6 +191,50 @@ export const packageAPI = {
   },
 }
 
+// Flight API functions
+export const flightAPI = {
+  // Search flights
+  searchFlights: async (searchParams: FlightSearchParams) => {
+    return apiRequest("/flights/search/", {
+      method: "POST",
+      body: JSON.stringify(searchParams),
+    })
+  },
+
+  // Create flight booking
+  createBooking: async (bookingData: FlightBookingData) => {
+    return apiRequest("/flights/bookings/", {
+      method: "POST",
+      body: JSON.stringify(bookingData),
+    })
+  },
+
+  // Get user's flight bookings
+  getUserBookings: async () => {
+    return apiRequest("/flights/bookings/my-bookings/")
+  },
+
+  // Get booking details
+  getBookingDetails: async (bookingId: string) => {
+    return apiRequest(`/flights/bookings/${bookingId}/`)
+  },
+
+  // Cancel booking
+  cancelBooking: async (bookingId: string) => {
+    return apiRequest(`/flights/bookings/${bookingId}/cancel/`, {
+      method: "POST",
+    })
+  },
+
+  // Update booking
+  updateBooking: async (bookingId: string, updateData: Partial<FlightBookingData>) => {
+    return apiRequest(`/flights/bookings/${bookingId}/`, {
+      method: "PATCH",
+      body: JSON.stringify(updateData),
+    })
+  },
+}
+
 // Types
 export interface UserData {
   id?: string
@@ -238,7 +282,7 @@ export interface ItineraryItem {
   order: number
 }
 
-// NEW: Visa-related types - THESE WERE MISSING
+// Visa-related types
 export interface Country {
   code: string
   name: string
@@ -293,7 +337,7 @@ export interface EmbassyContact {
   website: string
 }
 
-// Package-related types - ADD THESE TO YOUR EXISTING TYPES
+// Package-related types
 export interface PackageOption {
   id: string
   name: string
@@ -340,6 +384,70 @@ export interface TravelPackage {
   hotel?: PackageOption
   vehicle?: PackageOption
   guide?: PackageOption
+  created_at: string
+  updated_at: string
+}
+
+// Flight-related types
+export interface FlightSearchParams {
+  from: string
+  to: string
+  departure_date: string
+  return_date?: string
+  passengers: number
+  class?: "economy" | "business" | "first"
+}
+
+export interface FlightBookingData {
+  flight_id: string
+  passengers: PassengerInfo[]
+  contact_email: string
+  contact_phone: string
+  special_requests?: string
+  total_price: number
+  booking_date: string
+  flight_details: {
+    airline: string
+    flight_number: string
+    from: string
+    to: string
+    departure: string
+    arrival: string
+    duration: string
+    aircraft?: string
+  }
+  user_id?: string
+  status: "pending" | "confirmed" | "cancelled"
+}
+
+export interface PassengerInfo {
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string
+  dateOfBirth?: string
+  passportNumber?: string
+}
+
+export interface FlightBooking {
+  id: string
+  booking_reference: string
+  flight_details: {
+    airline: string
+    flight_number: string
+    from: string
+    to: string
+    departure: string
+    arrival: string
+    duration: string
+    aircraft?: string
+  }
+  passengers: PassengerInfo[]
+  contact_email: string
+  contact_phone: string
+  total_price: number
+  status: "pending" | "confirmed" | "cancelled"
+  booking_date: string
   created_at: string
   updated_at: string
 }
