@@ -80,7 +80,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/public-transport" element={<PublicTransport />} />
       <Route path="/packages" element={<Packages />} />
       <Route path="/create-packages" element={<CreatePackage />} />
-      <Route path="/Community" element={<Destination01 />} />
+      
       {/* Redirects */}
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
