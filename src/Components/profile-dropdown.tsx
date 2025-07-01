@@ -87,37 +87,10 @@ const ProfileDropdown: React.FC = () => {
             <div className={styles.userEmail}>{user?.email}</div>
           </div>
           <hr className={styles.divider} />
-          <button
-            className={styles.menuItem}
-            onClick={() => {
-              navigate("/dashboard")
-              setIsOpen(false)
-            }}
-          >
-            Dashboard
-          </button>
-          <button
-            className={styles.menuItem}
-            onClick={() => {
-              navigate("/profile")
-              setIsOpen(false)
-            }}
-          >
-            Profile Settings
-          </button>
-          <button
-            className={styles.menuItem}
-            onClick={() => {
-              navigate("/bookings")
-              setIsOpen(false)
-            }}
-          >
-            My Bookings
-          </button>
+          <div className={styles.dropdownItem} onClick={() => navigate('/dashboard')}>Dashboard</div>
+          <div className={styles.dropdownItem} onClick={() => navigate('/profile-settings')}>Profile Settings</div>
           <hr className={styles.divider} />
-          <button className={`${styles.menuItem} ${styles.logoutItem}`} onClick={handleLogout}>
-            Logout
-          </button>
+          <div className={styles.dropdownItem + ' ' + styles.logout} onClick={handleLogout}>Logout</div>
         </div>
       )}
     </div>

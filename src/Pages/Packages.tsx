@@ -17,6 +17,71 @@ interface Package {
   price: string;
 }
 
+// Modal component for booking (full form)
+const BookNowModal = ({ open, onClose, pkg, onConfirm, loading }: any) => {
+  const [from, setFrom] = useState(pkg?.from || '');
+  const [to, setTo] = useState(pkg?.title || '');
+  const [startDate, setStartDate] = useState(pkg?.startDate || '');
+  const [endDate, setEndDate] = useState(pkg?.endDate || '');
+  const [travelers, setTravelers] = useState(1);
+  const [budget, setBudget] = useState(pkg?.price || '');
+
+  useEffect(() => {
+    if (pkg) {
+      setFrom(pkg.from || '');
+      setTo(pkg.title || '');
+      setStartDate(pkg.startDate || '');
+      setEndDate(pkg.endDate || '');
+      setTravelers(1);
+      setBudget(pkg.price || '');
+    }
+  }, [pkg]);
+
+  if (!open || !pkg) return null;
+  return (
+    <div className="modalOverlay" style={{ alignItems: 'center' }}>
+      <div className="modalContent" style={{ maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}>×</button>
+        <h2 style={{ marginBottom: 16 }}>Book Package</h2>
+        <form onSubmit={e => { e.preventDefault(); onConfirm({ from, to, startDate, endDate, travelers, budget }); }}>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>From:</b></label>
+            <input type="text" value={from} onChange={e => setFrom(e.target.value)} style={{ width: '100%' }} required />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>To:</b></label>
+            <input type="text" value={to} onChange={e => setTo(e.target.value)} style={{ width: '100%' }} required />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>Start Date:</b></label>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ width: '100%' }} required />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>End Date:</b></label>
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ width: '100%' }} required />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>Number of Travelers:</b></label>
+            <input type="number" min="1" max="20" value={travelers} onChange={e => setTravelers(Number(e.target.value))} style={{ width: '100%' }} required />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label><b>Budget (BDT):</b></label>
+            <input type="number" min="0" step="100" value={budget} onChange={e => setBudget(e.target.value)} style={{ width: '100%' }} required />
+          </div>
+          {/* Add more fields as needed, or make some read-only if required */}
+          <button
+            style={{ marginTop: 24, width: '100%', padding: '10px 0', background: '#0a7cff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Confirm Package'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const Packages: FunctionComponent = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -26,6 +91,10 @@ const Packages: FunctionComponent = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [confirmError, setConfirmError] = useState('');
 
   // Fetch packages from API
   useEffect(() => {
@@ -99,6 +168,30 @@ const Packages: FunctionComponent = () => {
     });
     return matchesSearch && matchesFilters;
   });
+
+  // Handler for Book Now
+  const handleBookNow = (pkg: Package) => {
+    setSelectedPackage(pkg);
+    setModalOpen(true);
+    setConfirmError('');
+  };
+
+  // Handler for Confirm Package (SSLCommerz API call stub)
+  const handleConfirmPackage = async (formData: any) => {
+    setConfirmLoading(true);
+    setConfirmError('');
+    try {
+      // TODO: Replace with real SSLCommerz API call
+      // Example: await fetch('/api/sslcommerz/checkout', { method: 'POST', body: JSON.stringify(formData) })
+      await new Promise(res => setTimeout(res, 1500)); // Simulate network
+      setModalOpen(false);
+      alert('Package booking initiated! (SSLCommerz)');
+    } catch (err) {
+      setConfirmError('Failed to confirm package. Please try again.');
+    } finally {
+      setConfirmLoading(false);
+    }
+  };
 
   return (
     <Layout>
@@ -200,7 +293,7 @@ const Packages: FunctionComponent = () => {
                                 <div className={styles.cardPrice}>৳{Number(pkg.price).toLocaleString()}</div>
                                 <button
                                   className={styles.createCustomPackage}
-                                  onClick={e => { e.stopPropagation(); alert(`Booking for ${pkg.title}`); }}
+                                  onClick={e => { e.stopPropagation(); handleBookNow(pkg); }}
                                   type="button"
                                 >
                                   Book Now
@@ -222,6 +315,13 @@ const Packages: FunctionComponent = () => {
             </div>
           </div>
         </div>
+        <BookNowModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          pkg={selectedPackage}
+          onConfirm={handleConfirmPackage}
+          loading={confirmLoading}
+        />
       </div>
     </Layout>
   );

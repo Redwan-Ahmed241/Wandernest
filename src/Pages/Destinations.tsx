@@ -1,11 +1,27 @@
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from '../Styles/Destinations.module.css';
 import Layout from '../App/Layout';
+import { getDestinations } from '../App/api-services';
 
+const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
+
+const incrementDestinationClick = async (id: number) => {
+  try {
+    await fetch(`https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/click/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (err) {
+    // Optionally handle error
+  }
+}
 
 const Destinations:FunctionComponent = () => {
   	const navigate = useNavigate();
+  	const [destinations, setDestinations] = useState<any[]>([]);
+  	const [loading, setLoading] = useState(true);
+  	const [error, setError] = useState('');
   	
   	const onDepth4FrameClick = useCallback(() => {
     		// Add your code here
@@ -15,6 +31,23 @@ const Destinations:FunctionComponent = () => {
   	const onDepth5FrameClick = useCallback(() => {
     		navigate("/");
   	}, [navigate]);
+  	
+  	useEffect(() => {
+    		const fetchDestinations = async () => {
+      			setLoading(true);
+      			setError('');
+      			try {
+        				const data = await getDestinations();
+        				setDestinations(Array.isArray(data) ? data : []);
+      			} catch (err) {
+        				setError('Failed to fetch destinations');
+        				setDestinations([]);
+      			} finally {
+        				setLoading(false);
+      			}
+    		};
+    		fetchDestinations();
+  	}, []);
   	
   	return (
 		<Layout>
@@ -40,34 +73,30 @@ const Destinations:FunctionComponent = () => {
               							</div>
               							<div className={styles.depth4Frame2}>
                 								<div className={styles.destinationsGrid}>
-                  									<div className={styles.destinationCard} onClick={() => navigate('/destination-01')}>
-                    										<img className={styles.destinationImage} alt="Cox's Bazar" src="/Figma_photoes/cox.jpg" />
-                    										<div className={styles.destinationContent}>
-                      											<div className={styles.destinationTitle}>Cox's Bazar</div>
-                      											<div className={styles.destinationDescription}>World's longest sea beach</div>
+                  									{loading && (
+                    										<div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                      											Loading destinations...
                     										</div>
-                  									</div>
-                  									<div className={styles.destinationCard} onClick={() => navigate('/sundarban')}>
-                    										<img className={styles.destinationImage} alt="Sundarbans" src="/Figma_photoes/sundarban.jpg" />
-                    										<div className={styles.destinationContent}>
-                      											<div className={styles.destinationTitle}>Sundarbans</div>
-                      											<div className={styles.destinationDescription}>Discover the mangrove forest</div>
+                  									)}
+                  									{error && (
+                    										<div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                      											{error}
                     										</div>
-                  									</div>
-                  									<div className={styles.destinationCard} onClick={() => navigate('/bandarban')}>
-                    										<img className={styles.destinationImage} alt="Bandarban" src="/Figma_photoes/bandarban.jpg" />
-                    										<div className={styles.destinationContent}>
-                      											<div className={styles.destinationTitle}>Bandarban</div>
-                      											<div className={styles.destinationDescription}>Hills and waterfalls</div>
+                  									)}
+                  									{!loading && !error && destinations.map((dest, idx) => (
+                    										<div
+                      											className={styles.destinationCard}
+                      											key={dest.id || idx}
+                      											onClick={async () => { await incrementDestinationClick(dest.id); navigate(`/destination-01`); }}
+                      											style={{ cursor: 'pointer' }}
+                    										>
+                      											<img className={styles.destinationImage} alt={dest.name || dest.title} src={dest.image ? MEDIA_BASE + dest.image : '/Figma_photoes/cox.jpg'} />
+                      											<div className={styles.destinationContent}>
+                        												<div className={styles.destinationTitle}>{dest.name || dest.title}</div>
+                        												<div className={styles.destinationDescription}>{dest.subtitle || dest.description}</div>
+                      											</div>
                     										</div>
-                  									</div>
-                  									<div className={styles.destinationCard} onClick={() => navigate('/sylhet')}>
-                    										<img className={styles.destinationImage} alt="Sylhet" src="/Figma_photoes/sylhet.jpg" />
-                    										<div className={styles.destinationContent}>
-                      											<div className={styles.destinationTitle}>Sylhet</div>
-                      											<div className={styles.destinationDescription}>Lush tea gardens</div>
-                    										</div>
-                  									</div>
+                  									))}
                 								</div>
               							</div>
               							<div className={styles.depth4Frame3}>
@@ -100,4 +129,6 @@ const Destinations:FunctionComponent = () => {
 };
 
 export default Destinations;
+
+export {}
         				

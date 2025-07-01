@@ -767,3 +767,124 @@
   box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12) !important;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 340px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  animation: modalIn 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes modalIn {
+  from { transform: translateY(40px) scale(0.98); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.modalHeader {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.modalFormRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.modalInput, .modalSelect {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+  outline: none;
+}
+
+.modalInput:focus, .modalSelect:focus {
+  border: 1.5px solid #0a7cff;
+  background: #fff;
+}
+
+.modalButton {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.85rem 0;
+  background: linear-gradient(90deg, #0a7cff 60%, #2e7dff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(10,124,255,0.08);
+  transition: background 0.2s;
+}
+
+.modalButton:active {
+  background: #095ecb;
+}
+
+.modalSkipBtn {
+  margin-left: 12px;
+  background: #e6f4ea;
+  color: #2e7d32;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 12px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.modalSkipBtn:hover {
+  background: #c8e6c9;
+}
+
+.modalError {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.18s;
+}
+
+.modalCloseBtn:hover {
+  color: #0a7cff;
+}
+

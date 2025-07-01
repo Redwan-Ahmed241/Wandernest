@@ -116,3 +116,23 @@ export const getCurrencyRates = async (): Promise<CurrencyRate[]> => {
     ]
   }
 }
+
+// Destinations API function
+export const getDestinations = async () => {
+  try {
+    const response = await fetch("https://wander-nest-ad3s.onrender.com/api/home/destinations/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (!response.ok) {
+      throw new Error("Failed to fetch destinations")
+    }
+    const data = await response.json()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error("Destinations fetch error:", error)
+    return []
+  }
+}

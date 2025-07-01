@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import styles from "../Styles/Homepage.module.css"
 import Layout from "../App/Layout"
 
-const API_URL = "https://wander-nest-ad3s.onrender.com/api/home/features/"
+const FEATURED_API_URL = "https://wander-nest-ad3s.onrender.com/api/home/destinations/"
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
 const HomePage: FunctionComponent = () => {
@@ -19,21 +19,35 @@ const HomePage: FunctionComponent = () => {
       setLoading(true)
       setError("")
       try {
-        const response = await fetch(API_URL)
+        const response = await fetch(FEATURED_API_URL)
         if (!response.ok) throw new Error("Failed to fetch destinations")
         const data = await response.json()
-        setDestinations(Array.isArray(data) ? data : [])
+        // Sort by click count descending and take top 5
+        const sorted = (Array.isArray(data) ? data : []).sort((a, b) => (b.click || 0) - (a.click || 0)).slice(0, 5)
+        setDestinations(sorted)
       } catch (err: any) {
         setError(err.message || "Error fetching destinations")
       } finally {
         setLoading(false)
       }
     }
-
     fetchDestinations()
   }, [])
 
-  const handleCardClick = () => {
+  const incrementDestinationClick = async (id: number) => {
+    try {
+      await fetch(`https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/click/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (err) {
+      // Optionally handle error
+    }
+  }
+
+  const handleCardClick = async (dest: any) => {
+    await incrementDestinationClick(dest.id);
+    // TODO: update to dynamic route if available
     navigate("/destination-01")
   }
 
@@ -55,22 +69,21 @@ const HomePage: FunctionComponent = () => {
           <h2 className={styles.sectionTitle}>Featured Destinations</h2>
           {error && <div style={{ color: "red", marginBottom: 12 }}>{error}</div>}
           <div className={styles.destinationsGrid}>
-            {/* Show only first 6 destinations - no "View All" button */}
-            {destinations.slice(0, 6).map((place, index) => (
+            {destinations.map((place, index) => (
               <div
                 key={place.id || index}
                 className={styles.destinationCard}
-                onClick={handleCardClick}
+                onClick={() => handleCardClick(place)}
                 style={{ cursor: "pointer" }}
               >
                 <img
-                  src={place.pic.startsWith("http") ? place.pic : MEDIA_BASE + place.pic}
-                  alt={place.title}
+                  src={place.image ? MEDIA_BASE + place.image : "/Figma_photoes/cox.jpg"}
+                  alt={place.name}
                   className={styles.destinationImage}
                 />
                 <div className={styles.destinationContent}>
-                  <div className={styles.destinationTitle}>{place.title}</div>
-                  <div className={styles.destinationDescription}>{place.subtitle}</div>
+                  <div className={styles.destinationTitle}>{place.name}</div>
+                  <div className={styles.destinationDescription}>{place.description}</div>
                 </div>
               </div>
             ))}

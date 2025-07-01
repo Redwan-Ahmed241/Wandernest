@@ -1,15 +1,22 @@
 "use client"
 
 import type React from "react"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../Authentication/auth-context"
 import ProfileDropdown from "./profile-dropdown"
 import styles from "../Styles/Navbar.module.css"
+import { Bell, User } from 'react-feather'
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate()
   const { isAuthenticated, loading } = useAuth()
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notifications = [
+    { id: 1, text: "Your booking is confirmed!" },
+    { id: 2, text: "New travel package available." },
+    { id: 3, text: "Your visa application was approved." },
+  ] // TODO: Replace with real user notifications from API
 
   const goHome = useCallback(() => {
     navigate("/")
@@ -64,7 +71,9 @@ const Navbar: React.FC = () => {
                 )}
               </>
             )}
-            <img className={styles.depth5Frame21} alt="" src="/Figma_photoes/world.svg" />
+            <span title="Notifications">
+              <Bell size={26} style={{ marginLeft: 16, color: '#FFD700', verticalAlign: 'middle', cursor: 'pointer' }} />
+            </span>
           </div>
         </div>
       </div>

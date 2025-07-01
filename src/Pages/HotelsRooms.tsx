@@ -105,6 +105,8 @@ const MOCK_REVIEWS: Review[] = [
   },
 ]
 
+const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
+
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate()
 
@@ -395,7 +397,7 @@ const HotelsRooms: FunctionComponent = () => {
                 {filteredHotels.length > 0 ? (
                   filteredHotels.map((hotel) => (
                     <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
-                      <img src={hotel.image || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
+                      <img src={hotel.image && !hotel.image.startsWith('http') ? MEDIA_BASE + hotel.image : hotel.image || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
                       <div className={styles.hotelInfo}>
                         <h3 className={styles.hotelName}>{hotel.name}</h3>
                         <p className={styles.hotelDescription}>{hotel.description}</p>

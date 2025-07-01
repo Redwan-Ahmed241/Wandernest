@@ -36,6 +36,7 @@ import PublicTransport from "./Pages/public-transport"
 import DashboardHome from "./Pages/DashboardHome"
 import ProfileDropdown from "./Components/profile-dropdown"
 import Community from "./Pages/Community"
+import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
 
 // Protected Route Component
@@ -80,6 +81,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/public-transport" element={<PublicTransport />} />
       <Route path="/packages" element={<Packages />} />
       <Route path="/create-packages" element={<CreatePackage />} />
+      <Route path="/profile" element={<ProfileSettings />} />
       
       {/* Redirects */}
       {/* Auth Routes */}
@@ -127,6 +129,9 @@ const AppRoutes: React.FC = () => {
           </div>
         }
       />
+
+      {/* New Route */}
+      <Route path="/profile-settings" element={<ProfileSettings />} />
     </Routes>
   )
 }
