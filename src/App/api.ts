@@ -235,6 +235,94 @@ export const flightAPI = {
   },
 }
 
+// NEW: Community API functions
+export const communityAPI = {
+  // Get all blog posts
+  getBlogs: async (page?: number, limit?: number) => {
+    const params = new URLSearchParams()
+    if (page) params.append("page", page.toString())
+    if (limit) params.append("limit", limit.toString())
+    const endpoint = `/community/blogs/${params.toString() ? "?" + params.toString() : ""}`
+    return apiRequest(endpoint)
+  },
+
+  // Get blog by ID
+  getBlogById: async (blogId: string) => {
+    return apiRequest(`/community/blogs/${blogId}/`)
+  },
+
+  // Search blogs
+  searchBlogs: async (query: string) => {
+    return apiRequest(`/community/blogs/search/?q=${encodeURIComponent(query)}`)
+  },
+
+  // Get all travel groups
+  getGroups: async (page?: number, limit?: number) => {
+    const params = new URLSearchParams()
+    if (page) params.append("page", page.toString())
+    if (limit) params.append("limit", limit.toString())
+    const endpoint = `/community/groups/${params.toString() ? "?" + params.toString() : ""}`
+    return apiRequest(endpoint)
+  },
+
+  // Get user's joined groups
+  getUserGroups: async () => {
+    return apiRequest("/community/groups/my-groups/")
+  },
+
+  // Join a group
+  joinGroup: async (groupId: string) => {
+    return apiRequest(`/community/groups/${groupId}/join/`, {
+      method: "POST",
+    })
+  },
+
+  // Leave a group
+  leaveGroup: async (groupId: string) => {
+    return apiRequest(`/community/groups/${groupId}/leave/`, {
+      method: "POST",
+    })
+  },
+
+  // Search groups
+  searchGroups: async (query: string) => {
+    return apiRequest(`/community/groups/search/?q=${encodeURIComponent(query)}`)
+  },
+
+  // Get group details
+  getGroupDetails: async (groupId: string) => {
+    return apiRequest(`/community/groups/${groupId}/`)
+  },
+
+  // Search all community content
+  searchCommunity: async (query: string) => {
+    return apiRequest(`/community/search/?q=${encodeURIComponent(query)}`)
+  },
+
+  // Create a new blog post
+  createBlog: async (blogData: CreateBlogData) => {
+    return apiRequest("/community/blogs/", {
+      method: "POST",
+      body: JSON.stringify(blogData),
+    })
+  },
+
+  // Update blog post
+  updateBlog: async (blogId: string, blogData: Partial<CreateBlogData>) => {
+    return apiRequest(`/community/blogs/${blogId}/`, {
+      method: "PATCH",
+      body: JSON.stringify(blogData),
+    })
+  },
+
+  // Delete blog post
+  deleteBlog: async (blogId: string) => {
+    return apiRequest(`/community/blogs/${blogId}/`, {
+      method: "DELETE",
+    })
+  },
+}
+
 // Types
 export interface UserData {
   id?: string
@@ -450,4 +538,73 @@ export interface FlightBooking {
   booking_date: string
   created_at: string
   updated_at: string
+}
+
+// NEW: Community-related types
+export interface BlogPost {
+  id: string
+  title: string
+  content: string
+  excerpt?: string
+  author: {
+    id: string
+    username: string
+    first_name: string
+    last_name: string
+    profile_image?: string
+  }
+  image?: string
+  created_at: string
+  updated_at: string
+  tags?: string[]
+  likes_count: number
+  comments_count: number
+  is_liked?: boolean
+}
+
+export interface TravelGroup {
+  id: string
+  name: string
+  description: string
+  image?: string
+  cover_image?: string
+  member_count: number
+  created_by: {
+    id: string
+    username: string
+    first_name: string
+    last_name: string
+  }
+  created_at: string
+  is_member?: boolean
+  is_admin?: boolean
+  category?: string
+  location?: string
+}
+
+export interface CreateBlogData {
+  title: string
+  content: string
+  excerpt?: string
+  image?: File
+  tags?: string[]
+}
+
+export interface CommunitySearchResults {
+  blogs: BlogPost[]
+  groups: TravelGroup[]
+  total_results: number
+}
+
+export interface GroupMember {
+  id: string
+  user: {
+    id: string
+    username: string
+    first_name: string
+    last_name: string
+    profile_image?: string
+  }
+  joined_at: string
+  role: "member" | "admin" | "moderator"
 }

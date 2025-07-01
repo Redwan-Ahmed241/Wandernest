@@ -35,7 +35,7 @@ import ShoppingCenters from "./Pages/shopping-center"
 import PublicTransport from "./Pages/public-transport"
 import DashboardHome from "./Pages/DashboardHome"
 import ProfileDropdown from "./Components/profile-dropdown"
-import Community from "./Pages/Community-complete"
+import Community from "./Pages/Community"
 import "./global.css"
 
 // Protected Route Component
