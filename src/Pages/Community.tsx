@@ -167,7 +167,7 @@ const Community: React.FC = () => {
       const data = await communityAPI.getUserGroups()
       setUserGroups(data.results || data)
       // Update joined groups set
-      const joinedIds = new Set((data.results || data).map((group: TravelGroup) => group.id))
+      const joinedIds = new Set<string>((data.results || data).map((group: TravelGroup) => group.id))
       setJoinedGroups(joinedIds)
     } catch (error) {
       console.error("Error fetching user groups:", error)
@@ -197,7 +197,7 @@ const Community: React.FC = () => {
               group.id === groupId ? { ...group, member_count: group.member_count + 1, is_member: true } : group,
             ),
           )
-          setJoinedGroups((prev) => new Set([...prev, groupId]))
+          setJoinedGroups((prev) => new Set([...Array.from(prev), groupId]))
         }
 
         // Show success message
