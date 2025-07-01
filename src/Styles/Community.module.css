@@ -1,6 +1,6 @@
 /* Enhanced Community Page with Sharp Edges and Glowing Effects */
 
-.communityModernWrapper {
+.communityWrapper {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -8,7 +8,7 @@
   overflow-x: hidden;
 }
 
-.communityModernWrapper::before {
+.communityWrapper::before {
   content: "";
   position: absolute;
   top: 0;
@@ -19,12 +19,24 @@
   z-index: 0;
 }
 
-.communityModernContentWide {
+.community {
+  flex: 1;
+  padding: 0;
+}
+
+.community1 {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 24px;
   position: relative;
   z-index: 1;
+}
+
+.depth0Frame0,
+.depth1Frame0,
+.depth2Frame1,
+.depth3Frame02 {
+  width: 100%;
 }
 
 /* Hero Section with Enhanced Glow */
@@ -182,6 +194,106 @@
   border-radius: 1px;
 }
 
+/* Enhanced Blog Cards */
+.blogsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.blogCard {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(171, 183, 155, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.blogCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(171, 183, 155, 0.05) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.blogCard:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(171, 183, 155, 0.3), 0 0 30px rgba(171, 183, 155, 0.15);
+  border-color: rgba(171, 183, 155, 0.4);
+}
+
+.blogCard:hover::before {
+  opacity: 1;
+}
+
+.blogImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.blogCard:hover .blogImage {
+  transform: scale(1.03);
+}
+
+.blogInfo {
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.blogTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  flex: 1;
+}
+
+.blogMeta {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.blogExcerpt {
+  color: #495057;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blogStats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.blogStats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* Enhanced Group Cards */
 .groupsGrid {
   display: grid;
@@ -309,110 +421,111 @@
   left: 100%;
 }
 
+.joinButton:disabled,
+.responsiveButton:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .joinButton:active,
 .responsiveButton:active {
   transform: translateY(0);
   box-shadow: 0 4px 12px rgba(171, 183, 155, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Enhanced Blog Cards */
-.blogsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
+/* Reviews/Discussions Section */
+.reviewsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.blogCard {
+.reviewCard {
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  padding: 24px;
   border: 1px solid rgba(171, 183, 155, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.blogCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(171, 183, 155, 0.05) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
+.reviewCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(171, 183, 155, 0.3);
+  border-color: rgba(171, 183, 155, 0.3);
 }
 
-.blogCard:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(171, 183, 155, 0.3), 0 0 30px rgba(171, 183, 155, 0.15);
-  border-color: rgba(171, 183, 155, 0.4);
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.blogCard:hover::before {
-  opacity: 1;
+.reviewAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #abb79b;
 }
 
-.blogImage {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 2;
-}
-
-.blogCard:hover .blogImage {
-  transform: scale(1.03);
-}
-
-.blogInfo {
-  padding: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-.blogTitle {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2c3e50;
-  line-height: 1.4;
-  margin-bottom: 8px;
+.reviewUserInfo {
   flex: 1;
 }
 
-.blogMeta {
-  color: #6c757d;
+.reviewUserName {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 2px;
+}
+
+.reviewDate {
   font-size: 0.85rem;
-  margin-bottom: 8px;
+  color: #6c757d;
 }
 
-.blogExcerpt {
-  color: #495057;
-  font-size: 0.9rem;
-  line-height: 1.5;
+.reviewRating {
   margin-bottom: 12px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: flex;
+  gap: 2px;
 }
 
-.blogStats {
+.starFilled {
+  color: #ffc107;
+}
+
+.starEmpty {
+  color: #e9ecef;
+}
+
+.reviewContent {
+  color: #495057;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.reviewActions {
   display: flex;
   gap: 16px;
-  font-size: 0.85rem;
-  color: #6c757d;
 }
 
-.blogStats span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.reviewAction {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.reviewAction:hover {
+  background: rgba(171, 183, 155, 0.1);
+  color: #2c3e50;
 }
 
 /* Loading and Error States */
@@ -502,7 +615,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .communityModernContentWide {
+  .community1 {
     padding: 0 16px;
   }
 
