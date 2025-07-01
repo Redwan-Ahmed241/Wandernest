@@ -27,7 +27,7 @@ import Navbar from "./Components/Navbar"
 import Footer from "./Components/Footer"
 import Layout from "./App/Layout"
 import MyTrips from "./Pages/MyTrips"
-import Community from "./Pages/Community"
+
 import Packages from "./Pages/Packages"
 import CreatePackage from "./Pages/CreatePackages"
 import SignupForm from "./Pages/Signup-form"
@@ -35,7 +35,7 @@ import ShoppingCenters from "./Pages/shopping-center"
 import PublicTransport from "./Pages/public-transport"
 import DashboardHome from "./Pages/DashboardHome"
 import ProfileDropdown from "./Components/profile-dropdown"
-
+import Community from "./Pages/Community-complete"
 import "./global.css"
 
 // Protected Route Component
@@ -79,7 +79,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/shopping-centers" element={<ShoppingCenters />} />
       <Route path="/public-transport" element={<PublicTransport />} />
       <Route path="/packages" element={<Packages />} />
-
+      <Route path="/create-packages" element={<CreatePackage />} />
+      <Route path="/Community" element={<Destination01 />} />
+      {/* Redirects */}
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupForm />} />
