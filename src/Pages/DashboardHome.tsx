@@ -6,6 +6,9 @@ import Sidebar from "./Sidebar"
 import styles from "../Styles/DashboardHome.module.css"
 import Layout from "../App/Layout"
 import { userAPI, type UserData, type UserStats } from "../App/api" // FIXED IMPORT PATH
+import { tripsAPI } from "../App/api"
+import { communityAPI } from "../App/api"
+import { flightAPI } from "../App/api"
 import { useAuth } from "../Authentication/auth-context"// Using your existing auth context
 
 // ImageUploader Component
@@ -285,6 +288,19 @@ const DashboardHome: React.FC = () => {
   const [isLoadingStats, setIsLoadingStats] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // New states for dashboard sections
+  const [trips, setTrips] = useState<any[]>([])
+  const [isLoadingTrips, setIsLoadingTrips] = useState(true)
+  const [tripsError, setTripsError] = useState<string | null>(null)
+
+  const [userBlogs, setUserBlogs] = useState<any[]>([])
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true)
+  const [blogsError, setBlogsError] = useState<string | null>(null)
+
+  const [userGroups, setUserGroups] = useState<any[]>([])
+  const [isLoadingGroups, setIsLoadingGroups] = useState(true)
+  const [groupsError, setGroupsError] = useState<string | null>(null)
+
   // Fetch user data when authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
@@ -294,30 +310,69 @@ const DashboardHome: React.FC = () => {
           const profileData = await userAPI.getProfile()
           setUserData(profileData)
         } catch (error) {
-          console.error("Error fetching user profile:", error)
           setError("Failed to load profile data")
         } finally {
           setIsLoadingProfile(false)
         }
       }
-
       const fetchUserStats = async () => {
         try {
           setIsLoadingStats(true)
           const statsData = await userAPI.getStats()
           setUserStats(statsData)
         } catch (error) {
-          console.error("Error fetching user stats:", error)
           setError("Failed to load stats data")
         } finally {
           setIsLoadingStats(false)
         }
       }
-
+      const fetchTrips = async () => {
+        try {
+          setIsLoadingTrips(true)
+          const data = await tripsAPI.getTrips()
+          setTrips(Array.isArray(data) ? data : data.results || [])
+        } catch (error) {
+          setTripsError("Failed to load trips")
+        } finally {
+          setIsLoadingTrips(false)
+        }
+      }
+      const fetchUserBlogs = async () => {
+        try {
+          setIsLoadingBlogs(true)
+          const allBlogs = await communityAPI.getBlogs()
+          // Filter blogs by current user if possible
+          if (user && allBlogs && Array.isArray(allBlogs)) {
+            setUserBlogs(allBlogs.filter((b: any) => b.author?.id === user.id))
+          } else if (allBlogs.results && user) {
+            setUserBlogs(allBlogs.results.filter((b: any) => b.author?.id === user.id))
+          } else {
+            setUserBlogs([])
+          }
+        } catch (error) {
+          setBlogsError("Failed to load blogs")
+        } finally {
+          setIsLoadingBlogs(false)
+        }
+      }
+      const fetchUserGroups = async () => {
+        try {
+          setIsLoadingGroups(true)
+          const groups = await communityAPI.getUserGroups()
+          setUserGroups(Array.isArray(groups) ? groups : groups.results || [])
+        } catch (error) {
+          setGroupsError("Failed to load groups")
+        } finally {
+          setIsLoadingGroups(false)
+        }
+      }
       fetchUserData()
       fetchUserStats()
+      fetchTrips()
+      fetchUserBlogs()
+      fetchUserGroups()
     }
-  }, [authLoading, isAuthenticated])
+  }, [authLoading, isAuthenticated, user])
 
   const handleUserDataChange = (newData: Partial<UserData>) => {
     if (userData) {
@@ -363,7 +418,103 @@ const DashboardHome: React.FC = () => {
           </div>
 
           <div className={styles.dashboardContent}>
-            <DashboardStats stats={userStats} isLoading={isLoadingStats} />
+            {/* Stats Cards */}
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>✈️</div>
+                <div className={styles.statContent}>
+                  <h3 className={styles.statNumber}>{isLoadingStats ? '...' : userStats?.trips_taken ?? 0}</h3>
+                  <p className={styles.statLabel}>Total Trips</p>
+                </div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>📝</div>
+                <div className={styles.statContent}>
+                  <h3 className={styles.statNumber}>{isLoadingBlogs ? '...' : userBlogs.length}</h3>
+                  <p className={styles.statLabel}>Blogs Posted</p>
+                </div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>📦</div>
+                <div className={styles.statContent}>
+                  <h3 className={styles.statNumber}>{isLoadingTrips ? '...' : trips.length}</h3>
+                  <p className={styles.statLabel}>Bookings</p>
+                </div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>👥</div>
+                <div className={styles.statContent}>
+                  <h3 className={styles.statNumber}>{isLoadingGroups ? '...' : userGroups.length}</h3>
+                  <p className={styles.statLabel}>Joined Groups</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Summary */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Booking Summary</h2>
+              {isLoadingTrips ? (
+                <div className={styles.loadingSpinner}>Loading bookings...</div>
+              ) : tripsError ? (
+                <div className={styles.errorMessage}>{tripsError}</div>
+              ) : trips.length === 0 ? (
+                <div>No bookings found.</div>
+              ) : (
+                <ul className={styles.listGrid}>
+                  {trips.slice(0, 5).map((trip: any) => (
+                    <li key={trip.id} className={styles.listCard}>
+                      <div className={styles.listTitle}>{trip.title || trip.location}</div>
+                      <div className={styles.listMeta}>{trip.start_date} - {trip.end_date}</div>
+                      <div className={styles.listStatus}>{trip.status}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* Joined Groups */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Joined Groups</h2>
+              {isLoadingGroups ? (
+                <div className={styles.loadingSpinner}>Loading groups...</div>
+              ) : groupsError ? (
+                <div className={styles.errorMessage}>{groupsError}</div>
+              ) : userGroups.length === 0 ? (
+                <div>No groups joined yet.</div>
+              ) : (
+                <ul className={styles.listGrid}>
+                  {userGroups.slice(0, 5).map((group: any) => (
+                    <li key={group.id} className={styles.listCard}>
+                      <div className={styles.listTitle}>{group.name}</div>
+                      <div className={styles.listMeta}>{group.member_count} members</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* Blogs Written by User */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Blogs Written by You</h2>
+              {isLoadingBlogs ? (
+                <div className={styles.loadingSpinner}>Loading blogs...</div>
+              ) : blogsError ? (
+                <div className={styles.errorMessage}>{blogsError}</div>
+              ) : userBlogs.length === 0 ? (
+                <div>No blogs written yet.</div>
+              ) : (
+                <ul className={styles.listGrid}>
+                  {userBlogs.slice(0, 5).map((blog: any) => (
+                    <li key={blog.id} className={styles.listCard}>
+                      <div className={styles.listTitle}>{blog.title}</div>
+                      <div className={styles.listMeta}>{new Date(blog.created_at).toLocaleDateString()}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* User Info Card (Profile) */}
             {userData && (
               <UserInfoCard userData={userData} onUserDataChange={handleUserDataChange} isLoading={isLoadingProfile} />
             )}

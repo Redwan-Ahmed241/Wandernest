@@ -63,7 +63,7 @@ const Sidebar: FunctionComponent = () => {
           <span className={styles.icon}>🛂</span> Visa Assistance
         </button>
 
-        <button className={styles.navItem} onClick={() => navigate("/plan-a-trip")}>
+        <button className={styles.navItem} onClick={() => navigate("/create-packages")}>
           <span className={styles.icon}>N</span> Plan a Trip
         </button>
 
