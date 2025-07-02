@@ -15,7 +15,10 @@ interface Package {
   title: string;
   pic: string;
   price: string;
+  image_url: string;
 }
+
+const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
 // Modal component for booking (full form)
 const BookNowModal = ({ open, onClose, pkg, onConfirm, loading }: any) => {
@@ -282,7 +285,7 @@ const Packages: FunctionComponent = () => {
                               onClick={() => navigate(`/packages/${encodeURIComponent(pkg.title)}`)}
                               style={{ cursor: 'pointer' }}
                             >
-                              <img className={styles.depth7Frame01} alt="" src={pkg.pic} />
+                              <img className={styles.depth7Frame01} alt="" src={pkg.image_url} />
                               <div className={styles.depth7Frame11}>
                                 <div className={styles.depth7Frame11}>
                                   <div className={styles.sundarbansWildlifeExpedition}>{pkg.title}</div>
@@ -293,8 +296,8 @@ const Packages: FunctionComponent = () => {
                                 <div className={styles.cardPrice}>৳{Number(pkg.price).toLocaleString()}</div>
                                 <button
                                   className={styles.createCustomPackage}
-                                  onClick={e => { e.stopPropagation(); handleBookNow(pkg); }}
                                   type="button"
+                                  disabled
                                 >
                                   Book Now
                                 </button>

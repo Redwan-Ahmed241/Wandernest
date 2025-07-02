@@ -11,7 +11,7 @@ interface Hotel {
   name: string
   description: string
   location: string
-  image: string
+  image_url: string
   price: number
   rating: number
   amenities: string[]
@@ -157,7 +157,7 @@ const HotelsRooms: FunctionComponent = () => {
         name: hotel.name || "Unknown Hotel",
         description: hotel.description || "No description available",
         location: hotel.location || "Unknown Location",
-        image: hotel.image || "/placeholder.svg?height=200&width=300",
+        image_url: hotel.image_url || "/placeholder.svg?height=200&width=300",
         price: hotel.price || 0,
         rating: hotel.rating || 0,
         amenities: hotel.amenities || [],
@@ -397,7 +397,7 @@ const HotelsRooms: FunctionComponent = () => {
                 {filteredHotels.length > 0 ? (
                   filteredHotels.map((hotel) => (
                     <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
-                      <img src={hotel.image && !hotel.image.startsWith('http') ? MEDIA_BASE + hotel.image : hotel.image || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
+                      <img src={hotel.image_url} alt={hotel.name} className={styles.hotelImage} />
                       <div className={styles.hotelInfo}>
                         <h3 className={styles.hotelName}>{hotel.name}</h3>
                         <p className={styles.hotelDescription}>{hotel.description}</p>

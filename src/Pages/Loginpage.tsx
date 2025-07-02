@@ -17,7 +17,7 @@ export default function TravelLogin() {
   // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard")
+      navigate("/homepage")
     }
   }, [isAuthenticated, navigate])
 
@@ -53,8 +53,8 @@ export default function TravelLogin() {
       // Use the auth context login function
       login(mockToken, mockUser)
       
-      console.log("Mock login successful, navigating to dashboard")
-      navigate("/dashboard")
+      console.log("Mock login successful, navigating to homepage")
+      navigate("/homepage")
       return
     }
 
@@ -129,7 +129,7 @@ export default function TravelLogin() {
         },
       )
 
-      navigate("/dashboard")
+      navigate("/homepage")
     } catch (err: any) {
       console.error("Login error:", err)
       console.error("Error details:", {

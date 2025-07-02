@@ -27,7 +27,7 @@ const Destinations:FunctionComponent = () => {
     		// Add your code here
   	}, []);
   	
-  	
+  
   	const onDepth5FrameClick = useCallback(() => {
     		navigate("/");
   	}, [navigate]);
@@ -90,7 +90,7 @@ const Destinations:FunctionComponent = () => {
                       											onClick={async () => { await incrementDestinationClick(dest.id); navigate(`/destination-01`); }}
                       											style={{ cursor: 'pointer' }}
                     										>
-                      											<img className={styles.destinationImage} alt={dest.name || dest.title} src={dest.image ? MEDIA_BASE + dest.image : '/Figma_photoes/cox.jpg'} />
+                      											<img className={styles.destinationImage} alt={dest.name || dest.title} src={dest.image_url} />
                       											<div className={styles.destinationContent}>
                         												<div className={styles.destinationTitle}>{dest.name || dest.title}</div>
                         												<div className={styles.destinationDescription}>{dest.subtitle || dest.description}</div>

@@ -77,7 +77,7 @@ const HomePage: FunctionComponent = () => {
                 style={{ cursor: "pointer" }}
               >
                 <img
-                  src={place.image ? MEDIA_BASE + place.image : "/Figma_photoes/cox.jpg"}
+                  src={place.image_url}
                   alt={place.name}
                   className={styles.destinationImage}
                 />
