@@ -38,6 +38,7 @@ import ProfileDropdown from "./Components/profile-dropdown"
 import Community from "./Pages/Community"
 import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
+import ConfirmBook from "./Pages/confirm_book"
 
 
 // Protected Route Component
@@ -83,6 +84,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/packages" element={<Packages />} />
       <Route path="/create-packages" element={<CreatePackage />} />
       <Route path="/profile" element={<ProfileSettings />} />
+      <Route path="/confirm-book" element={<ConfirmBook />} />
       
       {/* Redirects */}
       {/* Auth Routes */}

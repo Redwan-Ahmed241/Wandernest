@@ -297,7 +297,7 @@ const Packages: FunctionComponent = () => {
                                 <button
                                   className={styles.createCustomPackage}
                                   type="button"
-                                  disabled
+                                  onClick={e => { e.stopPropagation(); navigate('/confirm-book', { state: { pkg } }); }}
                                 >
                                   Book Now
                                 </button>
