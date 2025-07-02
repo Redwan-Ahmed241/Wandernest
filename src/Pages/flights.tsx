@@ -13,7 +13,7 @@ import { flightAPI } from "../App/api"
 
 const API_KEY = "f69a050e081bb4a7910484976126421e"
 const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"]
-const CURRENCY_API_KEY = "cur_live_NahZXQETwnQiASxfRTbOTU12huYdGMOpECnjSwxf"
+const CURRENCY_API_URL = "https://api.currencyapi.com/v3/latest?apikey=cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1&currencies=EUR,USD,CAD"
 const DEFAULT_CURRENCIES = ["EUR", "USD", "CAD"]
 
 // Define interfaces
@@ -330,10 +330,9 @@ const Flights: FunctionComponent = () => {
     setCurrencyError("")
     try {
       const currencies = activeCurrencies.join(",")
-      const url = `https://api.currencyapi.com/v3/latest?apikey=${CURRENCY_API_KEY}&currencies=${currencies}&base_currency=BDT`
+      const url = `https://api.currencyapi.com/v3/latest?apikey=cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1&currencies=${currencies}`
       const response = await fetch(url)
       const data = await response.json()
-
       if (data && data.data) {
         const ratesArr = Object.values(data.data).map((item: any) => ({
           currency: item.code,

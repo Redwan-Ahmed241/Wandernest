@@ -39,6 +39,7 @@ import Community from "./Pages/Community"
 import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
 
+
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth()
@@ -142,6 +143,7 @@ function App() {
       <Router>
         <AppRoutes />
       </Router>
+   
     </AuthProvider>
   )
 }
