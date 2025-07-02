@@ -107,6 +107,25 @@ const MOCK_REVIEWS: Review[] = [
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
+// Helper functions for filtering - MOVED TO TOP TO AVOID HOISTING ISSUES
+const checkPriceRange = (price: number, range: string): boolean => {
+  switch (range) {
+    case "Under 3000":
+      return price < 3000
+    case "3000-7000":
+      return price >= 3000 && price <= 7000
+    case "7000+":
+      return price > 7000
+    default:
+      return true
+  }
+}
+
+const checkRatingMatch = (rating: number, filterRating: string): boolean => {
+  const starCount = Number.parseInt(filterRating.charAt(0))
+  return rating >= starCount
+}
+
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate()
 
@@ -214,7 +233,7 @@ const HotelsRooms: FunctionComponent = () => {
     setOpenFilter(openFilter === filterKey ? null : filterKey)
   }
 
-  // Search and filter hotels
+  // Search and filter hotels - NOW FUNCTIONS ARE AVAILABLE
   const filteredHotels = hotels.filter((hotel) => {
     const query = searchQuery.toLowerCase()
     const matchesSearch =
@@ -232,25 +251,6 @@ const HotelsRooms: FunctionComponent = () => {
 
     return matchesSearch && matchesPrice && matchesRating && matchesAmenities && matchesLocation && matchesRoomType
   })
-
-  // Helper functions for filtering
-  const checkPriceRange = (price: number, range: string): boolean => {
-    switch (range) {
-      case "Under 3000":
-        return price < 3000
-      case "3000-7000":
-        return price >= 3000 && price <= 7000
-      case "7000+":
-        return price > 7000
-      default:
-        return true
-    }
-  }
-
-  const checkRatingMatch = (rating: number, filterRating: string): boolean => {
-    const starCount = Number.parseInt(filterRating.charAt(0))
-    return rating >= starCount
-  }
 
   // Navigation functions
   const onHotelClick = useCallback(
@@ -380,9 +380,7 @@ const HotelsRooms: FunctionComponent = () => {
                 <h1 className={styles.title}>Explore Hotels and Rooms</h1>
                 <p className={styles.subtitle}>Find the perfect stay for your travel needs.</p>
               </div>
-              <button className={styles.viewAllButton} onClick={onViewAllClick}>
-                View All
-              </button>
+              
             </div>
 
             {/* Error Message */}
@@ -397,7 +395,7 @@ const HotelsRooms: FunctionComponent = () => {
                 {filteredHotels.length > 0 ? (
                   filteredHotels.map((hotel) => (
                     <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
-                      <img src={hotel.image_url} alt={hotel.name} className={styles.hotelImage} />
+                      <img src={hotel.image_url || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
                       <div className={styles.hotelInfo}>
                         <h3 className={styles.hotelName}>{hotel.name}</h3>
                         <p className={styles.hotelDescription}>{hotel.description}</p>
