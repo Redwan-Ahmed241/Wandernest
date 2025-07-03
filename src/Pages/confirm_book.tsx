@@ -45,6 +45,9 @@ const ConfirmBook: React.FC = () => {
   const navigate = useNavigate();
 
   const [startDateFocused, setStartDateFocused] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const dateInputRef = React.useRef<HTMLInputElement>(null);
 
   // Helper to get correct field regardless of casing
   const getField = (obj: any, key: string) => obj?.[key] || obj?.[key.toLowerCase()] || obj?.[key.charAt(0).toUpperCase() + key.slice(1)] || '';
@@ -73,6 +76,16 @@ const ConfirmBook: React.FC = () => {
     if (!dateStr) return '';
     const [dd, mm, yyyy] = dateStr.split('-');
     if (!dd || !mm || !yyyy) return '';
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  // Helper to get tomorrow's date in yyyy-mm-dd format
+  const getTomorrow = () => {
+    const t = new Date();
+    t.setDate(t.getDate() + 1);
+    const yyyy = t.getFullYear();
+    const mm = String(t.getMonth() + 1).padStart(2, '0');
+    const dd = String(t.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   };
 
@@ -243,13 +256,34 @@ const ConfirmBook: React.FC = () => {
             <div className={styles.formRow}>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Start Date</label>
-                <input
-                  className={styles.inputField}
-                  type="date"
-                  value={startDate}
-                  onChange={e => setStartDate(e.target.value)}
-                  placeholder="dd-mm-yyyy"
-                />
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    className={styles.inputField}
+                    type="text"
+                    value={formatDisplayDate(startDate)}
+                    readOnly
+                    onClick={() => dateInputRef.current && dateInputRef.current.showPicker && dateInputRef.current.showPicker()}
+                    placeholder="dd-mm-yyyy"
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <span
+                    className={styles.calendarIcon}
+                    onClick={() => dateInputRef.current && dateInputRef.current.showPicker && dateInputRef.current.showPicker()}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    📅
+                  </span>
+                  <input
+                    ref={dateInputRef}
+                    type="date"
+                    style={{ position: 'absolute', left: 0, top: 0, opacity: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+                    value={startDate}
+                    min={getTomorrow()}
+                    onChange={e => setStartDate(e.target.value)}
+                    tabIndex={-1}
+                  />
+                </div>
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>End Date</label>
