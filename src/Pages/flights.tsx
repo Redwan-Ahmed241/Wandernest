@@ -552,9 +552,9 @@ const BookingModal: React.FC<{
       passport_number: "",
       passport_expiry: "",
       passenger_type: "adult",
-      seat_preference: "window",
-      meal_preference: "vegetarian",
-    }))
+      seat_preference: "",
+      meal_preference: "",
+    })),
   )
   const [contactEmail, setContactEmail] = useState("")
   const [contactPhone, setContactPhone] = useState("")
@@ -1031,8 +1031,21 @@ const Flights: FunctionComponent = () => {
   }, [activeCurrencies])
 
   const handleSearchFlights = async () => {
+    // Check if required fields are filled
     if (!fromAirport || !toAirport || !departure) {
-      setSearchError("Please fill in all required fields")
+      if (!fromAirport && fromAirportSearch) {
+        setSearchError("Please select a departure airport from the dropdown list")
+      } else if (!toAirport && toAirportSearch) {
+        setSearchError("Please select a destination airport from the dropdown list")
+      } else {
+        setSearchError("Please select departure city, destination city, and departure date")
+      }
+      return
+    }
+
+    // Check if from and to airports are different
+    if (fromAirport === toAirport) {
+      setSearchError("Departure and destination cities must be different")
       return
     }
 
@@ -1041,9 +1054,11 @@ const Flights: FunctionComponent = () => {
       return
     }
 
+    // Clear any previous errors
+    setSearchError("")
+
     try {
       setIsSearchingFlights(true)
-      setSearchError("")
       setFlights([])
 
       const searchParams: FlightSearchRequest = {
@@ -1245,8 +1260,23 @@ const Flights: FunctionComponent = () => {
                       onChange={(e) => {
                         setFromAirportSearch(e.target.value)
                         setShowFromDropdown(true)
+
+                        // Auto-select if exact match found
+                        const exactMatch = airports.find(
+                          (airport) =>
+                            airport.city.toLowerCase() === e.target.value.toLowerCase() ||
+                            airport.name.toLowerCase() === e.target.value.toLowerCase(),
+                        )
+                        if (exactMatch) {
+                          setFromAirport(exactMatch.code)
+                        } else {
+                          setFromAirport("") // Clear if no exact match
+                        }
                       }}
                       onFocus={() => setShowFromDropdown(true)}
+                      style={{
+                        borderColor: fromAirport === toAirport && fromAirport ? "#ef4444" : undefined,
+                      }}
                       required
                     />
                     {showFromDropdown && (
@@ -1259,6 +1289,12 @@ const Flights: FunctionComponent = () => {
                               setFromAirport(airport.code)
                               setFromAirportSearch(`${airport.city} (${airport.code})`)
                               setShowFromDropdown(false)
+
+                              // Clear "To" field if same airport is selected
+                              if (toAirport === airport.code) {
+                                setToAirport("")
+                                setToAirportSearch("")
+                              }
                             }}
                           >
                             <div className={styles.airportCode}>{airport.code}</div>
@@ -1284,8 +1320,23 @@ const Flights: FunctionComponent = () => {
                       onChange={(e) => {
                         setToAirportSearch(e.target.value)
                         setShowToDropdown(true)
+
+                        // Auto-select if exact match found
+                        const exactMatch = airports.find(
+                          (airport) =>
+                            airport.city.toLowerCase() === e.target.value.toLowerCase() ||
+                            airport.name.toLowerCase() === e.target.value.toLowerCase(),
+                        )
+                        if (exactMatch) {
+                          setToAirport(exactMatch.code)
+                        } else {
+                          setToAirport("") // Clear if no exact match
+                        }
                       }}
                       onFocus={() => setShowToDropdown(true)}
+                      style={{
+                        borderColor: fromAirport === toAirport && toAirport ? "#ef4444" : undefined,
+                      }}
                       required
                     />
                     {showToDropdown && (
@@ -1298,6 +1349,12 @@ const Flights: FunctionComponent = () => {
                               setToAirport(airport.code)
                               setToAirportSearch(`${airport.city} (${airport.code})`)
                               setShowToDropdown(false)
+
+                              // Clear "From" field if same airport is selected
+                              if (fromAirport === airport.code) {
+                                setFromAirport("")
+                                setFromAirportSearch("")
+                              }
                             }}
                           >
                             <div className={styles.airportCode}>{airport.code}</div>
