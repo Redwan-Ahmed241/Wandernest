@@ -9,14 +9,160 @@ import Layout from "../App/Layout"
 import { MapContainer, TileLayer } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { useAuth } from "../Authentication/auth-context"
-import { flightAPI } from "../App/api"
 
-const API_KEY = "f69a050e081bb4a7910484976126421e"
-const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"]
-const CURRENCY_API_URL = "https://api.currencyapi.com/v3/latest?apikey=cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1&currencies=EUR,USD,CAD"
-const DEFAULT_CURRENCIES = ["EUR", "USD", "CAD"]
+// API Configuration
+const API_BASE_URL = "https://wander-nest-ad3s.onrender.com/api"
+const WEATHER_API_KEY = "f69a050e081bb4a7910484976126421e"
+const CURRENCY_API_KEY = "cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1"
 
-// Define interfaces
+// Updated interfaces to match Django models
+interface Airport {
+  code: string
+  name: string
+  city: string
+  country: string
+  country_code: string
+  timezone?: string
+  latitude?: number
+  longitude?: number
+}
+
+interface Airline {
+  code: string
+  name: string
+  logo?: string
+  website?: string
+}
+
+interface Aircraft {
+  model: string
+  manufacturer: string
+  total_seats: number
+  economy_seats: number
+  business_seats: number
+  first_class_seats: number
+}
+
+interface Flight {
+  id: string
+  airline: Airline // Changed from string to Airline object
+  flight_number: string
+  aircraft: Aircraft // Changed from string to Aircraft object
+  from_airport: Airport // Changed from string to Airport object
+  to_airport: Airport // Changed from string to Airport object
+  departure_datetime: string // ISO datetime string
+  arrival_datetime: string // ISO datetime string
+  duration: string
+  total_seats: number
+  available_seats: number
+  booked_seats: number
+  baggage_allowance: string
+  meal_included: boolean
+  wifi_available: boolean
+  entertainment_available: boolean
+  power_outlet_available: boolean
+  booking_class: "economy" | "business" | "first"
+  base_price: number
+  current_price: number // Use current_price instead of price
+  currency: string
+  cancellation_policy: string
+  refund_policy?: string
+  status: "scheduled" | "delayed" | "cancelled" | "boarding" | "departed" | "arrived"
+  gate?: string
+  terminal?: string
+  is_active: boolean
+  is_featured: boolean
+  is_available?: boolean // Add this computed property
+}
+
+interface FlightSearchRequest {
+  from_airport: string // Airport code
+  to_airport: string // Airport code
+  departure_date: string
+  return_date?: string
+  passengers: number
+  booking_class: string
+  trip_type: "one_way" | "round_trip"
+}
+
+interface FlightSearchResponse {
+  success: boolean
+  data: {
+    flights: Flight[]
+    total_results: number
+    search_id: string
+    search_timestamp: string
+  }
+}
+
+interface PassengerDetails {
+  title: "mr" | "ms" | "mrs" | "dr" | "prof"
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  date_of_birth: string
+  nationality: string
+  passport_number: string
+  passport_expiry: string
+  passenger_type: "adult" | "child" | "infant"
+  seat_preference: "window" | "aisle" | "middle"
+  meal_preference: "vegetarian" | "non_vegetarian" | "halal" | "kosher" | "vegan"
+}
+
+interface BookingRequest {
+  flight_id: string
+  passengers: PassengerDetails[]
+  contact_details: {
+    email: string
+    phone: string
+    emergency_contact?: {
+      name: string
+      phone: string
+      relationship: string
+    }
+  }
+  special_requests?: string
+  total_amount: number
+  currency: string
+}
+
+interface BookingResponse {
+  success: boolean
+  data: {
+    booking_id: string
+    confirmation_code: string
+    pnr: string
+    status: string
+    booking_date: string
+    flight_details: {
+      airline: string
+      flight_number: string
+      from: string
+      to: string
+      departure: string
+      arrival: string
+    }
+    passengers: Array<{
+      name: string
+      seat_number: string
+      boarding_pass_url: string
+    }>
+    payment: {
+      amount: number
+      currency: string
+      status: string
+      payment_id: string
+      payment_url?: string
+    }
+    tickets: Array<{
+      passenger_name: string
+      ticket_number: string
+      ticket_url: string
+    }>
+  }
+}
+
 interface WeatherData {
   city: string
   temperature: number
@@ -26,50 +172,200 @@ interface WeatherData {
   windSpeed: number
 }
 
-interface Flight {
-  id: string
-  airline: string
-  from: string
-  to: string
-  departure: string
-  arrival: string
-  duration: string
-  price: number
-  currency: string
-  flightNumber?: string
-  aircraft?: string
-  availableSeats?: number
-}
-
 interface CurrencyRate {
   currency: string
   rate: number
   change: string
 }
 
-// Booking Modal Component
+// Updated API Service Functions
+const flightAPI = {
+  // Get airports for search autocomplete
+  getAirports: async (search?: string): Promise<Airport[]> => {
+    const url = search ? `${API_BASE_URL}/airports/?search=${encodeURIComponent(search)}` : `${API_BASE_URL}/airports/`
+
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch airports: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.success ? data.data : []
+  },
+
+  // Search flights
+  searchFlights: async (searchParams: FlightSearchRequest): Promise<FlightSearchResponse> => {
+    const response = await fetch(`${API_BASE_URL}/flights/search/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(searchParams),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Flight search failed: ${response.statusText}`)
+    }
+
+    return response.json()
+  },
+
+  // Get flight details
+  getFlightDetails: async (flightId: string): Promise<Flight> => {
+    const response = await fetch(`${API_BASE_URL}/flights/${flightId}/`)
+
+    if (!response.ok) {
+      throw new Error(`Failed to get flight details: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.success ? data.data : null
+  },
+
+  // Create booking
+  createBooking: async (bookingData: BookingRequest): Promise<BookingResponse> => {
+    const response = await fetch(`${API_BASE_URL}/flights/bookings/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify(bookingData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Booking failed: ${response.statusText}`)
+    }
+
+    return response.json()
+  },
+
+  // Get user bookings
+  getUserBookings: async (userId: string): Promise<BookingResponse[]> => {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/bookings/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to get bookings: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.success ? data.data.bookings : []
+  },
+
+  // Track flight click for analytics
+  trackFlightClick: async (flightId: string, searchId?: string) => {
+    try {
+      await fetch(`${API_BASE_URL}/analytics/flight-click/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          flight_id: flightId,
+          search_id: searchId,
+          timestamp: new Date().toISOString(),
+        }),
+      })
+    } catch (error) {
+      console.error("Failed to track flight click:", error)
+    }
+  },
+}
+
+// Weather API Service (unchanged)
+const weatherAPI = {
+  getWeatherForCity: async (city: string): Promise<WeatherData> => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error(`Weather API failed for ${city}`)
+    }
+
+    const data = await response.json()
+
+    return {
+      city: data.name,
+      temperature: data.main.temp,
+      condition: data.weather[0].main,
+      description: data.weather[0].description,
+      humidity: data.main.humidity,
+      windSpeed: data.wind.speed,
+    }
+  },
+
+  getWeatherForMultipleCities: async (cities: string[]): Promise<WeatherData[]> => {
+    const promises = cities.map((city) => weatherAPI.getWeatherForCity(city))
+    const results = await Promise.allSettled(promises)
+
+    return results
+      .filter((result): result is PromiseFulfilledResult<WeatherData> => result.status === "fulfilled")
+      .map((result) => result.value)
+  },
+}
+
+// Currency API Service (unchanged)
+const currencyAPI = {
+  getRates: async (currencies: string[]): Promise<CurrencyRate[]> => {
+    const currencyList = currencies.join(",")
+    const url = `https://api.currencyapi.com/v3/latest?apikey=${CURRENCY_API_KEY}&currencies=${currencyList}&base_currency=BDT`
+
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error("Currency API failed")
+    }
+
+    const data = await response.json()
+
+    if (!data.data) {
+      throw new Error("Invalid currency API response")
+    }
+
+    return Object.entries(data.data).map(([currency, info]: [string, any]) => ({
+      currency,
+      rate: info.value,
+      change: "N/A",
+    }))
+  },
+}
+
+// Updated Booking Modal Component
 const BookingModal: React.FC<{
   flight: Flight
   passengers: number
   onClose: () => void
-  onConfirm: (bookingData: any) => void
+  onConfirm: (bookingData: BookingRequest) => void
   isLoading: boolean
 }> = ({ flight, passengers, onClose, onConfirm, isLoading }) => {
-  const [passengerDetails, setPassengerDetails] = useState(
+  const [passengerDetails, setPassengerDetails] = useState<PassengerDetails[]>(
     Array.from({ length: passengers }, () => ({
-      firstName: "",
-      lastName: "",
+      title: "mr",
+      first_name: "",
+      last_name: "",
       email: "",
       phone: "",
-      dateOfBirth: "",
-      passportNumber: "",
+      date_of_birth: "",
+      nationality: "Bangladeshi",
+      passport_number: "",
+      passport_expiry: "",
+      passenger_type: "adult",
+      seat_preference: "window",
+      meal_preference: "non_vegetarian",
     })),
   )
   const [contactEmail, setContactEmail] = useState("")
   const [contactPhone, setContactPhone] = useState("")
+  const [emergencyContactName, setEmergencyContactName] = useState("")
+  const [emergencyContactPhone, setEmergencyContactPhone] = useState("")
+  const [emergencyContactRelationship, setEmergencyContactRelationship] = useState("")
   const [specialRequests, setSpecialRequests] = useState("")
 
-  const handlePassengerChange = (index: number, field: string, value: string) => {
+  const handlePassengerChange = (index: number, field: keyof PassengerDetails, value: string) => {
     const updated = [...passengerDetails]
     updated[index] = { ...updated[index], [field]: value }
     setPassengerDetails(updated)
@@ -77,9 +373,10 @@ const BookingModal: React.FC<{
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
     // Validate required fields
     const isValid =
-      passengerDetails.every((p) => p.firstName.trim() && p.lastName.trim() && p.email.trim()) &&
+      passengerDetails.every((p) => p.first_name.trim() && p.last_name.trim() && p.email.trim()) &&
       contactEmail.trim() &&
       contactPhone.trim()
 
@@ -88,14 +385,23 @@ const BookingModal: React.FC<{
       return
     }
 
-    const bookingData = {
+    const bookingData: BookingRequest = {
       flight_id: flight.id,
       passengers: passengerDetails,
-      contact_email: contactEmail,
-      contact_phone: contactPhone,
+      contact_details: {
+        email: contactEmail,
+        phone: contactPhone,
+        emergency_contact: emergencyContactName
+          ? {
+              name: emergencyContactName,
+              phone: emergencyContactPhone,
+              relationship: emergencyContactRelationship,
+            }
+          : undefined,
+      },
       special_requests: specialRequests,
-      total_price: flight.price * passengers,
-      booking_date: new Date().toISOString(),
+      total_amount: flight.current_price * passengers, // Use current_price
+      currency: flight.currency,
     }
 
     onConfirm(bookingData)
@@ -110,17 +416,24 @@ const BookingModal: React.FC<{
             ×
           </button>
         </div>
+
         <div className={styles.flightSummary}>
           <h3>Flight Details</h3>
           <div className={styles.summaryGrid}>
             <div>
-              <strong>Route:</strong> {flight.from} → {flight.to}
+              <strong>Route:</strong> {flight.from_airport.city} → {flight.to_airport.city}
             </div>
             <div>
-              <strong>Airline:</strong> {flight.airline}
+              <strong>Airline:</strong> {flight.airline.name}
             </div>
             <div>
-              <strong>Departure:</strong> {flight.departure}
+              <strong>Flight:</strong> {flight.flight_number}
+            </div>
+            <div>
+              <strong>Aircraft:</strong> {flight.aircraft.model}
+            </div>
+            <div>
+              <strong>Departure:</strong> {new Date(flight.departure_datetime).toLocaleString()}
             </div>
             <div>
               <strong>Duration:</strong> {flight.duration}
@@ -129,7 +442,7 @@ const BookingModal: React.FC<{
               <strong>Passengers:</strong> {passengers}
             </div>
             <div>
-              <strong>Total Price:</strong> {flight.currency} {(flight.price * passengers).toLocaleString()}
+              <strong>Total Price:</strong> {flight.currency} {(flight.current_price * passengers).toLocaleString()}
             </div>
           </div>
         </div>
@@ -148,6 +461,43 @@ const BookingModal: React.FC<{
                 <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} required />
               </div>
             </div>
+
+            {/* Emergency Contact */}
+            <div className={styles.formRow}>
+              <div className={styles.inputGroup}>
+                <label>Emergency Contact Name</label>
+                <input
+                  type="text"
+                  value={emergencyContactName}
+                  onChange={(e) => setEmergencyContactName(e.target.value)}
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label>Emergency Contact Phone</label>
+                <input
+                  type="tel"
+                  value={emergencyContactPhone}
+                  onChange={(e) => setEmergencyContactPhone(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={styles.formRow}>
+              <div className={styles.inputGroup}>
+                <label>Relationship</label>
+                <select
+                  value={emergencyContactRelationship}
+                  onChange={(e) => setEmergencyContactRelationship(e.target.value)}
+                >
+                  <option value="">Select relationship</option>
+                  <option value="spouse">Spouse</option>
+                  <option value="parent">Parent</option>
+                  <option value="child">Child</option>
+                  <option value="sibling">Sibling</option>
+                  <option value="friend">Friend</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* Passenger Details */}
@@ -158,11 +508,39 @@ const BookingModal: React.FC<{
                 <h4>Passenger {index + 1}</h4>
                 <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
+                    <label>Title *</label>
+                    <select
+                      value={passenger.title}
+                      onChange={(e) => handlePassengerChange(index, "title", e.target.value)}
+                      required
+                    >
+                      <option value="mr">Mr</option>
+                      <option value="ms">Ms</option>
+                      <option value="mrs">Mrs</option>
+                      <option value="dr">Dr</option>
+                      <option value="prof">Prof</option>
+                    </select>
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Passenger Type *</label>
+                    <select
+                      value={passenger.passenger_type}
+                      onChange={(e) => handlePassengerChange(index, "passenger_type", e.target.value)}
+                      required
+                    >
+                      <option value="adult">Adult</option>
+                      <option value="child">Child</option>
+                      <option value="infant">Infant</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.formRow}>
+                  <div className={styles.inputGroup}>
                     <label>First Name *</label>
                     <input
                       type="text"
-                      value={passenger.firstName}
-                      onChange={(e) => handlePassengerChange(index, "firstName", e.target.value)}
+                      value={passenger.first_name}
+                      onChange={(e) => handlePassengerChange(index, "first_name", e.target.value)}
                       required
                     />
                   </div>
@@ -170,8 +548,8 @@ const BookingModal: React.FC<{
                     <label>Last Name *</label>
                     <input
                       type="text"
-                      value={passenger.lastName}
-                      onChange={(e) => handlePassengerChange(index, "lastName", e.target.value)}
+                      value={passenger.last_name}
+                      onChange={(e) => handlePassengerChange(index, "last_name", e.target.value)}
                       required
                     />
                   </div>
@@ -197,20 +575,66 @@ const BookingModal: React.FC<{
                 </div>
                 <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
-                    <label>Date of Birth</label>
+                    <label>Date of Birth *</label>
                     <input
                       type="date"
-                      value={passenger.dateOfBirth}
-                      onChange={(e) => handlePassengerChange(index, "dateOfBirth", e.target.value)}
+                      value={passenger.date_of_birth}
+                      onChange={(e) => handlePassengerChange(index, "date_of_birth", e.target.value)}
+                      required
                     />
                   </div>
+                  <div className={styles.inputGroup}>
+                    <label>Nationality *</label>
+                    <input
+                      type="text"
+                      value={passenger.nationality}
+                      onChange={(e) => handlePassengerChange(index, "nationality", e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
                     <label>Passport Number</label>
                     <input
                       type="text"
-                      value={passenger.passportNumber}
-                      onChange={(e) => handlePassengerChange(index, "passportNumber", e.target.value)}
+                      value={passenger.passport_number}
+                      onChange={(e) => handlePassengerChange(index, "passport_number", e.target.value)}
                     />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Passport Expiry</label>
+                    <input
+                      type="date"
+                      value={passenger.passport_expiry}
+                      onChange={(e) => handlePassengerChange(index, "passport_expiry", e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className={styles.formRow}>
+                  <div className={styles.inputGroup}>
+                    <label>Seat Preference</label>
+                    <select
+                      value={passenger.seat_preference}
+                      onChange={(e) => handlePassengerChange(index, "seat_preference", e.target.value)}
+                    >
+                      <option value="window">Window</option>
+                      <option value="aisle">Aisle</option>
+                      <option value="middle">Middle</option>
+                    </select>
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Meal Preference</label>
+                    <select
+                      value={passenger.meal_preference}
+                      onChange={(e) => handlePassengerChange(index, "meal_preference", e.target.value)}
+                    >
+                      <option value="non_vegetarian">Non-Vegetarian</option>
+                      <option value="vegetarian">Vegetarian</option>
+                      <option value="halal">Halal</option>
+                      <option value="kosher">Kosher</option>
+                      <option value="vegan">Vegan</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -236,7 +660,7 @@ const BookingModal: React.FC<{
             <button type="submit" disabled={isLoading} className={styles.confirmButton}>
               {isLoading
                 ? "Booking..."
-                : `Confirm Booking (${flight.currency} ${(flight.price * passengers).toLocaleString()})`}
+                : `Confirm Booking (${flight.currency} ${(flight.current_price * passengers).toLocaleString()})`}
             </button>
           </div>
         </form>
@@ -249,14 +673,25 @@ const Flights: FunctionComponent = () => {
   const navigate = useNavigate()
   const { isAuthenticated, loading: authLoading, user } = useAuth()
 
-  // Form states
-  const [from, setFrom] = useState("")
-  const [to, setTo] = useState("")
+  // Form states - Updated to use airport codes
+  const [fromAirport, setFromAirport] = useState("")
+  const [toAirport, setToAirport] = useState("")
   const [departure, setDeparture] = useState("")
+  const [returnDate, setReturnDate] = useState("")
   const [passengers, setPassengers] = useState(1)
+  const [bookingClass, setBookingClass] = useState("economy")
+  const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way")
+
+  // Airport search states
+  const [airports, setAirports] = useState<Airport[]>([])
+  const [fromAirportSearch, setFromAirportSearch] = useState("")
+  const [toAirportSearch, setToAirportSearch] = useState("")
+  const [showFromDropdown, setShowFromDropdown] = useState(false)
+  const [showToDropdown, setShowToDropdown] = useState(false)
 
   // API data states
   const [flights, setFlights] = useState<Flight[]>([])
+  const [currentSearchId, setCurrentSearchId] = useState<string>("")
   const [weatherData, setWeatherData] = useState<WeatherData[]>([])
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([])
 
@@ -281,71 +716,69 @@ const Flights: FunctionComponent = () => {
   const [search, setSearch] = useState("")
   const [searching, setSearching] = useState(false)
   const [currencySearch, setCurrencySearch] = useState("")
-  const [activeCurrencies, setActiveCurrencies] = useState(DEFAULT_CURRENCIES)
+  const [activeCurrencies, setActiveCurrencies] = useState(["EUR", "USD", "CAD"])
   const [showMap, setShowMap] = useState(false)
 
   // Load initial data on component mount
   useEffect(() => {
+    const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"]
     fetchWeatherForCities(defaultCities)
     fetchCurrencyRates()
+    loadAirports()
   }, [])
 
-  // Fetch weather for a list of cities
+  // Load airports for search
+  const loadAirports = async () => {
+    try {
+      const airportData = await flightAPI.getAirports()
+      setAirports(airportData)
+    } catch (error) {
+      console.error("Failed to load airports:", error)
+    }
+  }
+
+  // Filter airports based on search
+  const getFilteredAirports = (searchTerm: string) => {
+    if (!searchTerm) return airports.slice(0, 10) // Show first 10 if no search
+
+    return airports
+      .filter(
+        (airport) =>
+          airport.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          airport.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          airport.code.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+      .slice(0, 10)
+  }
+
+  // API Functions (weather and currency unchanged)
   const fetchWeatherForCities = async (cities: string[]) => {
     setIsLoadingWeather(true)
     setWeatherError("")
+
     try {
-      const results = await Promise.all(
-        cities.map(async (city) => {
-          const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-          const response = await fetch(url)
-          if (!response.ok) throw new Error(`Failed to fetch weather for ${city}`)
-
-          const data = await response.json()
-          const first = data.list[0]
-
-          return {
-            city: data.city.name,
-            temperature: first.main.temp,
-            condition: first.weather[0].main,
-            description: first.weather[0].description,
-            humidity: first.main.humidity,
-            windSpeed: first.wind.speed,
-          }
-        }),
-      )
-
-      setWeatherData(results)
+      const weatherResults = await weatherAPI.getWeatherForMultipleCities(cities)
+      setWeatherData(weatherResults)
     } catch (err) {
       setWeatherError("Failed to fetch weather data.")
       setWeatherData([])
+      console.error("Weather fetch error:", err)
     } finally {
       setIsLoadingWeather(false)
     }
   }
 
-  // Fetch currency rates
   const fetchCurrencyRates = async () => {
     setCurrencyLoading(true)
     setCurrencyError("")
+
     try {
-      const currencies = activeCurrencies.join(",")
-      const url = `https://api.currencyapi.com/v3/latest?apikey=cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1&currencies=${currencies}`
-      const response = await fetch(url)
-      const data = await response.json()
-      if (data && data.data) {
-        const ratesArr = Object.values(data.data).map((item: any) => ({
-          currency: item.code,
-          rate: item.value,
-          change: "N/A",
-        }))
-        setCurrencyRates(ratesArr)
-      } else {
-        setCurrencyRates([])
-      }
+      const rates = await currencyAPI.getRates(activeCurrencies)
+      setCurrencyRates(rates)
     } catch (err) {
       setCurrencyError("Failed to fetch currency rates.")
       setCurrencyRates([])
+      console.error("Currency fetch error:", err)
     } finally {
       setCurrencyLoading(false)
     }
@@ -357,8 +790,13 @@ const Flights: FunctionComponent = () => {
   }, [activeCurrencies])
 
   const handleSearchFlights = async () => {
-    if (!from || !to || !departure) {
+    if (!fromAirport || !toAirport || !departure) {
       setSearchError("Please fill in all required fields")
+      return
+    }
+
+    if (tripType === "round_trip" && !returnDate) {
+      setSearchError("Please select return date for round trip")
       return
     }
 
@@ -367,65 +805,42 @@ const Flights: FunctionComponent = () => {
       setSearchError("")
       setFlights([])
 
-      // Enhanced mock flight search with more realistic data
-      const mockFlights: Flight[] = [
-        {
-          id: "BG101",
-          airline: "Biman Bangladesh Airlines",
-          from: from,
-          to: to,
-          departure: "10:00 AM",
-          arrival: "2:00 PM",
-          duration: "4h 0m",
-          price: 15000,
-          currency: "BDT",
-          flightNumber: "BG-101",
-          aircraft: "Boeing 737-800",
-          availableSeats: 45,
-        },
-        {
-          id: "US205",
-          airline: "US-Bangla Airlines",
-          from: from,
-          to: to,
-          departure: "2:30 PM",
-          arrival: "6:45 PM",
-          duration: "4h 15m",
-          price: 18500,
-          currency: "BDT",
-          flightNumber: "BS-205",
-          aircraft: "ATR 72-600",
-          availableSeats: 23,
-        },
-        {
-          id: "NV301",
-          airline: "Novoair",
-          from: from,
-          to: to,
-          departure: "6:15 PM",
-          arrival: "10:30 PM",
-          duration: "4h 15m",
-          price: 16800,
-          currency: "BDT",
-          flightNumber: "VQ-301",
-          aircraft: "Embraer E145",
-          availableSeats: 12,
-        },
-      ]
+      const searchParams: FlightSearchRequest = {
+        from_airport: fromAirport,
+        to_airport: toAirport,
+        departure_date: departure,
+        return_date: tripType === "round_trip" ? returnDate : undefined,
+        passengers: passengers,
+        booking_class: bookingClass,
+        trip_type: tripType,
+      }
 
-      setTimeout(() => {
-        setFlights(mockFlights)
-        setIsSearchingFlights(false)
-      }, 1500)
+      const response = await flightAPI.searchFlights(searchParams)
+
+      if (response.success) {
+        setFlights(response.data.flights)
+        setCurrentSearchId(response.data.search_id)
+
+        if (response.data.flights.length === 0) {
+          setSearchError("No flights found for your search criteria")
+        }
+      } else {
+        setSearchError("Failed to search flights")
+      }
     } catch (error) {
       setSearchError("Failed to search flights. Please try again.")
       console.error("Flight search error:", error)
+      setFlights([])
+    } finally {
       setIsSearchingFlights(false)
     }
   }
 
   // Handle flight booking
-  const handleBookFlight = (flight: Flight) => {
+  const handleBookFlight = async (flight: Flight) => {
+    // Track flight click
+    await flightAPI.trackFlightClick(flight.id, currentSearchId)
+
     if (!isAuthenticated) {
       // Store the intended booking in localStorage and redirect to login
       localStorage.setItem(
@@ -446,38 +861,24 @@ const Flights: FunctionComponent = () => {
   }
 
   // Confirm booking
-  const handleConfirmBooking = async (bookingData: any) => {
+  const handleConfirmBooking = async (bookingData: BookingRequest) => {
     try {
       setIsBooking(true)
       setBookingError("")
 
-      // Add flight details to booking data
-      const completeBookingData = {
-        ...bookingData,
-        flight_details: {
-          airline: selectedFlight?.airline,
-          flight_number: selectedFlight?.flightNumber,
-          from: selectedFlight?.from,
-          to: selectedFlight?.to,
-          departure: selectedFlight?.departure,
-          arrival: selectedFlight?.arrival,
-          duration: selectedFlight?.duration,
-          aircraft: selectedFlight?.aircraft,
-        },
-        user_id: user?.id,
-        status: "confirmed",
+      const response = await flightAPI.createBooking(bookingData)
+
+      if (response.success) {
+        setBookingSuccess(true)
+        setShowBookingModal(false)
+
+        // Show success message and redirect to dashboard after delay
+        setTimeout(() => {
+          navigate("/dashboard")
+        }, 2000)
+      } else {
+        setBookingError("Failed to complete booking. Please try again.")
       }
-
-      // Call API to save booking
-      await flightAPI.createBooking(completeBookingData)
-
-      setBookingSuccess(true)
-      setShowBookingModal(false)
-
-      // Show success message and redirect to dashboard after delay
-      setTimeout(() => {
-        navigate("/dashboard")
-      }, 2000)
     } catch (error) {
       console.error("Booking error:", error)
       setBookingError("Failed to complete booking. Please try again.")
@@ -486,11 +887,12 @@ const Flights: FunctionComponent = () => {
     }
   }
 
-  // Handle weather search
+  // Handle weather search (unchanged)
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!search.trim()) {
       setSearching(false)
+      const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"]
       fetchWeatherForCities(defaultCities)
       return
     }
@@ -500,44 +902,28 @@ const Flights: FunctionComponent = () => {
     setWeatherError("")
 
     try {
-      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${search.trim()}&appid=${API_KEY}&units=metric`
-      const response = await fetch(url)
-      if (!response.ok) throw new Error(`Failed to fetch weather for ${search.trim()}`)
-
-      const data = await response.json()
-      const first = data.list[0]
-
-      setWeatherData([
-        {
-          city: data.city.name,
-          temperature: first.main.temp,
-          condition: first.weather[0].main,
-          description: first.weather[0].description,
-          humidity: first.main.humidity,
-          windSpeed: first.wind.speed,
-        },
-      ])
+      const weatherResult = await weatherAPI.getWeatherForCity(search.trim())
+      setWeatherData([weatherResult])
     } catch (err) {
       setWeatherError("Failed to fetch weather data.")
       setWeatherData([])
+      console.error("Weather search error:", err)
     } finally {
       setIsLoadingWeather(false)
     }
   }
 
-  // Handle currency search
+  // Handle currency search (unchanged)
   const handleCurrencySearch = (e: React.FormEvent) => {
     e.preventDefault()
     const code = currencySearch.trim().toUpperCase()
     if (!code) {
-      setActiveCurrencies(DEFAULT_CURRENCIES)
+      setActiveCurrencies(["EUR", "USD", "CAD"])
       return
     }
 
-    if (!DEFAULT_CURRENCIES.includes(code)) {
-      setActiveCurrencies([...DEFAULT_CURRENCIES, code])
-    } else {
-      setActiveCurrencies(DEFAULT_CURRENCIES)
+    if (!activeCurrencies.includes(code)) {
+      setActiveCurrencies([...activeCurrencies, code])
     }
   }
 
@@ -583,26 +969,67 @@ const Flights: FunctionComponent = () => {
             {/* Flight Search Form */}
             <div className={styles.searchForm}>
               {searchError && <div className={styles.errorMessage}>{searchError}</div>}
+
+              {/* Trip Type Selection */}
+              <div className={styles.tripTypeRow}>
+                <label>
+                  <input
+                    type="radio"
+                    value="one_way"
+                    checked={tripType === "one_way"}
+                    onChange={(e) => setTripType(e.target.value as "one_way")}
+                  />
+                  One Way
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="round_trip"
+                    checked={tripType === "round_trip"}
+                    onChange={(e) => setTripType(e.target.value as "round_trip")}
+                  />
+                  Round Trip
+                </label>
+              </div>
+
               <div className={styles.formRow}>
+                {/* From Airport Search */}
                 <div className={styles.inputGroup}>
                   <label>From</label>
-                  <input
-                    type="text"
-                    placeholder="City or airport"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label>To</label>
-                  <input
-                    type="text"
-                    placeholder="City or airport"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                    required
-                  />
+                  <div className={styles.airportSearchContainer}>
+                    <input
+                      type="text"
+                      placeholder="Search city or airport"
+                      value={fromAirportSearch}
+                      onChange={(e) => {
+                        setFromAirportSearch(e.target.value)
+                        setShowFromDropdown(true)
+                      }}
+                      onFocus={() => setShowFromDropdown(true)}
+                      required
+                    />
+                    {showFromDropdown && (
+                      <div className={styles.airportDropdown}>
+                        {getFilteredAirports(fromAirportSearch).map((airport) => (
+                          <div
+                            key={airport.code}
+                            className={styles.airportOption}
+                            onClick={() => {
+                              setFromAirport(airport.code)
+                              setFromAirportSearch(`${airport.city} (${airport.code})`)
+                              setShowFromDropdown(false)
+                            }}
+                          >
+                            <div className={styles.airportCode}>{airport.code}</div>
+                            <div className={styles.airportDetails}>
+                              <div className={styles.airportCity}>{airport.city}</div>
+                              <div className={styles.airportName}>{airport.name}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -617,6 +1044,20 @@ const Flights: FunctionComponent = () => {
                     required
                   />
                 </div>
+
+                {tripType === "round_trip" && (
+                  <div className={styles.inputGroup}>
+                    <label>Return</label>
+                    <input
+                      type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                      min={departure || new Date().toISOString().split("T")[0]}
+                      required
+                    />
+                  </div>
+                )}
+
                 <div className={styles.inputGroup}>
                   <label>Passengers</label>
                   <select value={passengers} onChange={(e) => setPassengers(Number.parseInt(e.target.value))}>
@@ -625,6 +1066,15 @@ const Flights: FunctionComponent = () => {
                         {num} {num === 1 ? "Passenger" : "Passengers"}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Class</label>
+                  <select value={bookingClass} onChange={(e) => setBookingClass(e.target.value)}>
+                    <option value="economy">Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First Class</option>
                   </select>
                 </div>
               </div>
@@ -639,24 +1089,33 @@ const Flights: FunctionComponent = () => {
         {/* Flight Results Section */}
         {flights.length > 0 && (
           <div className={styles.contentSection}>
-            <h2 className={styles.sectionTitle}>Available Flights</h2>
+            <h2 className={styles.sectionTitle}>Available Flights ({flights.length} found)</h2>
             <div className={styles.flightResults}>
               {flights.map((flight) => (
                 <div key={flight.id} className={styles.flightCard}>
                   <div className={styles.flightInfo}>
                     <div className={styles.flightHeader}>
                       <div className={styles.flightRoute}>
-                        <span className={styles.flightCity}>{flight.from}</span>
+                        <span className={styles.flightCity}>{flight.from_airport.city}</span>
                         <span className={styles.flightArrow}>→</span>
-                        <span className={styles.flightCity}>{flight.to}</span>
+                        <span className={styles.flightCity}>{flight.to_airport.city}</span>
                       </div>
-                      <div className={styles.flightNumber}>{flight.flightNumber}</div>
+                      <div className={styles.flightNumber}>{flight.flight_number}</div>
+                      {flight.status !== "scheduled" && (
+                        <div className={`${styles.flightStatus} ${styles[flight.status]}`}>
+                          {flight.status.toUpperCase()}
+                        </div>
+                      )}
                     </div>
 
                     <div className={styles.flightDetails}>
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Airline:</span>
-                        <span>{flight.airline}</span>
+                        <span>{flight.airline.name}</span>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Aircraft:</span>
+                        <span>{flight.aircraft.model}</span>
                       </div>
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Duration:</span>
@@ -664,42 +1123,57 @@ const Flights: FunctionComponent = () => {
                       </div>
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Departure:</span>
-                        <span>{flight.departure}</span>
+                        <span>{new Date(flight.departure_datetime).toLocaleString()}</span>
                       </div>
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Arrival:</span>
-                        <span>{flight.arrival}</span>
+                        <span>{new Date(flight.arrival_datetime).toLocaleString()}</span>
                       </div>
-                      {flight.aircraft && (
-                        <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Aircraft:</span>
-                          <span>{flight.aircraft}</span>
-                        </div>
-                      )}
-                      {flight.availableSeats && (
-                        <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Available Seats:</span>
-                          <span className={styles.availableSeats}>{flight.availableSeats} left</span>
-                        </div>
-                      )}
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Available Seats:</span>
+                        <span className={styles.availableSeats}>{flight.available_seats} left</span>
+                      </div>
+
+                      {/* Amenities */}
+                      <div className={styles.amenities}>
+                        {flight.meal_included && <span className={styles.amenity}>🍽️ Meal</span>}
+                        {flight.wifi_available && <span className={styles.amenity}>📶 WiFi</span>}
+                        {flight.entertainment_available && <span className={styles.amenity}>🎬 Entertainment</span>}
+                        {flight.power_outlet_available && <span className={styles.amenity}>🔌 Power</span>}
+                      </div>
                     </div>
                   </div>
 
                   <div className={styles.flightPrice}>
                     <div className={styles.priceInfo}>
+                      {flight.base_price !== flight.current_price && (
+                        <span className={styles.originalPrice}>
+                          {flight.currency} {flight.base_price.toLocaleString()}
+                        </span>
+                      )}
                       <span className={styles.price}>
-                        {flight.currency} {flight.price.toLocaleString()}
+                        {flight.currency} {flight.current_price.toLocaleString()}
                       </span>
                       <span className={styles.priceLabel}>per person</span>
                       {passengers > 1 && (
                         <span className={styles.totalPrice}>
-                          Total: {flight.currency} {(flight.price * passengers).toLocaleString()}
+                          Total: {flight.currency} {(flight.current_price * passengers).toLocaleString()}
                         </span>
                       )}
                     </div>
 
-                    <button className={styles.bookButton} onClick={() => handleBookFlight(flight)}>
-                      {isAuthenticated ? "Book Now" : "Login to Book"}
+                    <button
+                      className={styles.bookButton}
+                      onClick={() => handleBookFlight(flight)}
+                      disabled={flight.available_seats <= 0 || flight.status !== "scheduled" || !flight.is_active}
+                    >
+                      {flight.available_seats <= 0
+                        ? "Sold Out"
+                        : flight.status !== "scheduled"
+                          ? flight.status.charAt(0).toUpperCase() + flight.status.slice(1)
+                          : isAuthenticated
+                            ? "Book Now"
+                            : "Login to Book"}
                     </button>
                   </div>
                 </div>
@@ -726,7 +1200,7 @@ const Flights: FunctionComponent = () => {
         {/* Booking Error */}
         {bookingError && <div className={styles.errorMessage}>{bookingError}</div>}
 
-        {/* Weather Forecast Section */}
+        {/* Weather Forecast Section - Unchanged */}
         <div className={styles.contentSection}>
           <h2 className={styles.sectionTitle}>Real-Time Weather Forecast for Bangladesh</h2>
 
@@ -753,7 +1227,7 @@ const Flights: FunctionComponent = () => {
                     attribution="&copy; OpenStreetMap contributors"
                   />
                   <TileLayer
-                    url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
+                    url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${WEATHER_API_KEY}`}
                     attribution="&copy; OpenWeatherMap"
                   />
                 </MapContainer>
@@ -781,6 +1255,7 @@ const Flights: FunctionComponent = () => {
                 onClick={() => {
                   setSearch("")
                   setSearching(false)
+                  const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"]
                   fetchWeatherForCities(defaultCities)
                 }}
                 className={styles.resetButton}
@@ -809,7 +1284,7 @@ const Flights: FunctionComponent = () => {
           </div>
         </div>
 
-        {/* Currency Exchange Section - Simplified */}
+        {/* Currency Exchange Section - Unchanged */}
         <div className={styles.currencySection}>
           <h2 className={styles.currencyTitle}>Real-Time Currency Exchange Rates</h2>
 
@@ -826,12 +1301,12 @@ const Flights: FunctionComponent = () => {
               <button type="submit" className={styles.currencySearchButton}>
                 Search
               </button>
-              {activeCurrencies.length > DEFAULT_CURRENCIES.length && (
+              {activeCurrencies.length > 3 && (
                 <button
                   type="button"
                   onClick={() => {
                     setCurrencySearch("")
-                    setActiveCurrencies(DEFAULT_CURRENCIES)
+                    setActiveCurrencies(["EUR", "USD", "CAD"])
                   }}
                   className={styles.resetButton}
                 >
