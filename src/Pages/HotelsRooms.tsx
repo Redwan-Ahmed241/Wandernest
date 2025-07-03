@@ -4,6 +4,7 @@ import { useCallback, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Styles/HotelsRooms.module.css"
 import Layout from "../App/Layout"
+import { useAuth } from "../Authentication/auth-context"
 
 // Define interfaces
 interface Hotel {
@@ -118,6 +119,7 @@ const checkRatingMatch = (rating: number, filterRating: string): boolean => {
 
 const HotelsRooms: FunctionComponent = () => {
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
 
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState("")
@@ -454,7 +456,11 @@ const HotelsRooms: FunctionComponent = () => {
                           className={styles.bookNowButton}
                           onClick={e => {
                             e.stopPropagation();
-                            navigate('/hotel-book', { state: { hotel } });
+                            if (!isAuthenticated) {
+                              navigate('/login');
+                            } else {
+                              navigate('/hotel-book', { state: { hotel } });
+                            }
                           }}
                         >
                           Book Now

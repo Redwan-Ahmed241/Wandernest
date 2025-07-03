@@ -2,6 +2,7 @@ import { FunctionComponent, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Styles/Packages.module.css';
 import Layout from '../App/Layout';
+import { useAuth } from "../Authentication/auth-context";
 
 const FILTER_OPTIONS = {
   Destination: ['All', 'Sundarbans', "Cox's Bazar", 'Srimangal', 'Rangamati', 'Bandarban'],
@@ -98,6 +99,7 @@ const Packages: FunctionComponent = () => {
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [confirmError, setConfirmError] = useState('');
+  const { isAuthenticated } = useAuth();
 
   // Fetch packages from API
   useEffect(() => {
@@ -297,7 +299,14 @@ const Packages: FunctionComponent = () => {
                                 <button
                                   className={styles.createCustomPackage}
                                   type="button"
-                                  onClick={e => { e.stopPropagation(); navigate('/confirm-book', { state: { pkg } }); }}
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    if (!isAuthenticated) {
+                                      navigate('/login');
+                                    } else {
+                                      navigate('/confirm-book', { state: { pkg } });
+                                    }
+                                  }}
                                 >
                                   Book Now
                                 </button>

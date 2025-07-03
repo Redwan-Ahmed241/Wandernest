@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from "../Authentication/auth-context";
 
 const API_URL = 'https://wander-nest-ad3s.onrender.com/api/hotels/';
 
 const HotelBook: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const passedHotel = location.state?.hotel;
   const hotelId = passedHotel?.id;
   const [hotel, setHotel] = useState<any>(passedHotel || null);
@@ -19,6 +22,12 @@ const HotelBook: React.FC = () => {
     guests: 1,
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      navigate("/login", { replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   useEffect(() => {
     if (hotel) return;
