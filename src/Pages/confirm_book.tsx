@@ -308,7 +308,7 @@ const ConfirmBook: React.FC = () => {
           <div className={styles.optionsSection}>
             {/* Transport */}
             <div ref={optionRefs.transport} className={`${styles.optionRow} ${activeOption === 'transport' ? 'active' : ''}`.trim()}>
-              <span className={styles.optionLabel}>Select Transport</span>
+              <span className={styles.optionLabel}>Select Flight</span>
               <button
                 type="button"
                 className={styles.skipToggleBtn}

@@ -336,19 +336,22 @@
 
 .hotelMeta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 8px;
 }
 
 .hotelLocation {
   color: #888;
-  font-size: 12px;
+  font-size: 13px;
+  margin-bottom: 2px;
 }
 
-.hotelPrice {
-  color: #abb79a;
-  font-weight: 600;
-  font-size: 14px;
+.hotelPrice { color: #23a36c;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
 
 /* Amenities Section */
@@ -535,4 +538,24 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+.bookNowButton {
+  width: auto;
+  margin-top: 16px;
+  padding: 12px 40px;
+  background: linear-gradient(90deg, #5cb98e 0%, #4ca678 100%);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(76, 166, 120, 0.10);
+  display: block;
+}
+.bookNowButton:hover {
+  background: linear-gradient(90deg, #4ca678 0%, #5cb98e 100%);
+  box-shadow: 0 6px 24px rgba(76, 166, 120, 0.18);
 }

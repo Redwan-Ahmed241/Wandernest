@@ -40,6 +40,7 @@ import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
 import ConfirmBook from "./Pages/confirm_book"
 import FPass from "./Pages/fpass"
+import HotelBook from "./Pages/HotelBook"
 
 
 // Protected Route Component
@@ -139,6 +140,9 @@ const AppRoutes: React.FC = () => {
 
       {/* New Route */}
       <Route path="/fpass" element={<FPass />} />
+
+      {/* New Route */}
+      <Route path="/hotel-book" element={<HotelBook />} />
     </Routes>
   )
 }

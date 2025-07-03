@@ -13,7 +13,7 @@ interface Hotel {
   location: string
   image_url: string
   price: number
-  rating: number
+  star: number
   amenities: string[]
   roomTypes: string[]
 }
@@ -31,7 +31,6 @@ interface Review {
 interface FilterOptions {
   price: string
   rating: string
-  amenities: string
   location: string
   roomType: string
 }
@@ -39,7 +38,6 @@ interface FilterOptions {
 const FILTERS: { key: keyof FilterOptions; label: string; options: string[] }[] = [
   { key: "price", label: "Price Range", options: ["Any", "Under 3000", "3000-7000", "7000+"] },
   { key: "rating", label: "Star Rating", options: ["Any", "5 Star", "4 Star", "3 Star"] },
-  { key: "amenities", label: "Amenities", options: ["Any", "Pool", "WiFi", "Breakfast", "Parking"] },
   { key: "location", label: "Location", options: ["Any", "Dhaka", "Beachfront", "Mountain View", "Countryside"] },
   { key: "roomType", label: "Room Type", options: ["Any", "Single", "Double", "Suite", "Family"] },
 ]
@@ -85,15 +83,7 @@ const MOCK_REVIEWS: Review[] = [
     likes: 12,
     dislikes: 0,
   },
-  {
-    id: "2",
-    userName: "Kashem",
-    date: "Oct 28, 2025",
-    rating: 5,
-    comment: "Affordable and convenient location.",
-    likes: 8,
-    dislikes: 2,
-  },
+  
   {
     id: "3",
     userName: "Anonna",
@@ -134,7 +124,6 @@ const HotelsRooms: FunctionComponent = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOptions>({
     price: "Any",
     rating: "Any",
-    amenities: "Any",
     location: "Any",
     roomType: "Any",
   })
@@ -153,6 +142,10 @@ const HotelsRooms: FunctionComponent = () => {
   // Loading states
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
   const [searchError, setSearchError] = useState("")
+
+  // Sorting state
+  const [sortKey, setSortKey] = useState<'price' | 'star' | 'name'>('price');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Load hotels on component mount
   useEffect(() => {
@@ -176,11 +169,11 @@ const HotelsRooms: FunctionComponent = () => {
         name: hotel.name || "Unknown Hotel",
         description: hotel.description || "No description available",
         location: hotel.location || "Unknown Location",
-        image_url: hotel.image_url || "/placeholder.svg?height=200&width=300",
-        price: hotel.price || 0,
-        rating: hotel.rating || 0,
+        image_url: hotel.image_url || hotel.image || "/placeholder.svg?height=200&width=300",
+        price: parseFloat(hotel.price) || 0,
+        star: hotel.star || 0,
         amenities: hotel.amenities || [],
-        roomTypes: hotel.roomTypes || [],
+        roomTypes: hotel.roomTypes || (hotel.type ? [hotel.type] : []),
       }))
 
       setHotels(transformedHotels)
@@ -233,24 +226,78 @@ const HotelsRooms: FunctionComponent = () => {
     setOpenFilter(openFilter === filterKey ? null : filterKey)
   }
 
-  // Search and filter hotels - NOW FUNCTIONS ARE AVAILABLE
+  // Extract main city/area from location (first word or comma-separated part)
+  const extractCity = (location: string) => {
+    if (!location) return '';
+    // Try to get the first comma-separated part, or first word
+    return location.split(',')[0].trim();
+  };
+  const cityOptions = ['Any', ...Array.from(new Set(hotels.map(h => extractCity(h.location).toLowerCase()))).filter(Boolean)]
+    .map(city => city.charAt(0).toUpperCase() + city.slice(1))
+    .sort((a, b) => a.localeCompare(b));
+
+  // Fallback static options
+  const staticAmenityOptions = ['Any', 'Pool', 'WiFi', 'Breakfast', 'Parking'];
+  const staticRoomTypeOptions = ['Any', 'Single', 'Double', 'Suite', 'Family'];
+  const staticStarOptions = ['Any', '5 Star', '4 Star', '3 Star'];
+
+  // Use dynamic options if available, otherwise fallback to static
+  const amenityOptions = ['Any', ...Array.from(new Set(hotels.flatMap(h => h.amenities || []))).filter(Boolean).sort((a, b) => a.localeCompare(b))];
+  const roomTypeOptions = ['Any', ...Array.from(new Set(hotels.flatMap(h => h.roomTypes || []))).filter(Boolean).map(rt => rt.charAt(0).toUpperCase() + rt.slice(1)).sort((a, b) => a.localeCompare(b))];
+  if (!roomTypeOptions.includes('Single')) {
+    roomTypeOptions.push('Single');
+  }
+  const starOptions = ['Any', ...Array.from(new Set(hotels.map(h => h.star))).filter(Boolean).sort((a, b) => b - a).map(star => `${star} Star`)];
+
+  const amenityFilterOptions = amenityOptions.length > 1 ? amenityOptions : staticAmenityOptions;
+  const roomTypeFilterOptions = roomTypeOptions.length > 1 ? roomTypeOptions : staticRoomTypeOptions;
+  const starFilterOptions = starOptions.length > 1 ? starOptions : staticStarOptions;
+
+  // Replace FILTERS with all dynamic options (fallback to static if needed)
+  const dynamicFilters = FILTERS.map(filter => {
+    if (filter.key === 'location') return { ...filter, options: cityOptions };
+    if (filter.key === 'roomType') return { ...filter, options: roomTypeFilterOptions };
+    if (filter.key === 'rating') return { ...filter, options: starFilterOptions };
+    return filter;
+  });
+
+  // Update filter logic to match city substring
   const filteredHotels = hotels.filter((hotel) => {
-    const query = searchQuery.toLowerCase()
+    const query = searchQuery.toLowerCase();
     const matchesSearch =
       !query ||
       hotel.name.toLowerCase().includes(query) ||
       hotel.description.toLowerCase().includes(query) ||
-      hotel.location.toLowerCase().includes(query)
+      hotel.location.toLowerCase().includes(query);
 
-    // Add filter logic here based on selectedFilters
-    const matchesPrice = selectedFilters.price === "Any" || checkPriceRange(hotel.price, selectedFilters.price)
-    const matchesRating = selectedFilters.rating === "Any" || checkRatingMatch(hotel.rating, selectedFilters.rating)
-    const matchesAmenities = selectedFilters.amenities === "Any" || hotel.amenities.includes(selectedFilters.amenities)
-    const matchesLocation = selectedFilters.location === "Any" || hotel.location.includes(selectedFilters.location)
-    const matchesRoomType = selectedFilters.roomType === "Any" || hotel.roomTypes.includes(selectedFilters.roomType)
+    const matchesPrice = selectedFilters.price === "Any" || checkPriceRange(hotel.price, selectedFilters.price);
+    // Star rating: exact match
+    const matchesRating = selectedFilters.rating === "Any" || `${hotel.star} Star` === selectedFilters.rating;
+    const matchesLocation = selectedFilters.location === "Any" || extractCity(hotel.location).toLowerCase() === selectedFilters.location.toLowerCase();
+    let hotelRoomTypes: string[] = [];
+    if (Array.isArray(hotel.roomTypes)) {
+      hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) => rt.trim());
+    } else if (typeof (hotel.roomTypes as any) === 'string') {
+      hotelRoomTypes = [(hotel.roomTypes as string).trim()];
+    }
+    const matchesRoomType = selectedFilters.roomType === "Any" || hotelRoomTypes.some(rt => rt.toLowerCase() === selectedFilters.roomType.toLowerCase());
 
-    return matchesSearch && matchesPrice && matchesRating && matchesAmenities && matchesLocation && matchesRoomType
-  })
+    return matchesSearch && matchesPrice && matchesRating && matchesLocation && matchesRoomType;
+  });
+
+  // Sorting logic
+  const sortedHotels = [...filteredHotels].sort((a, b) => {
+    if (sortKey === 'price') {
+      return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+    } else if (sortKey === 'star') {
+      return sortOrder === 'asc' ? a.star - b.star : b.star - a.star;
+    } else if (sortKey === 'name') {
+      return sortOrder === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    }
+    return 0;
+  });
 
   // Navigation functions
   const onHotelClick = useCallback(
@@ -294,7 +341,7 @@ const HotelsRooms: FunctionComponent = () => {
             {/* Filters */}
             <div className={styles.filtersSection}>
               <div className={styles.filtersRow}>
-                {FILTERS.map((filter) => (
+                {dynamicFilters.map((filter) => (
                   <div key={filter.key} className={styles.filterContainer}>
                     <button
                       className={`${styles.filterButton} ${openFilter === filter.key ? styles.active : ""}`}
@@ -392,8 +439,8 @@ const HotelsRooms: FunctionComponent = () => {
             {/* Hotels Grid */}
             {!isLoadingHotels && (
               <div className={styles.hotelsGrid}>
-                {filteredHotels.length > 0 ? (
-                  filteredHotels.map((hotel) => (
+                {sortedHotels.length > 0 ? (
+                  sortedHotels.map((hotel) => (
                     <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
                       <img src={hotel.image_url || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
                       <div className={styles.hotelInfo}>
@@ -403,6 +450,15 @@ const HotelsRooms: FunctionComponent = () => {
                           <span className={styles.hotelLocation}>{hotel.location}</span>
                           {hotel.price > 0 && <span className={styles.hotelPrice}>৳{hotel.price}/night</span>}
                         </div>
+                        <button
+                          className={styles.bookNowButton}
+                          onClick={e => {
+                            e.stopPropagation();
+                            navigate('/hotel-book', { state: { hotel } });
+                          }}
+                        >
+                          Book Now
+                        </button>
                       </div>
                     </div>
                   ))
