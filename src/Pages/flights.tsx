@@ -552,8 +552,8 @@ const BookingModal: React.FC<{
       passport_number: "",
       passport_expiry: "",
       passenger_type: "adult",
-      seat_preference: "",
-      meal_preference: "",
+      seat_preference: "window",
+      meal_preference: "vegan",
     })),
   )
   const [contactEmail, setContactEmail] = useState("")
