@@ -459,6 +459,29 @@
   font-size: 0.9rem;
 }
 
+/* Trip Type Selection */
+.tripTypeRow {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.tripTypeRow label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1c170d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tripTypeRow input[type="radio"] {
+  accent-color: #abb79a;
+  margin-right: 6px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .heroTitle {
