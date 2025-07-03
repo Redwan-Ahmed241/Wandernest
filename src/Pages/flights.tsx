@@ -195,7 +195,7 @@ const flightAPI = {
 
   // Search flights
   searchFlights: async (searchParams: FlightSearchRequest): Promise<FlightSearchResponse> => {
-    const response = await fetch(`${API_BASE_URL}/flights/search/`, {
+    const response = await fetch(`${API_BASE_URL}/flights/flightsearch/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
