@@ -178,6 +178,204 @@ interface CurrencyRate {
   change: string
 }
 
+// Comprehensive list of nationalities
+const NATIONALITIES = [
+  "Afghan",
+  "Albanian",
+  "Algerian",
+  "American",
+  "Andorran",
+  "Angolan",
+  "Antiguans",
+  "Argentinean",
+  "Armenian",
+  "Australian",
+  "Austrian",
+  "Azerbaijani",
+  "Bahamian",
+  "Bahraini",
+  "Bangladeshi",
+  "Barbadian",
+  "Barbudans",
+  "Batswana",
+  "Belarusian",
+  "Belgian",
+  "Belizean",
+  "Beninese",
+  "Bhutanese",
+  "Bolivian",
+  "Bosnian",
+  "Brazilian",
+  "British",
+  "Bruneian",
+  "Bulgarian",
+  "Burkinabe",
+  "Burmese",
+  "Burundian",
+  "Cambodian",
+  "Cameroonian",
+  "Canadian",
+  "Cape Verdean",
+  "Central African",
+  "Chadian",
+  "Chilean",
+  "Chinese",
+  "Colombian",
+  "Comoran",
+  "Congolese",
+  "Costa Rican",
+  "Croatian",
+  "Cuban",
+  "Cypriot",
+  "Czech",
+  "Danish",
+  "Djibouti",
+  "Dominican",
+  "Dutch",
+  "East Timorese",
+  "Ecuadorean",
+  "Egyptian",
+  "Emirian",
+  "Equatorial Guinean",
+  "Eritrean",
+  "Estonian",
+  "Ethiopian",
+  "Fijian",
+  "Filipino",
+  "Finnish",
+  "French",
+  "Gabonese",
+  "Gambian",
+  "Georgian",
+  "German",
+  "Ghanaian",
+  "Greek",
+  "Grenadian",
+  "Guatemalan",
+  "Guinea-Bissauan",
+  "Guinean",
+  "Guyanese",
+  "Haitian",
+  "Herzegovinian",
+  "Honduran",
+  "Hungarian",
+  "I-Kiribati",
+  "Icelander",
+  "Indian",
+  "Indonesian",
+  "Iranian",
+  "Iraqi",
+  "Irish",
+  "Israeli",
+  "Italian",
+  "Ivorian",
+  "Jamaican",
+  "Japanese",
+  "Jordanian",
+  "Kazakhstani",
+  "Kenyan",
+  "Kittian and Nevisian",
+  "Kuwaiti",
+  "Kyrgyz",
+  "Laotian",
+  "Latvian",
+  "Lebanese",
+  "Liberian",
+  "Libyan",
+  "Liechtensteiner",
+  "Lithuanian",
+  "Luxembourger",
+  "Macedonian",
+  "Malagasy",
+  "Malawian",
+  "Malaysian",
+  "Maldivan",
+  "Malian",
+  "Maltese",
+  "Marshallese",
+  "Mauritanian",
+  "Mauritian",
+  "Mexican",
+  "Micronesian",
+  "Moldovan",
+  "Monacan",
+  "Mongolian",
+  "Moroccan",
+  "Mosotho",
+  "Motswana",
+  "Mozambican",
+  "Namibian",
+  "Nauruan",
+  "Nepalese",
+  "New Zealander",
+  "Ni-Vanuatu",
+  "Nicaraguan",
+  "Nigerian",
+  "Nigerien",
+  "North Korean",
+  "Northern Irish",
+  "Norwegian",
+  "Omani",
+  "Pakistani",
+  "Palauan",
+  "Panamanian",
+  "Papua New Guinean",
+  "Paraguayan",
+  "Peruvian",
+  "Polish",
+  "Portuguese",
+  "Qatari",
+  "Romanian",
+  "Russian",
+  "Rwandan",
+  "Saint Lucian",
+  "Salvadoran",
+  "Samoan",
+  "San Marinese",
+  "Sao Tomean",
+  "Saudi",
+  "Scottish",
+  "Senegalese",
+  "Serbian",
+  "Seychellois",
+  "Sierra Leonean",
+  "Singaporean",
+  "Slovakian",
+  "Slovenian",
+  "Solomon Islander",
+  "Somali",
+  "South African",
+  "South Korean",
+  "Spanish",
+  "Sri Lankan",
+  "Sudanese",
+  "Surinamer",
+  "Swazi",
+  "Swedish",
+  "Swiss",
+  "Syrian",
+  "Taiwanese",
+  "Tajik",
+  "Tanzanian",
+  "Thai",
+  "Togolese",
+  "Tongan",
+  "Trinidadian or Tobagonian",
+  "Tunisian",
+  "Turkish",
+  "Tuvaluan",
+  "Ugandan",
+  "Ukrainian",
+  "Uruguayan",
+  "Uzbekistani",
+  "Venezuelan",
+  "Vietnamese",
+  "Welsh",
+  "Yemenite",
+  "Zambian",
+  "Zimbabwean",
+]
+
 // Updated API Service Functions
 const flightAPI = {
   // Get airports for search autocomplete
@@ -195,7 +393,7 @@ const flightAPI = {
 
   // Search flights
   searchFlights: async (searchParams: FlightSearchRequest): Promise<FlightSearchResponse> => {
-    const response = await fetch(`${API_BASE_URL}/flights/flightsearch/`, {
+    const response = await fetch(`${API_BASE_URL}/flights/search/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -350,13 +548,13 @@ const BookingModal: React.FC<{
       email: "",
       phone: "",
       date_of_birth: "",
-      nationality: "Bangladeshi",
+      nationality: "",
       passport_number: "",
       passport_expiry: "",
       passenger_type: "adult",
       seat_preference: "window",
-      meal_preference: "non_vegetarian",
-    })),
+      meal_preference: "vegetarian",
+    }))
   )
   const [contactEmail, setContactEmail] = useState("")
   const [contactPhone, setContactPhone] = useState("")
@@ -374,14 +572,28 @@ const BookingModal: React.FC<{
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate required fields
+    // Enhanced validation
     const isValid =
-      passengerDetails.every((p) => p.first_name.trim() && p.last_name.trim() && p.email.trim()) &&
+      passengerDetails.every(
+        (p) =>
+          p.first_name.trim() && p.last_name.trim() && p.email.trim() && p.nationality.trim() && p.date_of_birth.trim(),
+      ) &&
       contactEmail.trim() &&
       contactPhone.trim()
 
     if (!isValid) {
-      alert("Please fill in all required fields")
+      alert("Please fill in all required fields including nationality and date of birth")
+      return
+    }
+
+    // Additional validation for international flights
+    const hasInternationalPassengers = passengerDetails.some((p) => p.nationality !== "Bangladeshi")
+    const missingPassportInfo = passengerDetails.some(
+      (p) => p.nationality !== "Bangladeshi" && (!p.passport_number.trim() || !p.passport_expiry.trim()),
+    )
+
+    if (hasInternationalPassengers && missingPassportInfo) {
+      alert("Passport number and expiry date are required for international passengers")
       return
     }
 
@@ -400,7 +612,7 @@ const BookingModal: React.FC<{
           : undefined,
       },
       special_requests: specialRequests,
-      total_amount: flight.current_price * passengers, // Use current_price
+      total_amount: flight.current_price * passengers,
       currency: flight.currency,
     }
 
@@ -514,6 +726,7 @@ const BookingModal: React.FC<{
                       onChange={(e) => handlePassengerChange(index, "title", e.target.value)}
                       required
                     >
+                      <option value="">Select...</option>
                       <option value="mr">Mr</option>
                       <option value="ms">Ms</option>
                       <option value="mrs">Mrs</option>
@@ -528,6 +741,7 @@ const BookingModal: React.FC<{
                       onChange={(e) => handlePassengerChange(index, "passenger_type", e.target.value)}
                       required
                     >
+                      <option value="">Select...</option>
                       <option value="adult">Adult</option>
                       <option value="child">Child</option>
                       <option value="infant">Infant</option>
@@ -585,29 +799,47 @@ const BookingModal: React.FC<{
                   </div>
                   <div className={styles.inputGroup}>
                     <label>Nationality *</label>
-                    <input
-                      type="text"
+                    <select
                       value={passenger.nationality}
                       onChange={(e) => handlePassengerChange(index, "nationality", e.target.value)}
                       required
-                    />
+                    >
+                      <option value="">Select nationality</option>
+                      {NATIONALITIES.map((nationality) => (
+                        <option key={nationality} value={nationality}>
+                          {nationality}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
-                    <label>Passport Number</label>
+                    <label>
+                      Passport Number {passenger.nationality !== "Bangladeshi" && passenger.nationality ? "*" : ""}
+                    </label>
                     <input
                       type="text"
                       value={passenger.passport_number}
                       onChange={(e) => handlePassengerChange(index, "passport_number", e.target.value)}
+                      required={passenger.nationality !== "Bangladeshi" && passenger.nationality !== ""}
+                      placeholder={
+                        passenger.nationality === "Bangladeshi"
+                          ? "Optional for domestic flights"
+                          : "Required for international passengers"
+                      }
                     />
                   </div>
                   <div className={styles.inputGroup}>
-                    <label>Passport Expiry</label>
+                    <label>
+                      Passport Expiry {passenger.nationality !== "Bangladeshi" && passenger.nationality ? "*" : ""}
+                    </label>
                     <input
                       type="date"
                       value={passenger.passport_expiry}
                       onChange={(e) => handlePassengerChange(index, "passport_expiry", e.target.value)}
+                      required={passenger.nationality !== "Bangladeshi" && passenger.nationality !== ""}
+                      min={new Date().toISOString().split("T")[0]} // Passport should not be expired
                     />
                   </div>
                 </div>
@@ -618,6 +850,7 @@ const BookingModal: React.FC<{
                       value={passenger.seat_preference}
                       onChange={(e) => handlePassengerChange(index, "seat_preference", e.target.value)}
                     >
+                      <option value="">Select...</option>
                       <option value="window">Window</option>
                       <option value="aisle">Aisle</option>
                       <option value="middle">Middle</option>
@@ -628,12 +861,20 @@ const BookingModal: React.FC<{
                     <select
                       value={passenger.meal_preference}
                       onChange={(e) => handlePassengerChange(index, "meal_preference", e.target.value)}
+                      disabled={!flight.meal_included}
                     >
-                      <option value="non_vegetarian">Non-Vegetarian</option>
-                      <option value="vegetarian">Vegetarian</option>
-                      <option value="halal">Halal</option>
-                      <option value="kosher">Kosher</option>
-                      <option value="vegan">Vegan</option>
+                      {flight.meal_included ? (
+                        <>
+                          <option value="">Select...</option>
+                          <option value="vegetarian">Vegetarian</option>
+                          <option value="non_vegetarian">Non-Vegetarian</option>
+                          <option value="halal">Halal</option>
+                          <option value="kosher">Kosher</option>
+                          <option value="vegan">Vegan</option>
+                        </>
+                      ) : (
+                        <option value="">No meal service on this flight</option>
+                      )}
                     </select>
                   </div>
                 </div>
@@ -1018,6 +1259,45 @@ const Flights: FunctionComponent = () => {
                               setFromAirport(airport.code)
                               setFromAirportSearch(`${airport.city} (${airport.code})`)
                               setShowFromDropdown(false)
+                            }}
+                          >
+                            <div className={styles.airportCode}>{airport.code}</div>
+                            <div className={styles.airportDetails}>
+                              <div className={styles.airportCity}>{airport.city}</div>
+                              <div className={styles.airportName}>{airport.name}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* To Airport Search */}
+                <div className={styles.inputGroup}>
+                  <label>To</label>
+                  <div className={styles.airportSearchContainer}>
+                    <input
+                      type="text"
+                      placeholder="Search city or airport"
+                      value={toAirportSearch}
+                      onChange={(e) => {
+                        setToAirportSearch(e.target.value)
+                        setShowToDropdown(true)
+                      }}
+                      onFocus={() => setShowToDropdown(true)}
+                      required
+                    />
+                    {showToDropdown && (
+                      <div className={styles.airportDropdown}>
+                        {getFilteredAirports(toAirportSearch).map((airport) => (
+                          <div
+                            key={airport.code}
+                            className={styles.airportOption}
+                            onClick={() => {
+                              setToAirport(airport.code)
+                              setToAirportSearch(`${airport.city} (${airport.code})`)
+                              setShowToDropdown(false)
                             }}
                           >
                             <div className={styles.airportCode}>{airport.code}</div>
