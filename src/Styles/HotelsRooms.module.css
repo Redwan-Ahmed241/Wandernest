@@ -559,3 +559,152 @@
   background: linear-gradient(90deg, #4ca678 0%, #5cb98e 100%);
   box-shadow: 0 6px 24px rgba(76, 166, 120, 0.18);
 }
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.2s;
+}
+
+.modalClose:hover {
+  color: #333;
+}
+
+.hotelSummary {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.modalImage {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.hotelInfo h3 {
+  margin: 0 0 5px;
+  font-size: 1.2rem;
+}
+
+.hotelPrice {
+  font-weight: 700;
+  color: #23a36c;
+  font-size: 1.1rem;
+}
+
+.bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.formGroup input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 15px;
+}
+
+.formRow .formGroup {
+  flex: 1;
+}
+
+.bookButton {
+  background: #23a36c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.bookButton:hover {
+  background: #1d8a5a;
+}
+
+.successMessage {
+  margin-top: 15px;
+  padding: 10px;
+  background: #d4edda;
+  color: #155724;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.errorMessage {
+  color: #dc3545;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f8d7da;
+  border-radius: 6px;
+}

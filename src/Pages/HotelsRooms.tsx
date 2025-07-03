@@ -1,7 +1,6 @@
 "use client"
 import type { FunctionComponent } from "react"
 import { useCallback, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import styles from "../Styles/HotelsRooms.module.css"
 import Layout from "../App/Layout"
 import { useAuth } from "../Authentication/auth-context"
@@ -117,8 +116,90 @@ const checkRatingMatch = (rating: number, filterRating: string): boolean => {
   return rating >= starCount
 }
 
+// Add BookingModal component inside this file
+interface BookingModalProps {
+  hotel: Hotel;
+  onClose: () => void;
+  onBook: (bookingData: any) => void;
+}
+
+const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    checkin: '',
+    guests: 1,
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setError('');
+    if (!form.name || !form.email || !form.phone || !form.checkin) {
+      setError('Please fill all required fields');
+      return;
+    }
+    onBook({ ...form, hotelId: hotel.id });
+  };
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h2>Book {hotel.name}</h2>
+          <button className={styles.modalClose} onClick={onClose}>×</button>
+        </div>
+        {error && <div className={styles.errorMessage}>{error}</div>}
+        <div className={styles.hotelSummary}>
+          <img src={hotel.image_url || 'https://via.placeholder.com/400x200?text=Hotel+Image'} alt={hotel.name} className={styles.modalImage} />
+          <div className={styles.hotelInfo}>
+            <h3>{hotel.name}</h3>
+            <p>{hotel.location}</p>
+            <p className={styles.hotelPrice}>৳{hotel.price}/night</p>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className={styles.bookingForm}>
+          <div className={styles.formGroup}>
+            <label>Full Name *</label>
+            <input name="name" value={form.name} onChange={handleChange} required />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Email *</label>
+            <input name="email" type="email" value={form.email} onChange={handleChange} required />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Phone *</label>
+            <input name="phone" value={form.phone} onChange={handleChange} required />
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label>Check-in Date *</label>
+              <input name="checkin" type="date" value={form.checkin} onChange={handleChange} min={new Date().toISOString().split('T')[0]} required />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Guests</label>
+              <input name="guests" type="number" min={1} value={form.guests} onChange={handleChange} required />
+            </div>
+          </div>
+          <button type="submit" className={styles.bookButton}>Confirm Booking</button>
+        </form>
+        {submitted && !error && (
+          <div className={styles.successMessage}>Booking submitted successfully!</div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const HotelsRooms: FunctionComponent = () => {
-  const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
   // Search and filter states
@@ -144,6 +225,10 @@ const HotelsRooms: FunctionComponent = () => {
   // Loading states
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
   const [searchError, setSearchError] = useState("")
+
+  // Add state for modal
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null)
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
 
   // Load hotels on component mount
   useEffect(() => {
@@ -306,14 +391,14 @@ const HotelsRooms: FunctionComponent = () => {
   // Navigation functions
   const onHotelClick = useCallback(
     (hotelId: string) => {
-      navigate(`/hotel/${hotelId}`)
+      // navigate(`/hotel/${hotelId}`)
     },
-    [navigate],
+    [],
   )
 
   const onViewAllClick = useCallback(() => {
-    navigate("/hotels")
-  }, [navigate])
+    // navigate("/hotels")
+  }, [])
 
   // Calendar helper functions
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate()
@@ -459,9 +544,10 @@ const HotelsRooms: FunctionComponent = () => {
                           onClick={e => {
                             e.stopPropagation();
                             if (!isAuthenticated) {
-                              navigate('/login');
+                              // navigate('/login');
                             } else {
-                              navigate('/hotel-book', { state: { hotel } });
+                              setSelectedHotel(hotel);
+                              setIsBookingModalOpen(true);
                             }
                           }}
                         >
@@ -481,7 +567,7 @@ const HotelsRooms: FunctionComponent = () => {
               <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
               <div className={styles.amenitiesGrid}>
                 {AMENITY_LINKS.map((amenity) => (
-                  <div key={amenity.key} className={styles.amenityCard} onClick={() => navigate(amenity.route)}>
+                  <div key={amenity.key} className={styles.amenityCard} onClick={() => amenity.route}>
                     <img src={amenity.icon || "/placeholder.svg"} alt={amenity.title} className={styles.amenityIcon} />
                     <div className={styles.amenityInfo}>
                       <h3 className={styles.amenityTitle}>{amenity.title}</h3>
@@ -494,6 +580,33 @@ const HotelsRooms: FunctionComponent = () => {
           </div>
         </div>
       </div>
+      {isBookingModalOpen && selectedHotel && (
+        <BookingModal
+          hotel={selectedHotel}
+          onClose={() => {
+            setIsBookingModalOpen(false);
+            setSelectedHotel(null);
+          }}
+          onBook={(bookingData) => {
+            console.log('Booking data:', bookingData);
+            fetch('https://wander-nest-ad3s.onrender.com/api/bookings/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(bookingData),
+            })
+            .then(res => {
+              if (!res.ok) throw new Error('Booking failed');
+              return res.json();
+            })
+            .then(data => {
+              console.log('Booking successful:', data);
+            })
+            .catch(err => {
+              console.error('Booking error:', err);
+            });
+          }}
+        />
+      )}
     </Layout>
   )
 }
