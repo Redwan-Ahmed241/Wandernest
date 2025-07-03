@@ -18,7 +18,6 @@ const HotelBook: React.FC = () => {
     email: '',
     phone: '',
     checkin: '',
-    checkout: '',
     guests: 1,
   });
   const [submitted, setSubmitted] = useState(false);
@@ -133,8 +132,7 @@ const HotelBook: React.FC = () => {
         <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
         <input name="email" value={form.email} onChange={handleChange} placeholder="Email" type="email" required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
         <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
-        <input name="checkin" value={form.checkin} onChange={handleChange} placeholder="Check-in Date" type="date" required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
-        <input name="checkout" value={form.checkout} onChange={handleChange} placeholder="Check-out Date" type="date" required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
+        <input name="checkin" value={form.checkin} onChange={handleChange} placeholder="Check-in Date" type="date" required min={new Date().toISOString().split('T')[0]} style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
         <input name="guests" value={form.guests} onChange={handleChange} placeholder="Guests" type="number" min={1} required style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }} />
         <button type="submit" style={{ background: '#23a36c', color: '#fff', border: 'none', borderRadius: 8, padding: 12, fontWeight: 700, fontSize: 18, marginTop: 10, cursor: 'pointer' }}>Book Hotel</button>
       </form>
