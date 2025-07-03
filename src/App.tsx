@@ -39,6 +39,7 @@ import Community from "./Pages/Community"
 import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
 import ConfirmBook from "./Pages/confirm_book"
+import FPass from "./Pages/fpass"
 
 
 // Protected Route Component
@@ -135,6 +136,9 @@ const AppRoutes: React.FC = () => {
 
       {/* New Route */}
       <Route path="/profile-settings" element={<ProfileSettings />} />
+
+      {/* New Route */}
+      <Route path="/fpass" element={<FPass />} />
     </Routes>
   )
 }

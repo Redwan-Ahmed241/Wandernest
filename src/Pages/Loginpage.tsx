@@ -211,9 +211,9 @@ export default function TravelLogin() {
           </div>
 
           <div className={styles.forgotPassword}>
-            <a href="#" className={styles.link}>
+            <span className={styles.link} onClick={() => navigate('/fpass')} style={{ cursor: 'pointer' }}>
               Forget your password?
-            </a>
+            </span>
           </div>
 
           <button type="submit" className={styles.button} disabled={isLoading}>

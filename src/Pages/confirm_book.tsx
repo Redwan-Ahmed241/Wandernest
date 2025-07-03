@@ -17,6 +17,7 @@ const ConfirmBook: React.FC = () => {
   const [startDate, setStartDate] = useState('');
   const [travelers, setTravelers] = useState(1);
   const [totalPrice, setTotalPrice] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   // Skip states for options
   const [skipTransport, setSkipTransport] = useState(true);
@@ -42,6 +43,38 @@ const ConfirmBook: React.FC = () => {
   const [warning, setWarning] = useState('');
 
   const navigate = useNavigate();
+
+  const [startDateFocused, setStartDateFocused] = useState(false);
+
+  // Helper to get correct field regardless of casing
+  const getField = (obj: any, key: string) => obj?.[key] || obj?.[key.toLowerCase()] || obj?.[key.charAt(0).toUpperCase() + key.slice(1)] || '';
+
+  // Helper to format date as DD-MM-YYYY
+  const formatDisplayDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  };
+
+  // Helper to convert yyyy-mm-dd to dd-mm-yyyy
+  const toDisplayDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const [yyyy, mm, dd] = dateStr.split('-');
+    if (!yyyy || !mm || !dd) return '';
+    return `${dd}-${mm}-${yyyy}`;
+  };
+
+  // Helper to convert dd-mm-yyyy to yyyy-mm-dd
+  const toInputDateValue = (dateStr: string) => {
+    if (!dateStr) return '';
+    const [dd, mm, yyyy] = dateStr.split('-');
+    if (!dd || !mm || !yyyy) return '';
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -87,6 +120,26 @@ const ConfirmBook: React.FC = () => {
       setTotalPrice((basePrice * travelers).toFixed(2));
     }
   }, [travelers, packageDetails]);
+
+  // Recalculate end date if packageDetails or startDate changes
+  useEffect(() => {
+    if (packageDetails && startDate) {
+      const days = parseInt(getField(packageDetails, 'Days'), 10);
+      if (!isNaN(days)) {
+        const start = new Date(startDate);
+        const end = new Date(start);
+        end.setDate(start.getDate() + days);
+        const yyyy = end.getFullYear();
+        const mm = String(end.getMonth() + 1).padStart(2, '0');
+        const dd = String(end.getDate()).padStart(2, '0');
+        setEndDate(`${yyyy}-${mm}-${dd}`);
+      } else {
+        setEndDate('');
+      }
+    } else {
+      setEndDate('');
+    }
+  }, [packageDetails, startDate]);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
@@ -180,21 +233,27 @@ const ConfirmBook: React.FC = () => {
             <div className={styles.formRow}>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>From</label>
-                <input className={styles.inputField} type="text" value={packageDetails.from_location || ''} readOnly />
+                <input className={styles.inputField} type="text" value={getField(packageDetails, 'Source')} readOnly />
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>To</label>
-                <input className={styles.inputField} type="text" value={packageDetails.title || ''} readOnly />
+                <input className={styles.inputField} type="text" value={getField(packageDetails, 'Destination')} readOnly />
               </div>
             </div>
             <div className={styles.formRow}>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Start Date</label>
-                <input className={styles.inputField} type="date" value={startDate} onChange={handleStartDateChange} />
+                <input
+                  className={styles.inputField}
+                  type="date"
+                  value={startDate}
+                  onChange={e => setStartDate(e.target.value)}
+                  placeholder="dd-mm-yyyy"
+                />
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>End Date</label>
-                <input className={styles.inputField} type="text" value={packageDetails.end_date || ''} readOnly />
+                <input className={styles.inputField} type="text" value={formatDisplayDate(endDate)} readOnly />
               </div>
             </div>
             <div className={styles.formRow}>
