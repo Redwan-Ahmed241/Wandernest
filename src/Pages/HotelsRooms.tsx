@@ -145,10 +145,6 @@ const HotelsRooms: FunctionComponent = () => {
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
   const [searchError, setSearchError] = useState("")
 
-  // Sorting state
-  const [sortKey, setSortKey] = useState<'price' | 'star' | 'name'>('price');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
   // Load hotels on component mount
   useEffect(() => {
     fetchHotels()
@@ -163,21 +159,41 @@ const HotelsRooms: FunctionComponent = () => {
       if (!response.ok) throw new Error("Failed to fetch hotels")
 
       const data = await response.json()
-      const hotelsData = Array.isArray(data) ? data : []
+      console.log("API Response:", data) // Debug log
+      let hotelsData = []
+      if (Array.isArray(data)) {
+        hotelsData = data
+      } else if (Array.isArray(data?.results)) {
+        hotelsData = data.results
+      } else if (Array.isArray(data?.data)) {
+        hotelsData = data.data
+      } else if (Array.isArray(data?.hotels)) {
+        hotelsData = data.hotels
+      } else {
+        throw new Error("Unexpected response structure")
+      }
 
-      // Transform API data to match our interface
+      // Transform API data
       const transformedHotels: Hotel[] = hotelsData.map((hotel: any) => ({
-        id: hotel.id || hotel._id || Math.random().toString(),
+        id: hotel.id || hotel._id || "unknown-id", // Use consistent ID
         name: hotel.name || "Unknown Hotel",
         description: hotel.description || "No description available",
         location: hotel.location || "Unknown Location",
-        image_url: hotel.image_url || hotel.image || "/placeholder.svg?height=200&width=300",
+        image_url: hotel.image_url && hotel.image_url.startsWith('http')
+          ? hotel.image_url
+          : hotel.image_url
+            ? `${MEDIA_BASE}${hotel.image_url}`
+            : hotel.image && hotel.image.startsWith('http')
+              ? hotel.image
+              : hotel.image
+                ? `${MEDIA_BASE}${hotel.image}`
+                : "/placeholder.svg?height=200&width=300",
         price: parseFloat(hotel.price) || 0,
         star: hotel.star || 0,
         amenities: hotel.amenities || [],
         roomTypes: hotel.roomTypes || (hotel.type ? [hotel.type] : []),
       }))
-
+      console.log("Transformed hotels:", transformedHotels) // Debug log
       setHotels(transformedHotels)
     } catch (err) {
       setSearchError("Failed to fetch hotels. Please try again.")
@@ -285,20 +301,6 @@ const HotelsRooms: FunctionComponent = () => {
     const matchesRoomType = selectedFilters.roomType === "Any" || hotelRoomTypes.some(rt => rt.toLowerCase() === selectedFilters.roomType.toLowerCase());
 
     return matchesSearch && matchesPrice && matchesRating && matchesLocation && matchesRoomType;
-  });
-
-  // Sorting logic
-  const sortedHotels = [...filteredHotels].sort((a, b) => {
-    if (sortKey === 'price') {
-      return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
-    } else if (sortKey === 'star') {
-      return sortOrder === 'asc' ? a.star - b.star : b.star - a.star;
-    } else if (sortKey === 'name') {
-      return sortOrder === 'asc'
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name);
-    }
-    return 0;
   });
 
   // Navigation functions
@@ -441,8 +443,8 @@ const HotelsRooms: FunctionComponent = () => {
             {/* Hotels Grid */}
             {!isLoadingHotels && (
               <div className={styles.hotelsGrid}>
-                {sortedHotels.length > 0 ? (
-                  sortedHotels.map((hotel) => (
+                {filteredHotels.length > 0 ? (
+                  filteredHotels.map((hotel) => (
                     <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
                       <img src={hotel.image_url || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
                       <div className={styles.hotelInfo}>
