@@ -357,6 +357,8 @@ export interface Trip {
   status: "upcoming" | "past" | "cancelled"
   created_at: string
   updated_at: string
+  price?: number
+  travelers?: number
 }
 
 export interface ItineraryItem {

@@ -4,6 +4,7 @@ import type React from "react"
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { AuthProvider, useAuth } from "./Authentication/auth-context"
+import { BookingProvider } from "./Context/booking-context"
 
 // All your existing imports
 import ThingsToDo from "./Pages/ThingsToDo"
@@ -154,10 +155,11 @@ const AppRoutes: React.FC = () => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-   
+      <BookingProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </BookingProvider>
     </AuthProvider>
   )
 }

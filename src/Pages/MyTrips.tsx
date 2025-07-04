@@ -10,11 +10,16 @@ import { tripsAPI, type Trip, type ItineraryItem } from "../App/api"
 import { useAuth } from "../Authentication/auth-context"
 import { useBooking } from "../Context/booking-context"
 
+interface ExtendedTrip extends Trip {
+  price?: number;
+  travelers?: number;
+}
+
 const MyTrips: FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "cancelled">("upcoming")
   const [activeView, setActiveView] = useState("overview")
   const [trips, setTrips] = useState<Trip[]>([])
-  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null)
+  const [selectedTrip, setSelectedTrip] = useState<ExtendedTrip | null>(null)
   const [itinerary, setItinerary] = useState<ItineraryItem[]>([])
   const [isLoadingTrips, setIsLoadingTrips] = useState(true)
   const [isLoadingItinerary, setIsLoadingItinerary] = useState(false)
@@ -224,7 +229,7 @@ const MyTrips: FunctionComponent = () => {
                         value={selectedTrip?.id || ""}
                         onChange={(e) => {
                           const trip = allTrips.find((t) => t.id === e.target.value)
-                          setSelectedTrip(trip || null)
+                          setSelectedTrip(trip as ExtendedTrip || null)
                         }}
                         className={styles.tripSelect}
                       >
@@ -314,7 +319,7 @@ const MyTrips: FunctionComponent = () => {
                                 <div className={styles.overviewIcon}>💰</div>
                                 <div className={styles.overviewContent}>
                                   <h3>Total Cost</h3>
-                                  <p>৳{selectedTrip.price?.toLocaleString() || "N/A"}</p>
+                                  <p>৳{(selectedTrip as any)?.price?.toLocaleString() || "N/A"}</p>
                                 </div>
                               </div>
                             </div>

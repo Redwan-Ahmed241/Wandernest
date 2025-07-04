@@ -50,10 +50,10 @@ const DashboardHome: FunctionComponent = () => {
   }, [authLoading, isAuthenticated, refreshBookings])
 
   // Get recent bookings (last 5)
-  const recentBookings = bookings.slice(0, 5)
+  const recentBookings = (bookings || []).slice(0, 5)
 
   // Get upcoming trips
-  const upcomingTrips = bookings
+  const upcomingTrips = (bookings || [])
     .filter((b) => new Date(b.startDate) > new Date() && b.status === "confirmed")
     .slice(0, 3)
 
@@ -107,7 +107,7 @@ const DashboardHome: FunctionComponent = () => {
                           <div className={styles.depth5Frame03}>
                             <div className={styles.depth6Frame02}>
                               <div className={styles.welcomeBack}>
-                                Welcome back, {user?.name || user?.email || "Traveler"}! 👋
+                                Welcome back, {user?.email || "Traveler"}! 👋
                               </div>
                             </div>
                             <div className={styles.depth6Frame11}>
@@ -193,7 +193,7 @@ const DashboardHome: FunctionComponent = () => {
                                 <div className={styles.bookingMeta}>
                                   <div className={styles.bookingPrice}>{formatCurrency(booking.price)}</div>
                                   <div className={`${styles.bookingStatus} ${styles[booking.status]}`}>
-                                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                    {booking.status ? booking.status.charAt(0).toUpperCase() + booking.status.slice(1) : 'Unknown'}
                                   </div>
                                 </div>
                               </div>
@@ -232,36 +232,6 @@ const DashboardHome: FunctionComponent = () => {
                           </div>
                         </div>
                       )}
-
-                      {/* Quick Actions */}
-                      <div className={styles.section}>
-                        <h2 className={styles.sectionTitle}>
-                          <span className={styles.sectionIcon}>⚡</span>
-                          Quick Actions
-                        </h2>
-                        <div className={styles.quickActionsGrid}>
-                          <button className={styles.actionCard} onClick={() => navigate("/packages")}>
-                            <div className={styles.actionIcon}>🎒</div>
-                            <div className={styles.actionTitle}>Browse Packages</div>
-                            <div className={styles.actionDesc}>Discover amazing destinations</div>
-                          </button>
-                          <button className={styles.actionCard} onClick={() => navigate("/create-package")}>
-                            <div className={styles.actionIcon}>✨</div>
-                            <div className={styles.actionTitle}>Create Custom Package</div>
-                            <div className={styles.actionDesc}>Build your perfect trip</div>
-                          </button>
-                          <button className={styles.actionCard} onClick={() => navigate("/hotel-rooms")}>
-                            <div className={styles.actionIcon}>🏨</div>
-                            <div className={styles.actionTitle}>Book Hotels</div>
-                            <div className={styles.actionDesc}>Find the perfect stay</div>
-                          </button>
-                          <button className={styles.actionCard} onClick={() => navigate("/community")}>
-                            <div className={styles.actionIcon}>🌍</div>
-                            <div className={styles.actionTitle}>Join Community</div>
-                            <div className={styles.actionDesc}>Connect with travelers</div>
-                          </button>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>

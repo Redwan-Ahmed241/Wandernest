@@ -7,6 +7,7 @@ import Footer from '../Components/Footer';
 import { AuthProvider, useAuth } from '../Authentication/auth-context';
 import ProfileDropdown from "../Components/profile-dropdown";
 import { Bell, User } from 'react-feather'
+import Layout from '../App/Layout';
 
 
 const cardData = [
@@ -108,7 +109,7 @@ const ThingsToDo: FunctionComponent = () => {
    const { isAuthenticated, loading } = useAuth()
 
   return (
-    
+    <Layout>
       <div className={styles.thingsToDo}>
         <div className={styles.depth0Frame0}>
           <div className={styles.depth1Frame0}>
@@ -266,7 +267,7 @@ const ThingsToDo: FunctionComponent = () => {
         </div>
         <Footer />
       </div>
-    
+    </Layout>
   );
 };
 
