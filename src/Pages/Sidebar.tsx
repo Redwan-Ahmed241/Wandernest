@@ -87,9 +87,28 @@ const Sidebar: FunctionComponent = () => {
           <span className={styles.icon}>N</span> Plan a Trip
         </button>
 
-        <button className={styles.navItem} onClick={() => navigate("/groups")}>
-          <span className={styles.icon}>👥</span> Groups
-        </button>
+        <button
+  className={styles.navItem}
+  title="This feature is coming soon!"
+  disabled
+  style={{ cursor: 'not-allowed', opacity: 0.6 }}
+>
+  <span className={styles.icon}>👥</span>
+  Groups
+  <span
+    style={{
+      marginLeft: '8px',
+      backgroundColor: '#ff9800',
+      color: 'white',
+      fontSize: '0.65rem',
+      padding: '2px 6px',
+      borderRadius: '6px',
+      textTransform: 'uppercase'
+    }}
+  >
+    Upcoming
+  </span>
+</button>
 
         <button className={styles.navItem} onClick={() => navigate("/community")}>
           <span className={styles.icon}>🌐</span> Community
