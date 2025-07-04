@@ -552,8 +552,8 @@ const BookingModal: React.FC<{
       passport_number: "",
       passport_expiry: "",
       passenger_type: "adult",
-      seat_preference: "window",
-      meal_preference: "vegan",
+      seat_preference: "",
+      meal_preference: "",
     })),
   )
   const [contactEmail, setContactEmail] = useState("")
@@ -605,10 +605,10 @@ const BookingModal: React.FC<{
         phone: contactPhone,
         emergency_contact: emergencyContactName
           ? {
-              name: emergencyContactName,
-              phone: emergencyContactPhone,
-              relationship: emergencyContactRelationship,
-            }
+            name: emergencyContactName,
+            phone: emergencyContactPhone,
+            relationship: emergencyContactRelationship,
+          }
           : undefined,
       },
       special_requests: specialRequests,
