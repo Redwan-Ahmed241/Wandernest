@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+"use client"
+import React, { useCallback,useState } from 'react';
 import { FunctionComponent } from 'react';
 import styles from '../Styles/ThingsToDo.module.css';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../App/Layout';
+import Footer from '../Components/Footer';
+import { AuthProvider, useAuth } from '../Authentication/auth-context';
+import ProfileDropdown from "../Components/profile-dropdown";
+import { Bell, User } from 'react-feather'
+
 
 const cardData = [
   {
@@ -97,9 +102,13 @@ const ThingsToDo: FunctionComponent = () => {
   const onDepth4FrameClick = () => {
     // Handle navigation if needed
   };
+   const goHome = useCallback(() => {
+    navigate("/")
+  }, [navigate])
+   const { isAuthenticated, loading } = useAuth()
 
   return (
-    <Layout>
+    
       <div className={styles.thingsToDo}>
         <div className={styles.depth0Frame0}>
           <div className={styles.depth1Frame0}>
@@ -120,29 +129,74 @@ const ThingsToDo: FunctionComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className={styles.depth3Frame1}>
-                <div className={styles.depth4Frame01}>
-                  <div className={styles.depth5Frame01} onClick={() => navigate('/destinations')}>
-                    <div className={styles.stay}>Destinations</div>
-                  </div>
-                  <div className={styles.depth5Frame01} onClick={() => navigate('/hotels-rooms')}>
-                    <div className={styles.stay}>Hotels</div>
-                  </div>
-                  <div className={styles.depth5Frame1}>
-                    <div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                  </div>
-                  <div className={styles.depth5Frame01} onClick={() => navigate('/packages')}>
-                    <div className={styles.stay}>Packages</div>
-                  </div>
-                </div>
-                <img
-                  className={styles.depth5Frame21}
-                  alt="Plan a Trip"
-                  src="/Figma_photoes/ifty.jpg"
-                  onClick={() => navigate('/plan-a-trip')}
-                  style={{ cursor: 'pointer' }}
-                />
-              </div>
+               <div className={styles.navbarWrapper}>
+      <div className={styles.navbar}>
+        <div className={styles.depth3Frame0}>
+          <img className={styles.depth4Frame0} alt="Logo" src="/Figma_photoes/wandernest.svg" />
+          <div className={styles.depth4Frame1} onClick={goHome}>
+            <b className={styles.wandernest}>WanderNest</b>
+          </div>
+        </div>
+
+        <div className={styles.depth3Frame1}>
+          <div className={styles.depth4Frame01}>
+            <div className={styles.depth4Frame1} onClick={() => navigate("/destinations")}>
+              <div className={styles.destinations}>Destinations</div>
+            </div>
+            <div className={styles.depth4Frame1} onClick={() => navigate("/hotels-rooms")}>
+              <div className={styles.destinations}>Hotels</div>
+            </div>
+            <div className={styles.depth5Frame2} title="This feature is coming soon!">
+  <div className={styles.flights} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#999', cursor: 'not-allowed' }}>
+    Flights
+    <span style={{
+      backgroundColor: '#ff9800',
+      color: 'white',
+      fontSize: '0.65rem',
+      padding: '2px 6px',
+      borderRadius: '6px',
+      textTransform: 'uppercase'
+    }}>
+      Upcoming
+    </span>
+  </div>
+</div>
+
+            <div className={styles.depth4Frame1} onClick={() => navigate("/Packages")}>
+              <div className={styles.destinations}>Packages</div>
+            </div>
+          </div>
+
+          <div className={styles.depth4Frame11}>
+            {!loading && (
+              <>
+                {isAuthenticated ? (
+                  // Show profile dropdown when authenticated
+                  <ProfileDropdown />
+                ) : (
+                  // Show login/signup buttons when not authenticated
+                  <>
+                    <div className={styles.depth5Frame01} onClick={() => navigate("/signup")}>
+                      <div className={styles.depth6Frame0}>
+                        <b className={styles.signUp}>Sign up</b>
+                      </div>
+                    </div>
+                    <div className={styles.depth5Frame11} onClick={() => navigate("/login")}>
+                      <div className={styles.depth6Frame0}>
+                        <b className={styles.signUp}>Log in</b>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+            <span title="Notifications">
+              <Bell size={26} style={{ marginLeft: 16, color: '#FFD700', verticalAlign: 'middle', cursor: 'pointer' }} />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
             </div>
             <div className={styles.depth2Frame1}>
               <div className={styles.depth3Frame01}>
@@ -175,127 +229,7 @@ const ThingsToDo: FunctionComponent = () => {
                     <button className={styles.searchButton} type="button">Search</button>
                   </div>
                 </div>
-               {/* <div className={styles.depth4Frame5}>
-                  <div className={styles.depth5Frame05}>
-                    <div className={styles.depth6Frame02}>
-                      <div className={styles.nature}>Nature</div>
-                    </div>
-                  </div>
-                  <div className={styles.depth5Frame05}>
-                    <div className={styles.depth6Frame02}>
-                      <div className={styles.stay}>Food</div>
-                    </div>
-                  </div>
-                  <div className={styles.depth5Frame05}>
-                    <div className={styles.depth6Frame02}>
-                      <div className={styles.stay}>Culture</div>
-                    </div>
-                  </div>
-                  <div className={styles.depth5Frame05}>
-                    <div className={styles.depth6Frame02}>
-                      <div className={styles.stay}>Adventure</div>
-                    </div>
-                  </div>
-                  <div className={styles.depth5Frame4}>
-                    <div className={styles.depth6Frame02}>
-                      <div className={styles.stay}>All</div>
-                    </div>
-                  </div>
-                </div>*/}
-                {/*<div className={styles.depth4Frame4}>
-                  {/*<div className={styles.depth5Frame06}>
-                    <div className={styles.depth6Frame07}>
-                      <img className={styles.depth7Frame0} alt="" src="/Figma_photoes/mangrove.jpg" />
-                      <div className={styles.depth7Frame1}>
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.searchForActivities}>Explore the Sundarbans Mangrove Forest</div>
-                        </div>
-                        <div className={styles.depth8Frame1}>
-                          <div className={styles.immerseYourselfIn}>Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth6Frame07}>
-                      <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/puran_dhaka.jpg" />
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.searchForActivities}>Savor Street Food in Old Dhaka</div>
-                        </div>
-                        <div className={styles.depth8Frame1}>
-                          <div className={styles.immerseYourselfIn}>Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth6Frame07}>
-                      <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/lalbagh.jpg" />
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.searchForActivities}>Discover Historical Sites at Lalbagh Fort</div>
-                        </div>
-                        <div className={styles.depth8Frame1}>
-                          <div className={styles.immerseYourselfIn}>Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth6Frame07}>
-                      <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/burigangha.jpg" />
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.searchForActivities}>Boat Trip on the Buriganga River</div>
-                        </div>
-                        <div className={styles.depth8Frame1}>
-                          <div className={styles.immerseYourselfIn}>Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth6Frame07}>
-                      <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/coxsbazar.jpg" />
-                      <div className={styles.depth1Frame0}>
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.searchForActivities}>Relax at Cox's Bazar Beach</div>
-                        </div>
-                        <div className={styles.depth8Frame1}>
-                          <div className={styles.immerseYourselfIn}>Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.depth5Frame06}>
-                      <div className={styles.depth6Frame07}>
-                        <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/local_cuisine.jpeg" />
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.depth1Frame0}>
-                            <div className={styles.searchForActivities}>Experience Traditional Cuisine in a Local Eatery</div>
-                          </div>
-                          <div className={styles.depth8Frame1}>
-                            <div className={styles.immerseYourselfIn}>Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.depth6Frame07}>
-                        <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/museum.jpeg" />
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.depth1Frame0}>
-                            <div className={styles.searchForActivities}>Visit the National Museum of Bangladesh</div>
-                          </div>
-                          <div className={styles.depth8Frame1}>
-                            <div className={styles.immerseYourselfIn}>Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.depth6Frame07}>
-                        <img className={styles.depth7Frame2} alt="" src="/Figma_photoes/cycling.jpg" />
-                        <div className={styles.depth1Frame0}>
-                          <div className={styles.depth1Frame0}>
-                            <div className={styles.searchForActivities}>Cycle through the Countryside</div>
-                          </div>
-                          <div className={styles.depth8Frame1}>
-                            <div className={styles.immerseYourselfIn}>Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>*/}
+
               </div>
             </div>
           </div>
@@ -330,8 +264,9 @@ const ThingsToDo: FunctionComponent = () => {
             ))
           )}
         </div>
+        <Footer />
       </div>
-    </Layout>
+    
   );
 };
 
