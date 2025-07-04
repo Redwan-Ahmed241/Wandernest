@@ -2,6 +2,7 @@
 
 import { type FunctionComponent, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import styles from "../Styles/CreatePackage.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { packageAPI, type PackageOption, type CreatePackageData } from "../App/api"
@@ -25,19 +26,16 @@ const CreatePackage: FunctionComponent = () => {
   // Package options state
   const [transportOptions, setTransportOptions] = useState<PackageOption[]>([])
   const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([])
-  const [vehicleOptions, setVehicleOptions] = useState<PackageOption[]>([])
   const [guideOptions, setGuideOptions] = useState<PackageOption[]>([])
 
   // Selection state
   const [selectedTransport, setSelectedTransport] = useState<string | null>(null)
   const [selectedHotel, setSelectedHotel] = useState<string | null>(null)
-  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null)
   const [selectedGuide, setSelectedGuide] = useState<string | null>(null)
 
   // Skip state
   const [skipTransport, setSkipTransport] = useState(false)
   const [skipHotel, setSkipHotel] = useState(false)
-  const [skipVehicle, setSkipVehicle] = useState(false)
   const [skipGuide, setSkipGuide] = useState(false)
 
   // Loading and error states
@@ -63,16 +61,14 @@ const CreatePackage: FunctionComponent = () => {
       setIsLoadingOptions(true)
       setError(null)
 
-      const [transport, hotels, vehicles, guides] = await Promise.all([
+      const [transport, hotels, guides] = await Promise.all([
         packageAPI.getTransportOptions(),
         packageAPI.getHotelOptions(),
-        packageAPI.getVehicleOptions(),
         packageAPI.getGuideOptions(),
       ])
 
       setTransportOptions(transport.results || transport)
       setHotelOptions(hotels.results || hotels)
-      setVehicleOptions(vehicles.results || vehicles)
       setGuideOptions(guides.results || guides)
     } catch (error) {
       console.error("Error fetching package options:", error)
@@ -92,14 +88,34 @@ const CreatePackage: FunctionComponent = () => {
     return Array.from({ length: daysInMonth }, (_, i) => i + 1)
   }
 
-  // Date handlers
+  // Check if date is in the past
+  const isPastDate = (year: number, month: number, day: number) => {
+    const date = new Date(year, month, day)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    return date < today
+  }
+
+  // Date handlers with past date validation
   const handleStartDateSelect = (day: number) => {
+    if (isPastDate(startCalendarYear, startCalendarMonth, day)) {
+      return // Don't allow past dates
+    }
     const selectedDate = `${startCalendarYear}-${(startCalendarMonth + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
     setStartDate(selectedDate)
     setShowStartCalendar(false)
   }
 
   const handleEndDateSelect = (day: number) => {
+    if (isPastDate(endCalendarYear, endCalendarMonth, day)) {
+      return // Don't allow past dates
+    }
+    // Also check if end date is before start date
+    const selectedEndDate = new Date(endCalendarYear, endCalendarMonth, day)
+    const startDateObj = new Date(startDate)
+    if (startDate && selectedEndDate <= startDateObj) {
+      return // Don't allow end date before or same as start date
+    }
     const selectedDate = `${endCalendarYear}-${(endCalendarMonth + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
     setEndDate(selectedDate)
     setShowEndCalendar(false)
@@ -198,19 +214,16 @@ const CreatePackage: FunctionComponent = () => {
         budget: Number.parseFloat(budget),
         transport_id: skipTransport ? null : selectedTransport,
         hotel_id: skipHotel ? null : selectedHotel,
-        vehicle_id: skipVehicle ? null : selectedVehicle,
         guide_id: skipGuide ? null : selectedGuide,
         preferences: {
           skip_transport: skipTransport,
           skip_hotel: skipHotel,
-          skip_vehicle: skipVehicle,
+          skip_vehicle: false,
           skip_guide: skipGuide,
         },
       }
 
       const createdPackage = await packageAPI.createPackage(packageData)
-
-      // Navigate to package details or confirmation page
       navigate(`/package/${createdPackage.id}`)
     } catch (error) {
       console.error("Error creating package:", error)
@@ -224,10 +237,10 @@ const CreatePackage: FunctionComponent = () => {
   if (authLoading) {
     return (
       <Layout>
-        <div className="flex flex-row">
+        <div className={styles.flexRow}>
           <Sidebar />
-          <div className="flex-grow flex items-center justify-center p-8">
-            <div className="text-lg text-gray-600">Loading...</div>
+          <div className={`${styles.flexGrow} ${styles.centeredPadding}`}>
+            <div>Loading...</div>
           </div>
         </div>
       </Layout>
@@ -242,68 +255,107 @@ const CreatePackage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="flex flex-row">
+      <div className={styles.flexRow}>
         <Sidebar />
-        <div className="flex-grow">
-          <div className="w-full max-w-[1300px] mx-auto relative flex flex-col items-start justify-start text-left text-base text-[#1c170d] font-['Plus_Jakarta_Sans'] bg-white p-0 box-border rounded-none shadow-none min-h-screen">
-            {/* Header Section */}
-            <div className="w-full flex flex-col items-start pt-8 px-15 mb-6">
-              <h1 className="text-[2.2rem] font-extrabold tracking-[-0.67px] leading-10 mb-7 mt-0 self-start">
-                Create Your Custom Package
-              </h1>
+        <div className={styles.flexGrow}>
+          <div className={styles.createPackage}>
+            <div className={styles.headerSection}>
+              <div className={styles.createYourCustom}>Create Your Custom Package</div>
 
-              {error && <div className="bg-red-50 text-red-600 p-3 rounded-md mb-5 border border-red-200">{error}</div>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
 
-              {/* Form Fields Container */}
-              <div className="flex flex-col items-start gap-6 w-full px-15">
-                {/* First Row - From and To */}
-                <div className="flex flex-row gap-8 w-full max-w-[600px]">
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px]">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">From *</label>
+              {/* Enhanced Form Section */}
+              <div className={styles.enhancedFormSection}>
+                <div className={styles.compactFormGrid}>
+                  {/* Row 1: From and To */}
+                  <div className={styles.compactInputGroup}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      From *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border"
+                      className={styles.enhancedInputField}
                       type="text"
-                      placeholder="Enter departure location"
+                      placeholder="Departure city"
                       value={from}
                       onChange={(e) => setFrom(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px]">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">To *</label>
+
+                  <div className={styles.compactInputGroup}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      To *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border"
+                      className={styles.enhancedInputField}
                       type="text"
-                      placeholder="Enter destination"
+                      placeholder="Destination city"
                       value={to}
                       onChange={(e) => setTo(e.target.value)}
                       required
                     />
                   </div>
-                </div>
 
-                {/* Second Row - Start Date and End Date */}
-                <div className="flex flex-row gap-8 w-full max-w-[600px]">
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px] relative">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">Start Date *</label>
+                  {/* Row 2: Start Date and End Date */}
+                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Start Date *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border cursor-pointer"
+                      className={styles.enhancedInputField}
                       type="text"
                       placeholder="Select start date"
                       value={startDate}
                       readOnly
                       onClick={() => setShowStartCalendar(!showStartCalendar)}
                       required
+                      style={{ cursor: "pointer" }}
                     />
                     {showStartCalendar && (
-                      <div className="absolute z-10 bg-white border border-[#e8decf] rounded-lg shadow-lg p-3 mt-2 top-full">
-                        <div className="font-bold mb-2 text-center flex items-center justify-between">
+                      <div className={styles.enhancedCalendarPopup}>
+                        <div className={styles.enhancedCalendarHeader}>
                           <button
                             type="button"
                             onClick={handleStartPrevMonth}
-                            className="bg-none border-none cursor-pointer text-xl p-1 px-2 rounded hover:bg-gray-100"
+                            className={styles.enhancedCalendarNavButton}
                           >
-                            {"<"}
+                            ←
                           </button>
                           <span>
                             {new Date(startCalendarYear, startCalendarMonth).toLocaleString("default", {
@@ -314,45 +366,61 @@ const CreatePackage: FunctionComponent = () => {
                           <button
                             type="button"
                             onClick={handleStartNextMonth}
-                            className="bg-none border-none cursor-pointer text-xl p-1 px-2 rounded hover:bg-gray-100"
+                            className={styles.enhancedCalendarNavButton}
                           >
-                            {">"}
+                            →
                           </button>
                         </div>
-                        <div className="grid grid-cols-7 gap-1">
-                          {getDaysArray(startCalendarYear, startCalendarMonth).map((day) => (
-                            <div
-                              key={day}
-                              className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors hover:bg-green-100"
-                              onClick={() => handleStartDateSelect(day)}
-                            >
-                              {day}
-                            </div>
-                          ))}
+                        <div className={styles.enhancedCalendarGrid}>
+                          {getDaysArray(startCalendarYear, startCalendarMonth).map((day) => {
+                            const isDisabled = isPastDate(startCalendarYear, startCalendarMonth, day)
+                            return (
+                              <div
+                                key={day}
+                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
+                                onClick={() => !isDisabled && handleStartDateSelect(day)}
+                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
+                              >
+                                {day}
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px] relative">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">End Date *</label>
+
+                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      End Date *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border cursor-pointer"
+                      className={styles.enhancedInputField}
                       type="text"
                       placeholder="Select end date"
                       value={endDate}
                       readOnly
                       onClick={() => setShowEndCalendar(!showEndCalendar)}
                       required
+                      style={{ cursor: "pointer" }}
                     />
                     {showEndCalendar && (
-                      <div className="absolute z-10 bg-white border border-[#e8decf] rounded-lg shadow-lg p-3 mt-2 top-full">
-                        <div className="font-bold mb-2 text-center flex items-center justify-between">
+                      <div className={styles.enhancedCalendarPopup}>
+                        <div className={styles.enhancedCalendarHeader}>
                           <button
                             type="button"
                             onClick={handleEndPrevMonth}
-                            className="bg-none border-none cursor-pointer text-xl p-1 px-2 rounded hover:bg-gray-100"
+                            className={styles.enhancedCalendarNavButton}
                           >
-                            {"<"}
+                            ←
                           </button>
                           <span>
                             {new Date(endCalendarYear, endCalendarMonth).toLocaleString("default", { month: "long" })}{" "}
@@ -361,50 +429,75 @@ const CreatePackage: FunctionComponent = () => {
                           <button
                             type="button"
                             onClick={handleEndNextMonth}
-                            className="bg-none border-none cursor-pointer text-xl p-1 px-2 rounded hover:bg-gray-100"
+                            className={styles.enhancedCalendarNavButton}
                           >
-                            {">"}
+                            →
                           </button>
                         </div>
-                        <div className="grid grid-cols-7 gap-1">
-                          {getDaysArray(endCalendarYear, endCalendarMonth).map((day) => (
-                            <div
-                              key={day}
-                              className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors hover:bg-green-100"
-                              onClick={() => handleEndDateSelect(day)}
-                            >
-                              {day}
-                            </div>
-                          ))}
+                        <div className={styles.enhancedCalendarGrid}>
+                          {getDaysArray(endCalendarYear, endCalendarMonth).map((day) => {
+                            const isDisabled =
+                              isPastDate(endCalendarYear, endCalendarMonth, day) ||
+                              (startDate && new Date(endCalendarYear, endCalendarMonth, day) <= new Date(startDate))
+                            return (
+                              <div
+                                key={day}
+                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
+                                onClick={() => !isDisabled && handleEndDateSelect(day)}
+                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
+                              >
+                                {day}
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     )}
                   </div>
-                </div>
 
-                {/* Third Row - Travelers and Budget */}
-                <div className="flex flex-row gap-8 w-full max-w-[600px]">
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px]">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">Number of Travelers *</label>
+                  {/* Row 3: Travelers and Budget */}
+                  <div className={styles.compactInputGroup}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                        />
+                      </svg>
+                      Travelers *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border"
+                      className={styles.enhancedInputField}
                       type="number"
                       min="1"
                       max="20"
-                      placeholder="Enter number of travelers"
+                      placeholder="1"
                       value={travelers}
                       onChange={(e) => setTravelers(Number.parseInt(e.target.value) || 1)}
                       required
                     />
                   </div>
-                  <div className="flex flex-col items-start gap-1.5 flex-1 min-w-[160px]">
-                    <label className="text-base font-semibold text-[#222] mb-0.5 ml-0.5">Budget (BDT) *</label>
+
+                  <div className={styles.compactInputGroup}>
+                    <label className={styles.enhancedInputLabel}>
+                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                        />
+                      </svg>
+                      Budget (BDT) *
+                    </label>
                     <input
-                      className="w-full min-w-[200px] max-w-[300px] p-3 rounded-lg border border-[#e8decf] text-base bg-white mt-0 box-border"
+                      className={styles.enhancedInputField}
                       type="number"
                       min="0"
                       step="100"
-                      placeholder="Enter your budget"
+                      placeholder="Enter budget"
                       value={budget}
                       onChange={(e) => setBudget(e.target.value)}
                       required
@@ -415,188 +508,113 @@ const CreatePackage: FunctionComponent = () => {
             </div>
 
             {isLoadingOptions ? (
-              <div className="text-center py-15 px-5 text-gray-500 text-lg">
+              <div className={styles.loadingSection}>
                 <div>Loading package options...</div>
               </div>
             ) : (
               <>
                 {/* Transport Section */}
-                <div className="w-full mb-10 px-15 box-border">
-                  <div className="flex flex-row items-center w-full mb-4.5 pl-0.5">
-                    <span className="text-xl font-bold text-[#1c170d] mr-3 self-start">Select Transport</span>
+                <div className={styles.sectionContainer}>
+                  <div className={styles.sectionHeader}>
+                    <span className={styles.sectionTitle}>Select Transport</span>
                     <button
                       type="button"
-                      className="ml-3 bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer mt-0 transition-colors hover:bg-green-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                      className={styles.skipButton}
                       onClick={() => handleSkip(skipTransport, setSkipTransport, setSelectedTransport)}
                     >
                       {skipTransport ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div
-                    className={`grid grid-cols-3 gap-5 w-full xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 ${skipTransport ? "opacity-50 pointer-events-none" : ""}`}
-                  >
+                  <div className={`${styles.cardsGrid} ${skipTransport ? styles.sectionDisabled : ""}`}>
                     {transportOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-gray-100 rounded-xl shadow-sm p-0 flex flex-col items-start cursor-pointer relative transition-all border-2 min-h-[280px] overflow-hidden ${
-                          selectedTransport === option.id
-                            ? "border-green-500 shadow-lg shadow-green-200"
-                            : "border-transparent hover:shadow-md"
-                        }`}
+                        className={`${styles.card} ${selectedTransport === option.id ? styles.selectedCard : ""}`}
                         onClick={() =>
                           handleOptionSelect(option.id, selectedTransport, setSelectedTransport, skipTransport)
                         }
                       >
                         <img
-                          className="w-full h-[220px] object-cover rounded-t-xl mb-0"
+                          className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=220&width=400"}
+                          src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className="p-4 flex flex-col gap-1">
-                          <h3 className="text-base font-semibold m-0 mb-1 text-[#1c170d]">{option.name}</h3>
-                          <p className="text-sm text-gray-600 m-0 leading-relaxed mb-2">{option.description}</p>
-                          <div className="font-bold text-green-600 mt-2 text-lg">৳{option.price}</div>
+                        <div className={styles.cardContent}>
+                          <div className={styles.cardTitle}>{option.name}</div>
+                          <div className={styles.cardDescription}>{option.description}</div>
+                          <div className={styles.cardPrice}>৳{option.price}</div>
+                          {selectedTransport === option.id && <span className={styles.selectedMark}>✔</span>}
                         </div>
-                        {selectedTransport === option.id && (
-                          <span className="absolute top-2 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
-                            ✔
-                          </span>
-                        )}
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Hotels Section */}
-                <div className="w-full mb-10 px-15 box-border">
-                  <div className="flex flex-row items-center w-full mb-4.5 pl-0.5">
-                    <span className="text-xl font-bold text-[#1c170d] mr-3 self-start">Select Hotels</span>
+                <div className={styles.sectionContainer}>
+                  <div className={styles.sectionHeader}>
+                    <span className={styles.sectionTitle}>Select Hotels</span>
                     <button
                       type="button"
-                      className="ml-3 bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer mt-0 transition-colors hover:bg-green-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                      className={styles.skipButton}
                       onClick={() => handleSkip(skipHotel, setSkipHotel, setSelectedHotel)}
                     >
                       {skipHotel ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div
-                    className={`grid grid-cols-3 gap-5 w-full xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 ${skipHotel ? "opacity-50 pointer-events-none" : ""}`}
-                  >
+                  <div className={`${styles.cardsGrid} ${skipHotel ? styles.sectionDisabled : ""}`}>
                     {hotelOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-gray-100 rounded-xl shadow-sm p-0 flex flex-col items-start cursor-pointer relative transition-all border-2 min-h-[280px] overflow-hidden ${
-                          selectedHotel === option.id
-                            ? "border-green-500 shadow-lg shadow-green-200"
-                            : "border-transparent hover:shadow-md"
-                        }`}
+                        className={`${styles.card} ${selectedHotel === option.id ? styles.selectedCard : ""}`}
                         onClick={() => handleOptionSelect(option.id, selectedHotel, setSelectedHotel, skipHotel)}
                       >
                         <img
-                          className="w-full h-[220px] object-cover rounded-t-xl mb-0"
+                          className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=220&width=400"}
+                          src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className="p-4 flex flex-col gap-1">
-                          <h3 className="text-base font-semibold m-0 mb-1 text-[#1c170d]">{option.name}</h3>
-                          <p className="text-sm text-gray-600 m-0 leading-relaxed mb-2">{option.description}</p>
-                          <div className="font-bold text-green-600 mt-2 text-lg">৳{option.price}/night</div>
+                        <div className={styles.cardContent}>
+                          <div className={styles.cardTitle}>{option.name}</div>
+                          <div className={styles.cardDescription}>{option.description}</div>
+                          <div className={styles.cardPrice}>৳{option.price}/night</div>
+                          {selectedHotel === option.id && <span className={styles.selectedMark}>✔</span>}
                         </div>
-                        {selectedHotel === option.id && (
-                          <span className="absolute top-2 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
-                            ✔
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Vehicle Section */}
-                <div className="w-full mb-10 px-15 box-border">
-                  <div className="flex flex-row items-center w-full mb-4.5 pl-0.5">
-                    <span className="text-xl font-bold text-[#1c170d] mr-3 self-start">Select Vehicle</span>
-                    <button
-                      type="button"
-                      className="ml-3 bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer mt-0 transition-colors hover:bg-green-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-                      onClick={() => handleSkip(skipVehicle, setSkipVehicle, setSelectedVehicle)}
-                    >
-                      {skipVehicle ? "Include" : "Skip"}
-                    </button>
-                  </div>
-                  <div
-                    className={`grid grid-cols-3 gap-5 w-full xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 ${skipVehicle ? "opacity-50 pointer-events-none" : ""}`}
-                  >
-                    {vehicleOptions.map((option) => (
-                      <div
-                        key={option.id}
-                        className={`bg-gray-100 rounded-xl shadow-sm p-0 flex flex-col items-start cursor-pointer relative transition-all border-2 min-h-[280px] overflow-hidden ${
-                          selectedVehicle === option.id
-                            ? "border-green-500 shadow-lg shadow-green-200"
-                            : "border-transparent hover:shadow-md"
-                        }`}
-                        onClick={() => handleOptionSelect(option.id, selectedVehicle, setSelectedVehicle, skipVehicle)}
-                      >
-                        <img
-                          className="w-full h-[220px] object-cover rounded-t-xl mb-0"
-                          alt={option.name}
-                          src={option.image || "/placeholder.svg?height=220&width=400"}
-                        />
-                        <div className="p-4 flex flex-col gap-1">
-                          <h3 className="text-base font-semibold m-0 mb-1 text-[#1c170d]">{option.name}</h3>
-                          <p className="text-sm text-gray-600 m-0 leading-relaxed mb-2">{option.description}</p>
-                          <div className="font-bold text-green-600 mt-2 text-lg">৳{option.price}/day</div>
-                        </div>
-                        {selectedVehicle === option.id && (
-                          <span className="absolute top-2 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
-                            ✔
-                          </span>
-                        )}
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Guide Section */}
-                <div className="w-full mb-10 px-15 box-border">
-                  <div className="flex flex-row items-center w-full mb-4.5 pl-0.5">
-                    <span className="text-xl font-bold text-[#1c170d] mr-3 self-start">Hire a Guide</span>
+                <div className={styles.sectionContainer}>
+                  <div className={styles.sectionHeader}>
+                    <span className={styles.sectionTitle}>Hire a Guide</span>
                     <button
                       type="button"
-                      className="ml-3 bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer mt-0 transition-colors hover:bg-green-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                      className={styles.skipButton}
                       onClick={() => handleSkip(skipGuide, setSkipGuide, setSelectedGuide)}
                     >
                       {skipGuide ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div
-                    className={`grid grid-cols-3 gap-5 w-full xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 ${skipGuide ? "opacity-50 pointer-events-none" : ""}`}
-                  >
+                  <div className={`${styles.cardsGrid} ${skipGuide ? styles.sectionDisabled : ""}`}>
                     {guideOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-gray-100 rounded-xl shadow-sm p-0 flex flex-col items-start cursor-pointer relative transition-all border-2 min-h-[280px] overflow-hidden ${
-                          selectedGuide === option.id
-                            ? "border-green-500 shadow-lg shadow-green-200"
-                            : "border-transparent hover:shadow-md"
-                        }`}
+                        className={`${styles.card} ${selectedGuide === option.id ? styles.selectedCard : ""}`}
                         onClick={() => handleOptionSelect(option.id, selectedGuide, setSelectedGuide, skipGuide)}
                       >
                         <img
-                          className="w-full h-[220px] object-cover rounded-t-xl mb-0"
+                          className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=220&width=400"}
+                          src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className="p-4 flex flex-col gap-1">
-                          <h3 className="text-base font-semibold m-0 mb-1 text-[#1c170d]">{option.name}</h3>
-                          <p className="text-sm text-gray-600 m-0 leading-relaxed mb-2">{option.description}</p>
-                          <div className="font-bold text-green-600 mt-2 text-lg">৳{option.price}/day</div>
+                        <div className={styles.cardContent}>
+                          <div className={styles.cardTitle}>{option.name}</div>
+                          <div className={styles.cardDescription}>{option.description}</div>
+                          <div className={styles.cardPrice}>৳{option.price}/day</div>
+                          {selectedGuide === option.id && <span className={styles.selectedMark}>✔</span>}
                         </div>
-                        {selectedGuide === option.id && (
-                          <span className="absolute top-2 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
-                            ✔
-                          </span>
-                        )}
                       </div>
                     ))}
                   </div>
@@ -605,13 +623,13 @@ const CreatePackage: FunctionComponent = () => {
             )}
 
             {/* Confirm section */}
-            <div className="w-full flex flex-col items-center mt-8 mb-16 px-10">
-              <div className="text-base text-gray-700 mb-4.5 text-center">
+            <div className={styles.confirmSection}>
+              <div className={styles.reviewText}>
                 Review your package details and proceed to create your custom travel package.
               </div>
               <button
                 type="button"
-                className="bg-green-700 text-white border-none rounded-lg py-3 px-9 text-lg font-bold cursor-pointer transition-colors hover:bg-green-800 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                className={styles.confirmPackage}
                 onClick={handleCreatePackage}
                 disabled={!isFormValid() || isCreatingPackage}
               >
