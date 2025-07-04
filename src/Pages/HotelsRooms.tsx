@@ -1,6 +1,7 @@
 "use client"
 import type { FunctionComponent } from "react"
-import { useCallback, useState, useEffect } from "react"
+import { useCallback, useState, useEffect, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import styles from "../Styles/HotelsRooms.module.css"
 import Layout from "../App/Layout"
 import { useAuth } from "../Authentication/auth-context"
@@ -35,12 +36,14 @@ interface FilterOptions {
   roomType: string
 }
 
-const FILTERS: { key: keyof FilterOptions; label: string; options: string[] }[] = [
-  { key: "price", label: "Price Range", options: ["Any", "Under 3000", "3000-7000", "7000+"] },
-  { key: "rating", label: "Star Rating", options: ["Any", "5 Star", "4 Star", "3 Star"] },
-  { key: "location", label: "Location", options: ["Any", "Dhaka", "Beachfront", "Mountain View", "Countryside"] },
-  { key: "roomType", label: "Room Type", options: ["Any", "Single", "Double", "Suite", "Family"] },
-]
+const FILTER_OPTIONS = {
+  Price: ['All', 'Under 3000৳', '3000–7000৳', '7000+৳'],
+  Rating: ['All', '5 Star', '4 Star', '3 Star'],
+  Location: ['All', 'Dhaka', 'Chittagong', 'Sylhet', 'Cox\'s Bazar', 'Bandarban'],
+  'Room Type': ['All', 'Single', 'Double', 'Suite', 'Family'],
+}
+
+type FilterKey = keyof typeof FILTER_OPTIONS
 
 const AMENITY_LINKS = [
   {
@@ -83,7 +86,6 @@ const MOCK_REVIEWS: Review[] = [
     likes: 12,
     dislikes: 0,
   },
-  
   {
     id: "3",
     userName: "Anonna",
@@ -97,14 +99,14 @@ const MOCK_REVIEWS: Review[] = [
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
-// Helper functions for filtering - MOVED TO TOP TO AVOID HOISTING ISSUES
+// Helper functions for filtering
 const checkPriceRange = (price: number, range: string): boolean => {
   switch (range) {
-    case "Under 3000":
+    case "Under 3000৳":
       return price < 3000
-    case "3000-7000":
+    case "3000–7000৳":
       return price >= 3000 && price <= 7000
-    case "7000+":
+    case "7000+৳":
       return price > 7000
     default:
       return true
@@ -116,11 +118,11 @@ const checkRatingMatch = (rating: number, filterRating: string): boolean => {
   return rating >= starCount
 }
 
-// Add BookingModal component inside this file
+// Booking Modal Component
 interface BookingModalProps {
-  hotel: Hotel;
-  onClose: () => void;
-  onBook: (bookingData: any) => void;
+  hotel: Hotel
+  onClose: () => void
+  onBook: (bookingData: any) => void
 }
 
 const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) => {
@@ -130,25 +132,25 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) =
     phone: '',
     checkin: '',
     guests: 1,
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
+  })
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
-  };
+    const { name, value } = e.target
+    setForm(f => ({ ...f, [name]: value }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setError('');
+    e.preventDefault()
+    setSubmitted(true)
+    setError('')
     if (!form.name || !form.email || !form.phone || !form.checkin) {
-      setError('Please fill all required fields');
-      return;
+      setError('Please fill all required fields')
+      return
     }
-    onBook({ ...form, hotelId: hotel.id });
-  };
+    onBook({ ...form, hotelId: hotel.id })
+  }
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -196,27 +198,18 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) =
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const HotelsRooms: FunctionComponent = () => {
+  const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
   // Search and filter states
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedFilters, setSelectedFilters] = useState<FilterOptions>({
-    price: "Any",
-    rating: "Any",
-    location: "Any",
-    roomType: "Any",
-  })
-  const [openFilter, setOpenFilter] = useState<string | null>(null)
-
-  // Calendar states
-  const today = new Date()
-  const [calendarMonth, setCalendarMonth] = useState(today.getMonth())
-  const [calendarYear, setCalendarYear] = useState(today.getFullYear())
-  const [selectedDate, setSelectedDate] = useState<{ day: number; month: number; year: number } | null>(null)
+  const [search, setSearch] = useState('')
+  const [openFilter, setOpenFilter] = useState<FilterKey | null>(null)
+  const [selectedFilters, setSelectedFilters] = useState<{ [key in FilterKey]?: string }>({})
+  const filterDropdownRef = useRef<HTMLDivElement>(null)
 
   // Data states
   const [hotels, setHotels] = useState<Hotel[]>([])
@@ -226,7 +219,7 @@ const HotelsRooms: FunctionComponent = () => {
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
   const [searchError, setSearchError] = useState("")
 
-  // Add state for modal
+  // Modal states
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null)
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
 
@@ -234,6 +227,26 @@ const HotelsRooms: FunctionComponent = () => {
   useEffect(() => {
     fetchHotels()
   }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        filterDropdownRef.current &&
+        !filterDropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenFilter(null)
+      }
+    }
+    if (openFilter) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [openFilter])
 
   // Fetch hotels from API
   const fetchHotels = async () => {
@@ -289,104 +302,62 @@ const HotelsRooms: FunctionComponent = () => {
     }
   }
 
-  // Calendar functions
-  const handlePrevMonth = () => {
-    if (calendarMonth === 0) {
-      setCalendarMonth(11)
-      setCalendarYear(calendarYear - 1)
-    } else {
-      setCalendarMonth(calendarMonth - 1)
-    }
-  }
-
-  const handleNextMonth = () => {
-    if (calendarMonth === 11) {
-      setCalendarMonth(0)
-      setCalendarYear(calendarYear + 1)
-    } else {
-      setCalendarMonth(calendarMonth + 1)
-    }
-  }
-
-  const handleDateSelect = (day: number) => {
-    setSelectedDate({
-      day,
-      month: calendarMonth,
-      year: calendarYear,
-    })
-  }
-
   // Filter functions
-  const handleFilterChange = (filterKey: keyof FilterOptions, value: string) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [filterKey]: value,
-    }))
-    setOpenFilter(null)
+  const handleFilterClick = (filter: FilterKey) => {
+    setOpenFilter(openFilter === filter ? null : filter)
   }
 
-  const toggleFilter = (filterKey: string) => {
-    setOpenFilter(openFilter === filterKey ? null : filterKey)
+  const handleOptionSelect = (filter: FilterKey, option: string) => {
+    if (option === 'All') {
+      // Remove the filter for this category
+      const { [filter]: _, ...rest } = selectedFilters
+      setSelectedFilters(rest)
+    } else {
+      setSelectedFilters({ ...selectedFilters, [filter]: option })
+    }
+    setOpenFilter(null)
   }
 
   // Extract main city/area from location (first word or comma-separated part)
   const extractCity = (location: string) => {
-    if (!location) return '';
+    if (!location) return ''
     // Try to get the first comma-separated part, or first word
-    return location.split(',')[0].trim();
-  };
-  const cityOptions = ['Any', ...Array.from(new Set(hotels.map(h => extractCity(h.location).toLowerCase()))).filter(Boolean)]
-    .map(city => city.charAt(0).toUpperCase() + city.slice(1))
-    .sort((a, b) => a.localeCompare(b));
-
-  // Fallback static options
-  const staticAmenityOptions = ['Any', 'Pool', 'WiFi', 'Breakfast', 'Parking'];
-  const staticRoomTypeOptions = ['Any', 'Single', 'Double', 'Suite', 'Family'];
-  const staticStarOptions = ['Any', '5 Star', '4 Star', '3 Star'];
-
-  // Use dynamic options if available, otherwise fallback to static
-  const amenityOptions = ['Any', ...Array.from(new Set(hotels.flatMap(h => h.amenities || []))).filter(Boolean).sort((a, b) => a.localeCompare(b))];
-  const roomTypeOptions = ['Any', ...Array.from(new Set(hotels.flatMap(h => h.roomTypes || []))).filter(Boolean).map(rt => rt.charAt(0).toUpperCase() + rt.slice(1)).sort((a, b) => a.localeCompare(b))];
-  if (!roomTypeOptions.includes('Single')) {
-    roomTypeOptions.push('Single');
+    return location.split(',')[0].trim()
   }
-  const starOptions = ['Any', ...Array.from(new Set(hotels.map(h => h.star))).filter(Boolean).sort((a, b) => b - a).map(star => `${star} Star`)];
 
-  const amenityFilterOptions = amenityOptions.length > 1 ? amenityOptions : staticAmenityOptions;
-  const roomTypeFilterOptions = roomTypeOptions.length > 1 ? roomTypeOptions : staticRoomTypeOptions;
-  const starFilterOptions = starOptions.length > 1 ? starOptions : staticStarOptions;
-
-  // Replace FILTERS with all dynamic options (fallback to static if needed)
-  const dynamicFilters = FILTERS.map(filter => {
-    if (filter.key === 'location') return { ...filter, options: cityOptions };
-    if (filter.key === 'roomType') return { ...filter, options: roomTypeFilterOptions };
-    if (filter.key === 'rating') return { ...filter, options: starFilterOptions };
-    return filter;
-  });
-
-  // Update filter logic to match city substring
+  // Filter hotels by search and selected filters
   const filteredHotels = hotels.filter((hotel) => {
-    const query = searchQuery.toLowerCase();
+    const query = search.toLowerCase()
     const matchesSearch =
       !query ||
       hotel.name.toLowerCase().includes(query) ||
       hotel.description.toLowerCase().includes(query) ||
-      hotel.location.toLowerCase().includes(query);
+      hotel.location.toLowerCase().includes(query)
 
-    const matchesPrice = selectedFilters.price === "Any" || checkPriceRange(hotel.price, selectedFilters.price);
-    // Star rating: exact match
-    const matchesRating = selectedFilters.rating === "Any" || `${hotel.star} Star` === selectedFilters.rating;
-    const matchesLocation = selectedFilters.location === "Any" || extractCity(hotel.location).toLowerCase() === selectedFilters.location.toLowerCase();
-    let hotelRoomTypes: string[] = [];
-    if (Array.isArray(hotel.roomTypes)) {
-      hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) => rt.trim());
-    } else if (typeof (hotel.roomTypes as any) === 'string') {
-      hotelRoomTypes = [(hotel.roomTypes as string).trim()];
-    }
-    const matchesRoomType = selectedFilters.roomType === "Any" || hotelRoomTypes.some(rt => rt.toLowerCase() === selectedFilters.roomType.toLowerCase());
+    const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
+      if (filter === 'Price') {
+        return checkPriceRange(hotel.price, value)
+      }
+      if (filter === 'Rating') {
+        return checkRatingMatch(hotel.star, value)
+      }
+      if (filter === 'Location') {
+        return extractCity(hotel.location).toLowerCase() === value.toLowerCase()
+      }
+      if (filter === 'Room Type') {
+        let hotelRoomTypes: string[] = []
+        if (Array.isArray(hotel.roomTypes)) {
+          hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) => rt.trim())
+        } else if (typeof (hotel.roomTypes as any) === 'string') {
+          hotelRoomTypes = [(hotel.roomTypes as string).trim()]
+        }
+        return hotelRoomTypes.some(rt => rt.toLowerCase() === value.toLowerCase())
+      }
+      return true
+    })
 
-    return matchesSearch && matchesPrice && matchesRating && matchesLocation && matchesRoomType;
-  });
+    return matchesSearch && matchesFilters
+  })
 
   // Navigation functions
   const onHotelClick = useCallback(
@@ -400,213 +371,208 @@ const HotelsRooms: FunctionComponent = () => {
     // navigate("/hotels")
   }, [])
 
-  // Calendar helper functions
-  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate()
-  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1)
-  const weekDays = ["S", "M", "T", "W", "T", "F", "S"]
-  const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay()
+  // Handle booking
+  const handleBookHotel = (hotel: Hotel) => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    setSelectedHotel(hotel)
+    setIsBookingModalOpen(true)
+  }
 
   return (
     <Layout>
       <div className={styles.hotelsContainer}>
-        {/* Main Content */}
-        <div className={styles.mainContent}>
-          {/* Filters Sidebar */}
-          <div className={styles.sidebar}>
-            {/* Search Bar */}
-            <div className={styles.searchSection}>
-              <div className={styles.searchBarContainer}>
-                <img src="/Figma_photoes/search.svg" alt="search" className={styles.searchIcon} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search hotels, rooms..."
-                  className={styles.searchInput}
-                />
-              </div>
-            </div>
+        {/* Header Section */}
+        <div className={styles.groupParent}>
+          <div className={styles.tourPackages2}>Hotels & Rooms</div>
+        </div>
 
-            {/* Filters */}
-            <div className={styles.filtersSection}>
-              <div className={styles.filtersRow}>
-                {dynamicFilters.map((filter) => (
-                  <div key={filter.key} className={styles.filterContainer}>
-                    <button
-                      className={`${styles.filterButton} ${openFilter === filter.key ? styles.active : ""}`}
-                      onClick={() => toggleFilter(filter.key)}
-                      type="button"
-                    >
-                      {selectedFilters[filter.key] || filter.label}
-                      <img src="/Figma_photoes/darrow.svg" alt="▼" className={styles.filterArrow} />
-                    </button>
-                    {openFilter === filter.key && (
-                      <div className={styles.filterDropdown}>
-                        {filter.options.map((option) => (
-                          <div
-                            key={option}
-                            className={`${styles.filterOption} ${selectedFilters[filter.key] === option ? styles.selected : ""}`}
-                            onClick={() => handleFilterChange(filter.key, option)}
-                          >
-                            {option}
+        {/* Search Bar */}
+        <div className={styles.searchBarContainer}>
+          <img
+            src="/Figma_photoes/search.svg"
+            alt="search"
+            className={styles.searchIconInside}
+          />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search hotels, locations..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+
+        {/* Filters and Hotels Grid */}
+        <div className={styles.tourPackagesWrapper}>
+          <div className={styles.tourPackages}>
+            <div className={styles.tourPackages1}>
+              <div className={styles.depth0Frame0}>
+                <div className={styles.depth1Frame0}>
+                  <div className={styles.depth2Frame1}>
+                    <div className={styles.depth3Frame01}>
+                      {/* Filters */}
+                      <div className={styles.depth4Frame2} ref={filterDropdownRef}>
+                        {Object.keys(FILTER_OPTIONS).map(filter => (
+                          <div key={filter} className={styles.depth5Frame03}>
+                            <div
+                              className={
+                                styles.depth6Frame03 +
+                                (selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All' ? ' ' + styles.selected : '')
+                              }
+                              onClick={() => handleFilterClick(filter as FilterKey)}
+                              style={{ cursor: 'pointer', position: 'relative' }}
+                            >
+                              <div className={styles.destinations}>
+                                {selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All'
+                                  ? selectedFilters[filter as FilterKey]
+                                  : filter}
+                              </div>
+                              <img
+                                className={
+                                  styles.depth6Frame1 +
+                                  (openFilter === (filter as FilterKey) ? ' ' + styles.arrowOpen : '')
+                                }
+                                alt=""
+                                src="/Figma_photoes/darrow.svg"
+                              />
+                              {openFilter === (filter as FilterKey) && (
+                                <div className={styles.filterDropdown}>
+                                  {(FILTER_OPTIONS[filter as FilterKey] as string[]).map((option: string) => (
+                                    <div
+                                      key={option}
+                                      className={
+                                        styles.filterDropdownOption +
+                                        (selectedFilters[filter as FilterKey] === option || (!selectedFilters[filter as FilterKey] && option === 'All') ? ' ' + styles.selected : '')
+                                      }
+                                      onClick={() => handleOptionSelect(filter as FilterKey, option)}
+                                    >
+                                      {option}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Calendar */}
-            <div className={styles.calendarSection}>
-              <div className={styles.calendarContainer}>
-                <div className={styles.calendarHeader}>
-                  <button onClick={handlePrevMonth} className={styles.calendarNavBtn}>
-                    {"<"}
-                  </button>
-                  <span className={styles.calendarTitle}>
-                    {new Date(calendarYear, calendarMonth).toLocaleString("default", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <button onClick={handleNextMonth} className={styles.calendarNavBtn}>
-                    {">"}
-                  </button>
-                </div>
-
-                <div className={styles.calendarWeekdays}>
-                  {weekDays.map((day, i) => (
-                    <span key={i} className={styles.weekday}>
-                      {day}
-                    </span>
-                  ))}
-                </div>
-
-                <div className={styles.calendarGrid}>
-                  {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                    <span key={`empty-${i}`} className={styles.emptyDay}></span>
-                  ))}
-                  {daysArray.map((day) => (
-                    <span
-                      key={day}
-                      className={`${styles.calendarDay} ${
-                        selectedDate?.day === day &&
-                        selectedDate?.month === calendarMonth &&
-                        selectedDate?.year === calendarYear
-                          ? styles.selectedDay
-                          : ""
-                      }`}
-                      onClick={() => handleDateSelect(day)}
-                    >
-                      {day}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Hotel Listings */}
-          <div className={styles.contentArea}>
-            {/* Header */}
-            <div className={styles.contentHeader}>
-              <div className={styles.headerText}>
-                <h1 className={styles.title}>Explore Hotels and Rooms</h1>
-                <p className={styles.subtitle}>Find the perfect stay for your travel needs.</p>
-              </div>
-              
-            </div>
-
-            {/* Error Message */}
-            {searchError && <div className={styles.errorMessage}>{searchError}</div>}
-
-            {/* Loading State */}
-            {isLoadingHotels && <div className={styles.loadingText}>Loading hotels...</div>}
-
-            {/* Hotels Grid */}
-            {!isLoadingHotels && (
-              <div className={styles.hotelsGrid}>
-                {filteredHotels.length > 0 ? (
-                  filteredHotels.map((hotel) => (
-                    <div key={hotel.id} className={styles.hotelCard} onClick={() => onHotelClick(hotel.id)}>
-                      <img src={hotel.image_url || "/placeholder.svg"} alt={hotel.name} className={styles.hotelImage} />
-                      <div className={styles.hotelInfo}>
-                        <h3 className={styles.hotelName}>{hotel.name}</h3>
-                        <p className={styles.hotelDescription}>{hotel.description}</p>
-                        <div className={styles.hotelMeta}>
-                          <span className={styles.hotelLocation}>{hotel.location}</span>
-                          {hotel.price > 0 && <span className={styles.hotelPrice}>৳{hotel.price}/night</span>}
+                      {/* Hotels Grid */}
+                      <div className={styles.depth4Frame3}>
+                        <div className={styles.depth5Frame04}>
+                          {isLoadingHotels && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                              Loading hotels...
+                            </div>
+                          )}
+                          {searchError && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                              {searchError}
+                            </div>
+                          )}
+                          {!isLoadingHotels && !searchError && filteredHotels.map(hotel => (
+                            <div
+                              className={styles.depth6Frame07}
+                              key={hotel.id}
+                              onClick={() => onHotelClick(hotel.id)}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              <img className={styles.depth7Frame01} alt="" src={hotel.image_url} />
+                              <div className={styles.depth7Frame11}>
+                                <div className={styles.depth7Frame11}>
+                                  <div className={styles.sundarbansWildlifeExpedition}>{hotel.name}</div>
+                                </div>
+                                <div className={styles.depth8Frame1}>
+                                  <div className={styles.exploreTheWorlds}>{hotel.description}</div>
+                                </div>
+                                <div className={styles.hotelMeta}>
+                                  <span className={styles.hotelLocation}>{hotel.location}</span>
+                                  {hotel.star > 0 && (
+                                    <span className={styles.hotelRating}>
+                                      {'⭐'.repeat(hotel.star)} {hotel.star} Star
+                                    </span>
+                                  )}
+                                </div>
+                                <div className={styles.cardPrice}>৳{hotel.price.toLocaleString()}/night</div>
+                                <button
+                                  className={styles.createCustomPackage}
+                                  type="button"
+                                  onClick={e => {
+                                    e.stopPropagation()
+                                    handleBookHotel(hotel)
+                                  }}
+                                >
+                                  Book Now
+                                </button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <button
-                          className={styles.bookNowButton}
-                          onClick={e => {
-                            e.stopPropagation();
-                            if (!isAuthenticated) {
-                              // navigate('/login');
-                            } else {
-                              setSelectedHotel(hotel);
-                              setIsBookingModalOpen(true);
-                            }
-                          }}
-                        >
-                          Book Now
-                        </button>
+                        {!isLoadingHotels && !searchError && filteredHotels.length === 0 && (
+                          <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                            No hotels found matching your criteria.
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className={styles.noResults}>No hotels found matching your criteria.</div>
-                )}
-              </div>
-            )}
-
-            {/* Local Amenities */}
-            <div className={styles.amenitiesSection}>
-              <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
-              <div className={styles.amenitiesGrid}>
-                {AMENITY_LINKS.map((amenity) => (
-                  <div key={amenity.key} className={styles.amenityCard} onClick={() => amenity.route}>
-                    <img src={amenity.icon || "/placeholder.svg"} alt={amenity.title} className={styles.amenityIcon} />
-                    <div className={styles.amenityInfo}>
-                      <h3 className={styles.amenityTitle}>{amenity.title}</h3>
-                      <p className={styles.amenityDescription}>{amenity.description}</p>
-                    </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Local Amenities */}
+        <div className={styles.amenitiesSection}>
+          <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
+          <div className={styles.amenitiesGrid}>
+            {AMENITY_LINKS.map((amenity) => (
+              <div key={amenity.key} className={styles.amenityCard} onClick={() => navigate(amenity.route)}>
+                <img src={amenity.icon || "/placeholder.svg"} alt={amenity.title} className={styles.amenityIcon} />
+                <div className={styles.amenityInfo}>
+                  <h3 className={styles.amenityTitle}>{amenity.title}</h3>
+                  <p className={styles.amenityDescription}>{amenity.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Booking Modal */}
+        {isBookingModalOpen && selectedHotel && (
+          <BookingModal
+            hotel={selectedHotel}
+            onClose={() => {
+              setIsBookingModalOpen(false)
+              setSelectedHotel(null)
+            }}
+            onBook={(bookingData) => {
+              console.log('Booking data:', bookingData)
+              fetch('https://wander-nest-ad3s.onrender.com/api/bookings/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData),
+              })
+              .then(res => {
+                if (!res.ok) throw new Error('Booking failed')
+                return res.json()
+              })
+              .then(data => {
+                console.log('Booking successful:', data)
+                setIsBookingModalOpen(false)
+                setSelectedHotel(null)
+                alert('Booking submitted successfully!')
+              })
+              .catch(err => {
+                console.error('Booking error:', err)
+                alert('Booking failed. Please try again.')
+              })
+            }}
+          />
+        )}
       </div>
-      {isBookingModalOpen && selectedHotel && (
-        <BookingModal
-          hotel={selectedHotel}
-          onClose={() => {
-            setIsBookingModalOpen(false);
-            setSelectedHotel(null);
-          }}
-          onBook={(bookingData) => {
-            console.log('Booking data:', bookingData);
-            fetch('https://wander-nest-ad3s.onrender.com/api/bookings/', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(bookingData),
-            })
-            .then(res => {
-              if (!res.ok) throw new Error('Booking failed');
-              return res.json();
-            })
-            .then(data => {
-              console.log('Booking successful:', data);
-            })
-            .catch(err => {
-              console.error('Booking error:', err);
-            });
-          }}
-        />
-      )}
     </Layout>
   )
 }
