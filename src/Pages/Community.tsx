@@ -378,54 +378,7 @@ const Community: React.FC = () => {
                       </div>
 
                       {/* Join Travel Groups */}
-                      <div className={styles.section}>
-                        <h2 className={styles.sectionTitle}>
-                          <span role="img" aria-label="group">
-                            👥
-                          </span>{" "}
-                          Join Travel Groups
-                        </h2>
-                        {isLoadingGroups ? (
-                          <div className={styles.loadingSpinner}>Loading travel groups...</div>
-                        ) : groupsError ? (
-                          <div className={styles.errorMessage}>
-                            {groupsError}
-                            <button onClick={fetchGroups} className={styles.retryButton}>
-                              Try Again
-                            </button>
-                          </div>
-                        ) : suggestedGroups.length === 0 ? (
-                          <div className={styles.emptyState}>
-                            <p>No group suggestions at the moment.</p>
-                          </div>
-                        ) : (
-                          <div className={styles.groupsGrid}>
-                            {suggestedGroups.slice(0, 8).map((group) => (
-                              <div key={group.id} className={styles.groupCard}>
-                                <img
-                                  src={group.image || "/placeholder.svg?height=176&width=200"}
-                                  alt={group.name}
-                                  className={styles.groupImage}
-                                />
-                                <div className={styles.groupInfo}>
-                                  <div className={styles.groupName}>{group.name}</div>
-                                  <div className={styles.groupDesc}>{group.description}</div>
-                                  <div className={styles.groupMembers}>
-                                    {group.member_count.toLocaleString()} members
-                                  </div>
-                                  <button
-                                    className={`${styles.joinButton} ${styles.responsiveButton}`}
-                                    onClick={() => handleGroupJoin(group.id)}
-                                    disabled={joinedGroups.has(group.id)}
-                                  >
-                                    {joinedGroups.has(group.id) ? "Joined" : "Join"}
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                     
 
                       {/* Your Groups */}
                       {userGroups.length > 0 && (
