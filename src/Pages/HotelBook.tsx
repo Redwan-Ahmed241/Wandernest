@@ -65,51 +65,60 @@ const HotelBook: React.FC = () => {
     setIsProcessingPayment(true);
     setError('');
 
-    try {
-      // Calculate total amount
-      const totalAmount = (hotel?.price || 0) * form.guests;
-      
-      // Prepare payment data
-      const paymentData = {
-        service_type: 'hotel',
-        service_name: hotel?.name || 'Hotel Booking',
-        service_details: `Hotel booking for ${form.guests} guests`,
-        amount: totalAmount,
-        customer_name: form.name,
-        customer_email: form.email,
-        customer_phone: form.phone,
-        service_data: {
-          hotel_id: hotelId,
-          hotel_name: hotel?.name,
-          checkin_date: form.checkin,
-          guests: form.guests,
-          location: hotel?.location
-        }
-      };
+   try {
+  // Calculate total amount
+  const totalAmount = (hotel?.price || 0) * form.guests;
 
-      // Call Django SSLCommerz endpoint
-      const response = await fetch('https://wander-nest-ad3s.onrender.com/api/sslcommerz/init-payment/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(paymentData)
-      });
+  // Get auth token (assuming it's stored in localStorage)
+  const token = localStorage.getItem('authToken'); // Or use context/store
 
-      const data = await response.json();
+  if (!token) {
+    setError("You must be logged in to make a payment.");
+    return;
+  }
 
-      if (data.status === 'SUCCESS' && data.GatewayPageURL) {
-        // Redirect to SSLCommerz payment gateway
-        window.location.href = data.GatewayPageURL;
-      } else {
-        setError('Payment initialization failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Payment error:', error);
-      setError('Payment failed. Please try again.');
-    } finally {
-      setIsProcessingPayment(false);
+  // Prepare payment data
+  const paymentData = {
+    amount: totalAmount,
+    customer_name: form.name,
+    customer_email: form.email,
+    customer_phone: form.phone,
+    service_type: 'hotel',
+    service_name: hotel?.name || 'Hotel Booking',
+    service_details: `Hotel booking for ${form.guests} guests`,
+    service_data: {
+      hotel_id: hotelId,
+      hotel_name: hotel?.name,
+      checkin_date: form.checkin,
+      guests: form.guests,
+      location: hotel?.location
     }
+  };
+
+  // Call Django SSLCommerz endpoint
+  const response = await fetch('https://wander-nest-ad3s.onrender.com/api/sslcommerz/init-payment/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`  // or Bearer if JWT
+    },
+    body: JSON.stringify(paymentData)
+  });
+
+  const data = await response.json();
+
+  if (data.status === 'SUCCESS' && data.GatewayPageURL) {
+    // Redirect to SSLCommerz payment gateway
+    window.location.href = data.GatewayPageURL;
+  } else {
+    setError('Payment initialization failed. Please try again.');
+  }
+} catch (error) {
+  console.error('Payment error:', error);
+  setError('Payment failed. Please try again.');
+} finally {
+  setIsProcessingPayment(false);
+}
   };
 
   // Robust getRooms function
