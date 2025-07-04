@@ -165,11 +165,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
         },
       }
       console.log("Sending payment data:", paymentData)
+      const token = localStorage.getItem("token"); // or get it from your auth context
+
       const response = await fetch("https://wander-nest-ad3s.onrender.com/initiate-payment/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
+          "Authorization": `Token ${token}`,
         },
         body: JSON.stringify(paymentData),
       })
