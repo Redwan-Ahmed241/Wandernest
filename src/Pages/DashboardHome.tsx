@@ -1,394 +1,83 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import Sidebar from "./Sidebar"
+
+import { type FunctionComponent, useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import styles from "../Styles/DashboardHome.module.css"
 import Layout from "../App/Layout"
-import { userAPI, type UserData, type UserStats } from "../App/api" // FIXED IMPORT PATH
-import { tripsAPI } from "../App/api"
-import { communityAPI } from "../App/api"
-import { flightAPI } from "../App/api"
-import { useAuth } from "../Authentication/auth-context"// Using your existing auth context
+import Sidebar from "./Sidebar"
+import { useAuth } from "../Authentication/auth-context"
+import { useBooking } from "../Context/booking-context"
 
-// ImageUploader Component
-const ImageUploader: React.FC<{
-  currentImage: string
-  onImageChange: (imageUrl: string) => void
-}> = ({ currentImage, onImageChange }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [isUploading, setIsUploading] = useState(false)
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file.")
-        return
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Image size should be less than 5MB.")
-        return
-      }
-
-      setIsUploading(true)
-
-      try {
-        const response = await userAPI.uploadProfileImage(file) // NOW THIS FUNCTION EXISTS
-        onImageChange(response.profile_image || response.profileImage)
-      } catch (error) {
-        console.error("Error uploading image:", error)
-        alert("Failed to upload image. Please try again.")
-      } finally {
-        setIsUploading(false)
-      }
-    }
-  }
-
-  return (
-    <div className={styles.imageUploader}>
-      <div className={styles.profileImageContainer}>
-        <img src={currentImage || "/placeholder.svg"} alt="Profile" className={styles.profileImage} />
-        <button
-          className={`${styles.editImageButton} ${isUploading ? styles.uploading : ""}`}
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploading}
-        >
-          {isUploading ? "..." : "📷"}
-        </button>
-      </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleImageUpload}
-        className={styles.hiddenInput}
-      />
-    </div>
-  )
-}
-
-// EditableField Component
-const EditableField: React.FC<{
-  label: string
-  value: string | number
-  onSave: (value: string | number) => Promise<void>
-  type?: "text" | "number" | "email" | "tel"
-}> = ({ label, value, onSave, type = "text" }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editValue, setEditValue] = useState(value)
-  const [isSaving, setIsSaving] = useState(false)
+// Success notification component
+const BookingNotification: React.FC = () => {
+  const [notification, setNotification] = useState<{ message: string; show: boolean }>({ message: "", show: false })
 
   useEffect(() => {
-    setEditValue(value)
-  }, [value])
-
-  const handleSave = async () => {
-    setIsSaving(true)
-    try {
-      await onSave(editValue)
-      setIsEditing(false)
-    } catch (error) {
-      console.error("Error saving field:", error)
-      alert("Failed to save changes. Please try again.")
-    } finally {
-      setIsSaving(false)
+    const handleBookingSuccess = (event: CustomEvent) => {
+      setNotification({ message: event.detail.message, show: true })
+      setTimeout(() => setNotification((prev) => ({ ...prev, show: false })), 5000)
     }
-  }
 
-  const handleCancel = () => {
-    setEditValue(value)
-    setIsEditing(false)
-  }
+    window.addEventListener("booking-success", handleBookingSuccess as EventListener)
+    return () => window.removeEventListener("booking-success", handleBookingSuccess as EventListener)
+  }, [])
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSave()
-    } else if (e.key === "Escape") {
-      handleCancel()
-    }
-  }
+  if (!notification.show) return null
 
   return (
-    <div className={styles.editableField}>
-      <label className={styles.fieldLabel}>{label}</label>
-      {isEditing ? (
-        <div className={styles.editMode}>
-          <input
-            type={type}
-            value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className={styles.editInput}
-            autoFocus
-            disabled={isSaving}
-          />
-          <div className={styles.editButtons}>
-            <button onClick={handleSave} className={styles.saveButton} disabled={isSaving}>
-              {isSaving ? "..." : "✓"}
-            </button>
-            <button onClick={handleCancel} className={styles.cancelButton} disabled={isSaving}>
-              ✕
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.displayMode}>
-          <span className={styles.fieldValue}>{value}</span>
-          <button onClick={() => setIsEditing(true)} className={styles.editButton}>
-            ✏️
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// UserInfoCard Component
-const UserInfoCard: React.FC<{
-  userData: UserData
-  onUserDataChange: (newData: Partial<UserData>) => void
-  isLoading: boolean
-}> = ({ userData, onUserDataChange, isLoading }) => {
-  const handleFieldSave = async (field: keyof UserData, value: string | number) => {
-    try {
-      const updateData = { [field]: value }
-      await userAPI.updateProfile(updateData)
-      onUserDataChange(updateData)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <div className={styles.userInfoCard}>
-        <h2 className={styles.cardTitle}>Profile Information</h2>
-        <div className={styles.cardContent}>
-          <div className={styles.loadingSpinner}>Loading...</div>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className={styles.userInfoCard}>
-      <h2 className={styles.cardTitle}>Profile Information</h2>
-      <div className={styles.cardContent}>
-        <ImageUploader
-          currentImage={userData.profile_image || ""}
-          onImageChange={(imageUrl) => onUserDataChange({ profile_image: imageUrl })}
-        />
-        <div className={styles.fieldsGrid}>
-          <EditableField
-            label="First Name"
-            value={userData.first_name}
-            onSave={(value) => handleFieldSave("first_name", value as string)}
-          />
-          <EditableField
-            label="Last Name"
-            value={userData.last_name}
-            onSave={(value) => handleFieldSave("last_name", value as string)}
-          />
-          <EditableField
-            label="Username"
-            value={userData.username}
-            onSave={(value) => handleFieldSave("username", value as string)}
-          />
-          <EditableField
-            label="Email"
-            value={userData.email}
-            onSave={(value) => handleFieldSave("email", value as string)}
-            type="email"
-          />
-          {userData.phone && (
-            <EditableField
-              label="Phone Number"
-              value={userData.phone}
-              onSave={(value) => handleFieldSave("phone", value as string)}
-              type="tel"
-            />
-          )}
-          {userData.country && (
-            <EditableField
-              label="Country"
-              value={userData.country}
-              onSave={(value) => handleFieldSave("country", value as string)}
-            />
-          )}
-        </div>
+    <div className={styles.successNotification}>
+      <div className={styles.notificationContent}>
+        <span className={styles.successIcon}>🎉</span>
+        <span>{notification.message}</span>
+        <button onClick={() => setNotification((prev) => ({ ...prev, show: false }))}>×</button>
       </div>
     </div>
   )
 }
 
-// Dashboard Stats Component
-const DashboardStats: React.FC<{ stats: UserStats | null; isLoading: boolean }> = ({ stats, isLoading }) => {
-  if (isLoading) {
-    return (
-      <div className={styles.statsGrid}>
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className={styles.statCard}>
-            <div className={styles.loadingSpinner}>Loading...</div>
-          </div>
-        ))}
-      </div>
-    )
-  }
+const DashboardHome: FunctionComponent = () => {
+  const navigate = useNavigate()
+  const { isAuthenticated, loading: authLoading, user } = useAuth()
+  const { bookings, stats, refreshBookings, isLoading } = useBooking()
 
-  if (!stats) {
-    return (
-      <div className={styles.statsGrid}>
-        <div className={styles.errorMessage}>Failed to load stats</div>
-      </div>
-    )
-  }
-
-  return (
-    <div className={styles.statsGrid}>
-      <div className={styles.statCard}>
-        <div className={styles.statIcon}>✈️</div>
-        <div className={styles.statContent}>
-          <h3 className={styles.statNumber}>{stats.trips_taken}</h3>
-          <p className={styles.statLabel}>Trips Taken</p>
-        </div>
-      </div>
-      <div className={styles.statCard}>
-        <div className={styles.statIcon}>🏨</div>
-        <div className={styles.statContent}>
-          <h3 className={styles.statNumber}>{stats.hotels_booked}</h3>
-          <p className={styles.statLabel}>Hotels Booked</p>
-        </div>
-      </div>
-      <div className={styles.statCard}>
-        <div className={styles.statIcon}>🚗</div>
-        <div className={styles.statContent}>
-          <h3 className={styles.statNumber}>{stats.cars_rented}</h3>
-          <p className={styles.statLabel}>Cars Rented</p>
-        </div>
-      </div>
-      <div className={styles.statCard}>
-        <div className={styles.statIcon}>⭐</div>
-        <div className={styles.statContent}>
-          <h3 className={styles.statNumber}>{stats.average_rating.toFixed(1)}</h3>
-          <p className={styles.statLabel}>Average Rating</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Main Dashboard Component
-const DashboardHome: React.FC = () => {
-  const { user, isAuthenticated, loading: authLoading } = useAuth()
-  const [userData, setUserData] = useState<UserData | null>(null)
-  const [userStats, setUserStats] = useState<UserStats | null>(null)
-  const [isLoadingProfile, setIsLoadingProfile] = useState(true)
-  const [isLoadingStats, setIsLoadingStats] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  // New states for dashboard sections
-  const [trips, setTrips] = useState<any[]>([])
-  const [isLoadingTrips, setIsLoadingTrips] = useState(true)
-  const [tripsError, setTripsError] = useState<string | null>(null)
-
-  const [userBlogs, setUserBlogs] = useState<any[]>([])
-  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true)
-  const [blogsError, setBlogsError] = useState<string | null>(null)
-
-  const [userGroups, setUserGroups] = useState<any[]>([])
-  const [isLoadingGroups, setIsLoadingGroups] = useState(true)
-  const [groupsError, setGroupsError] = useState<string | null>(null)
-
-  // Fetch user data when authenticated
+  // Refresh bookings on mount
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      const fetchUserData = async () => {
-        try {
-          setIsLoadingProfile(true)
-          const profileData = await userAPI.getProfile()
-          setUserData(profileData)
-        } catch (error) {
-          setError("Failed to load profile data")
-        } finally {
-          setIsLoadingProfile(false)
-        }
-      }
-      const fetchUserStats = async () => {
-        try {
-          setIsLoadingStats(true)
-          const statsData = await userAPI.getStats()
-          setUserStats(statsData)
-        } catch (error) {
-          setError("Failed to load stats data")
-        } finally {
-          setIsLoadingStats(false)
-        }
-      }
-      const fetchTrips = async () => {
-        try {
-          setIsLoadingTrips(true)
-          const data = await tripsAPI.getTrips()
-          setTrips(Array.isArray(data) ? data : data.results || [])
-        } catch (error) {
-          setTripsError("Failed to load trips")
-        } finally {
-          setIsLoadingTrips(false)
-        }
-      }
-      const fetchUserBlogs = async () => {
-        try {
-          setIsLoadingBlogs(true)
-          const allBlogs = await communityAPI.getBlogs()
-          // Filter blogs by current user if possible
-          if (user && allBlogs && Array.isArray(allBlogs)) {
-            setUserBlogs(allBlogs.filter((b: any) => b.author?.id === user.id))
-          } else if (allBlogs.results && user) {
-            setUserBlogs(allBlogs.results.filter((b: any) => b.author?.id === user.id))
-          } else {
-            setUserBlogs([])
-          }
-        } catch (error) {
-          setBlogsError("Failed to load blogs")
-        } finally {
-          setIsLoadingBlogs(false)
-        }
-      }
-      const fetchUserGroups = async () => {
-        try {
-          setIsLoadingGroups(true)
-          const groups = await communityAPI.getUserGroups()
-          setUserGroups(Array.isArray(groups) ? groups : groups.results || [])
-        } catch (error) {
-          setGroupsError("Failed to load groups")
-        } finally {
-          setIsLoadingGroups(false)
-        }
-      }
-      fetchUserData()
-      fetchUserStats()
-      fetchTrips()
-      fetchUserBlogs()
-      fetchUserGroups()
+      refreshBookings()
     }
-  }, [authLoading, isAuthenticated, user])
+  }, [authLoading, isAuthenticated, refreshBookings])
 
-  const handleUserDataChange = (newData: Partial<UserData>) => {
-    if (userData) {
-      setUserData((prev) => ({ ...prev!, ...newData }))
-    }
+  // Get recent bookings (last 5)
+  const recentBookings = bookings.slice(0, 5)
+
+  // Get upcoming trips
+  const upcomingTrips = bookings
+    .filter((b) => new Date(b.startDate) > new Date() && b.status === "confirmed")
+    .slice(0, 3)
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+
+  const formatCurrency = (amount: number) => {
+    return `৳${amount.toLocaleString()}`
   }
 
   // Show loading while auth is loading
   if (authLoading) {
     return (
       <Layout>
-        <div className={styles.dashboardContainer}>
+        <div style={{ display: "flex" }}>
           <Sidebar />
-          <main className={styles.mainContent}>
-            <div className={styles.loadingSpinner}>Loading...</div>
-          </main>
+          <div style={{ flex: 1, padding: "40px", textAlign: "center" }}>
+            <div>Loading...</div>
+          </div>
         </div>
       </Layout>
     )
@@ -396,130 +85,190 @@ const DashboardHome: React.FC = () => {
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
-    return (
-      <Layout>
-        <div className={styles.dashboardContainer}>
-          <div className={styles.errorMessage}>Please log in to access the dashboard.</div>
-        </div>
-      </Layout>
-    )
+    navigate("/login")
+    return null
   }
 
   return (
     <Layout>
-      <div className={styles.dashboardContainer}>
+      <BookingNotification />
+      <div style={{ display: "flex" }}>
         <Sidebar />
-        <main className={styles.mainContent}>
-          <div className={styles.dashboardHeader}>
-            <h1 className={styles.dashboardTitle}>Dashboard</h1>
-            <p className={styles.dashboardSubtitle}>
-              Welcome back{user ? `, ${user.first_name}` : ""}! Here's your travel overview.
-            </p>
-          </div>
+        <div className={styles.dashboardHome}>
+          <div className={styles.dashboardWrapper}>
+            <div className={styles.dashboard1}>
+              <div className={styles.depth0Frame0}>
+                <div className={styles.depth1Frame0}>
+                  <div className={styles.depth2Frame1}>
+                    <div className={styles.depth3Frame02}>
+                      {/* Welcome Section */}
+                      <div className={styles.welcomeSection}>
+                        <div className={styles.depth4Frame02}>
+                          <div className={styles.depth5Frame03}>
+                            <div className={styles.depth6Frame02}>
+                              <div className={styles.welcomeBack}>
+                                Welcome back, {user?.name || user?.email || "Traveler"}! 👋
+                              </div>
+                            </div>
+                            <div className={styles.depth6Frame11}>
+                              <div className={styles.readyForYour}>Ready for your next adventure?</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-          <div className={styles.dashboardContent}>
-            {/* Stats Cards */}
-            <div className={styles.statsGrid}>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>✈️</div>
-                <div className={styles.statContent}>
-                  <h3 className={styles.statNumber}>{isLoadingStats ? '...' : userStats?.trips_taken ?? 0}</h3>
-                  <p className={styles.statLabel}>Total Trips</p>
-                </div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>📝</div>
-                <div className={styles.statContent}>
-                  <h3 className={styles.statNumber}>{isLoadingBlogs ? '...' : userBlogs.length}</h3>
-                  <p className={styles.statLabel}>Blogs Posted</p>
-                </div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>📦</div>
-                <div className={styles.statContent}>
-                  <h3 className={styles.statNumber}>{isLoadingTrips ? '...' : trips.length}</h3>
-                  <p className={styles.statLabel}>Bookings</p>
-                </div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>👥</div>
-                <div className={styles.statContent}>
-                  <h3 className={styles.statNumber}>{isLoadingGroups ? '...' : userGroups.length}</h3>
-                  <p className={styles.statLabel}>Joined Groups</p>
+                      {/* Stats Cards */}
+                      <div className={styles.statsSection}>
+                        <div className={styles.statsGrid}>
+                          <div className={styles.statCard}>
+                            <div className={styles.statIcon}>📊</div>
+                            <div className={styles.statContent}>
+                              <div className={styles.statNumber}>{stats.totalBookings}</div>
+                              <div className={styles.statLabel}>Total Bookings</div>
+                            </div>
+                          </div>
+                          <div className={styles.statCard}>
+                            <div className={styles.statIcon}>✈️</div>
+                            <div className={styles.statContent}>
+                              <div className={styles.statNumber}>{stats.upcomingTrips}</div>
+                              <div className={styles.statLabel}>Upcoming Trips</div>
+                            </div>
+                          </div>
+                          <div className={styles.statCard}>
+                            <div className={styles.statIcon}>💰</div>
+                            <div className={styles.statContent}>
+                              <div className={styles.statNumber}>{formatCurrency(stats.totalSpent)}</div>
+                              <div className={styles.statLabel}>Total Spent</div>
+                            </div>
+                          </div>
+                          <div className={styles.statCard}>
+                            <div className={styles.statIcon}>🏆</div>
+                            <div className={styles.statContent}>
+                              <div className={styles.statNumber}>{stats.completedTrips}</div>
+                              <div className={styles.statLabel}>Completed Trips</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Recent Bookings */}
+                      <div className={styles.section}>
+                        <div className={styles.sectionHeader}>
+                          <h2 className={styles.sectionTitle}>
+                            <span className={styles.sectionIcon}>📋</span>
+                            Recent Bookings
+                          </h2>
+                          <button className={styles.viewAllButton} onClick={() => navigate("/my-trips")}>
+                            View All
+                          </button>
+                        </div>
+
+                        {isLoading ? (
+                          <div className={styles.loadingSpinner}>Loading bookings...</div>
+                        ) : recentBookings.length === 0 ? (
+                          <div className={styles.emptyState}>
+                            <div className={styles.emptyIcon}>📝</div>
+                            <p>No bookings yet</p>
+                            <button className={styles.ctaButton} onClick={() => navigate("/packages")}>
+                              Book Your First Trip
+                            </button>
+                          </div>
+                        ) : (
+                          <div className={styles.bookingsList}>
+                            {recentBookings.map((booking) => (
+                              <div key={booking.id} className={styles.bookingCard}>
+                                <div className={styles.bookingImage}>
+                                  <img
+                                    src={booking.image || "/placeholder.svg?height=60&width=80"}
+                                    alt={booking.title}
+                                  />
+                                </div>
+                                <div className={styles.bookingInfo}>
+                                  <div className={styles.bookingTitle}>{booking.title}</div>
+                                  <div className={styles.bookingLocation}>📍 {booking.location}</div>
+                                  <div className={styles.bookingDate}>
+                                    {formatDate(booking.startDate)} - {formatDate(booking.endDate)}
+                                  </div>
+                                </div>
+                                <div className={styles.bookingMeta}>
+                                  <div className={styles.bookingPrice}>{formatCurrency(booking.price)}</div>
+                                  <div className={`${styles.bookingStatus} ${styles[booking.status]}`}>
+                                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Upcoming Trips */}
+                      {upcomingTrips.length > 0 && (
+                        <div className={styles.section}>
+                          <div className={styles.sectionHeader}>
+                            <h2 className={styles.sectionTitle}>
+                              <span className={styles.sectionIcon}>🗓️</span>
+                              Upcoming Trips
+                            </h2>
+                          </div>
+                          <div className={styles.upcomingTripsGrid}>
+                            {upcomingTrips.map((trip) => (
+                              <div key={trip.id} className={styles.tripCard}>
+                                <img
+                                  src={trip.image || "/placeholder.svg?height=120&width=200"}
+                                  alt={trip.title}
+                                  className={styles.tripImage}
+                                />
+                                <div className={styles.tripInfo}>
+                                  <div className={styles.tripTitle}>{trip.title}</div>
+                                  <div className={styles.tripLocation}>📍 {trip.location}</div>
+                                  <div className={styles.tripDate}>🗓️ {formatDate(trip.startDate)}</div>
+                                  <div className={styles.tripTravelers}>
+                                    👥 {trip.travelers} traveler{trip.travelers > 1 ? "s" : ""}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Quick Actions */}
+                      <div className={styles.section}>
+                        <h2 className={styles.sectionTitle}>
+                          <span className={styles.sectionIcon}>⚡</span>
+                          Quick Actions
+                        </h2>
+                        <div className={styles.quickActionsGrid}>
+                          <button className={styles.actionCard} onClick={() => navigate("/packages")}>
+                            <div className={styles.actionIcon}>🎒</div>
+                            <div className={styles.actionTitle}>Browse Packages</div>
+                            <div className={styles.actionDesc}>Discover amazing destinations</div>
+                          </button>
+                          <button className={styles.actionCard} onClick={() => navigate("/create-package")}>
+                            <div className={styles.actionIcon}>✨</div>
+                            <div className={styles.actionTitle}>Create Custom Package</div>
+                            <div className={styles.actionDesc}>Build your perfect trip</div>
+                          </button>
+                          <button className={styles.actionCard} onClick={() => navigate("/hotel-rooms")}>
+                            <div className={styles.actionIcon}>🏨</div>
+                            <div className={styles.actionTitle}>Book Hotels</div>
+                            <div className={styles.actionDesc}>Find the perfect stay</div>
+                          </button>
+                          <button className={styles.actionCard} onClick={() => navigate("/community")}>
+                            <div className={styles.actionIcon}>🌍</div>
+                            <div className={styles.actionTitle}>Join Community</div>
+                            <div className={styles.actionDesc}>Connect with travelers</div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Booking Summary */}
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Booking Summary</h2>
-              {isLoadingTrips ? (
-                <div className={styles.loadingSpinner}>Loading bookings...</div>
-              ) : tripsError ? (
-                <div className={styles.errorMessage}>{tripsError}</div>
-              ) : trips.length === 0 ? (
-                <div>No bookings found.</div>
-              ) : (
-                <ul className={styles.listGrid}>
-                  {trips.slice(0, 5).map((trip: any) => (
-                    <li key={trip.id} className={styles.listCard}>
-                      <div className={styles.listTitle}>{trip.title || trip.location}</div>
-                      <div className={styles.listMeta}>{trip.start_date} - {trip.end_date}</div>
-                      <div className={styles.listStatus}>{trip.status}</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-
-            {/* Joined Groups */}
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Joined Groups</h2>
-              {isLoadingGroups ? (
-                <div className={styles.loadingSpinner}>Loading groups...</div>
-              ) : groupsError ? (
-                <div className={styles.errorMessage}>{groupsError}</div>
-              ) : userGroups.length === 0 ? (
-                <div>No groups joined yet.</div>
-              ) : (
-                <ul className={styles.listGrid}>
-                  {userGroups.slice(0, 5).map((group: any) => (
-                    <li key={group.id} className={styles.listCard}>
-                      <div className={styles.listTitle}>{group.name}</div>
-                      <div className={styles.listMeta}>{group.member_count} members</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-
-            {/* Blogs Written by User */}
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Blogs Written by You</h2>
-              {isLoadingBlogs ? (
-                <div className={styles.loadingSpinner}>Loading blogs...</div>
-              ) : blogsError ? (
-                <div className={styles.errorMessage}>{blogsError}</div>
-              ) : userBlogs.length === 0 ? (
-                <div>No blogs written yet.</div>
-              ) : (
-                <ul className={styles.listGrid}>
-                  {userBlogs.slice(0, 5).map((blog: any) => (
-                    <li key={blog.id} className={styles.listCard}>
-                      <div className={styles.listTitle}>{blog.title}</div>
-                      <div className={styles.listMeta}>{new Date(blog.created_at).toLocaleDateString()}</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-
-            {/* User Info Card (Profile) */}
-            {userData && (
-              <UserInfoCard userData={userData} onUserDataChange={handleUserDataChange} isLoading={isLoadingProfile} />
-            )}
           </div>
-        </main>
+        </div>
       </div>
     </Layout>
   )

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 import Sidebar from "./Sidebar"
 import { tripsAPI, type Trip, type ItineraryItem } from "../App/api"
 import { useAuth } from "../Authentication/auth-context"
+import { useBooking } from "../Context/booking-context"
 
 const MyTrips: FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "cancelled">("upcoming")
@@ -18,16 +19,49 @@ const MyTrips: FunctionComponent = () => {
   const [isLoadingTrips, setIsLoadingTrips] = useState(true)
   const [isLoadingItinerary, setIsLoadingItinerary] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
   const { isAuthenticated, loading: authLoading } = useAuth()
+  const { bookings, refreshBookings } = useBooking()
   const navigate = useNavigate()
+
+  // Convert bookings to trips format for display
+  const bookingTrips = bookings
+    .filter((booking) => {
+      const now = new Date()
+      const startDate = new Date(booking.startDate)
+      const endDate = new Date(booking.endDate)
+
+      if (activeTab === "upcoming") return startDate > now && booking.status === "confirmed"
+      if (activeTab === "past") return endDate < now && booking.status === "confirmed"
+      if (activeTab === "cancelled") return booking.status === "cancelled"
+      return false
+    })
+    .map((booking) => ({
+      id: booking.id,
+      title: booking.title,
+      start_date: booking.startDate,
+      end_date: booking.endDate,
+      location: booking.location,
+      status: booking.status,
+      duration: `${Math.ceil((new Date(booking.endDate).getTime() - new Date(booking.startDate).getTime()) / (1000 * 60 * 60 * 24))} days`,
+      activities_count: Math.floor(Math.random() * 10) + 1, // Mock data
+      check_in_time: "3:00 PM",
+      weather: "Sunny, 28°C",
+      currency: "BDT",
+      image: booking.image,
+      price: booking.price,
+      travelers: booking.travelers,
+    }))
 
   // Fetch trips when tab changes or component mounts
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
       fetchTrips(activeTab)
+      refreshBookings() // Also refresh bookings
     }
-  }, [activeTab, authLoading, isAuthenticated])
+  }, [activeTab, authLoading, isAuthenticated, refreshBookings])
+
+  // Combine API trips with booking trips
+  const allTrips = [...bookingTrips, ...trips]
 
   // Select first trip when trips load
   useEffect(() => {
@@ -48,9 +82,7 @@ const MyTrips: FunctionComponent = () => {
       setIsLoadingTrips(true)
       setError(null)
       const tripsData = await tripsAPI.getTrips(status)
-      setTrips(tripsData.results || tripsData) // Handle paginated or direct array response
-
-      // Reset selected trip when changing tabs
+      setTrips(tripsData.results || tripsData)
       setSelectedTrip(null)
     } catch (error) {
       console.error("Error fetching trips:", error)
@@ -76,7 +108,7 @@ const MyTrips: FunctionComponent = () => {
 
   const handleTabChange = (tab: "upcoming" | "past" | "cancelled") => {
     setActiveTab(tab)
-    setActiveView("overview") // Reset to overview when changing tabs
+    setActiveView("overview")
   }
 
   const formatDate = (dateString: string) => {
@@ -141,7 +173,10 @@ const MyTrips: FunctionComponent = () => {
                   className={`${styles.tab} ${activeTab === "upcoming" ? styles.activeTab : ""}`}
                   onClick={() => handleTabChange("upcoming")}
                 >
-                  Upcoming
+                  Upcoming (
+                  {bookingTrips.filter((t) => activeTab === "upcoming").length +
+                    trips.filter((t) => activeTab === "upcoming").length}
+                  )
                 </button>
                 <button
                   className={`${styles.tab} ${activeTab === "past" ? styles.activeTab : ""}`}
@@ -169,31 +204,31 @@ const MyTrips: FunctionComponent = () => {
                     Try Again
                   </button>
                 </div>
-              ) : trips.length === 0 ? (
+              ) : allTrips.length === 0 ? (
                 <div className={styles.emptyState}>
                   <div className={styles.emptyIcon}>✈️</div>
                   <h3>No {activeTab} trips found</h3>
                   <p>You don't have any {activeTab} trips yet.</p>
                   {activeTab === "upcoming" && (
-                    <button className={styles.planTripButton} onClick={() => navigate("/plan-a-trip")}>
-                      Plan a Trip
+                    <button className={styles.planTripButton} onClick={() => navigate("/packages")}>
+                      Book a Trip
                     </button>
                   )}
                 </div>
               ) : (
                 <>
                   {/* Trip Selection */}
-                  {trips.length > 1 && (
+                  {allTrips.length > 1 && (
                     <div className={styles.tripSelector}>
                       <select
                         value={selectedTrip?.id || ""}
                         onChange={(e) => {
-                          const trip = trips.find((t) => t.id === e.target.value)
+                          const trip = allTrips.find((t) => t.id === e.target.value)
                           setSelectedTrip(trip || null)
                         }}
                         className={styles.tripSelect}
                       >
-                        {trips.map((trip) => (
+                        {allTrips.map((trip) => (
                           <option key={trip.id} value={trip.id}>
                             {trip.title} - {formatDate(trip.start_date)}
                           </option>
@@ -278,8 +313,8 @@ const MyTrips: FunctionComponent = () => {
                               <div className={styles.overviewCard}>
                                 <div className={styles.overviewIcon}>💰</div>
                                 <div className={styles.overviewContent}>
-                                  <h3>Currency</h3>
-                                  <p>{selectedTrip.currency}</p>
+                                  <h3>Total Cost</h3>
+                                  <p>৳{selectedTrip.price?.toLocaleString() || "N/A"}</p>
                                 </div>
                               </div>
                             </div>
