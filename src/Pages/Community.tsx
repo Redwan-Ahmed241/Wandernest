@@ -316,7 +316,7 @@ const Community: React.FC = () => {
                         {searchError && <div className={styles.errorMessage}>{searchError}</div>}
                       </div>
 
-                      {/* Latest Travel Blogs */}
+                      
                       <div className={styles.section}>
                         <h2 className={styles.sectionTitle}>
                           <span role="img" aria-label="blog">
