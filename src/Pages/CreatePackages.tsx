@@ -10,7 +10,7 @@ import { useAuth } from "../Authentication/auth-context" // Using your auth cont
 
 const CreatePackage: FunctionComponent = () => {
   const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading, user } = useAuth()
+  const { isAuthenticated, loading: authLoading } = useAuth()
   const today = new Date()
 
   // Form state
@@ -225,9 +225,9 @@ const CreatePackage: FunctionComponent = () => {
   if (authLoading) {
     return (
       <Layout>
-        <div style={{ display: "flex" }}>
+        <div className={styles.flexRow}>
           <Sidebar />
-          <div style={{ flex: 1, padding: "40px", textAlign: "center" }}>
+          <div className={`${styles.flexGrow} ${styles.centeredPadding}`}>
             <div>Loading...</div>
           </div>
         </div>
@@ -243,9 +243,9 @@ const CreatePackage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div style={{ display: "flex" }}>
+      <div className={styles.flexRow}>
         <Sidebar />
-        <div style={{ flex: 1 }}>
+        <div className={styles.flexGrow}>
           <div className={styles.createPackage}>
             <div className={styles.headerSection}>
               <div className={styles.createYourCustom}>Create Your Custom Package</div>
@@ -288,13 +288,13 @@ const CreatePackage: FunctionComponent = () => {
                       value={startDate}
                       readOnly
                       onClick={() => setShowStartCalendar(!showStartCalendar)}
-                      style={{ cursor: "pointer", background: "#fff" }}
                       required
+                      style={{ cursor: "pointer", background: "#fff" }}
                     />
                     {showStartCalendar && (
                       <div className={styles.calendarPopup}>
                         <div className={styles.calendarHeader}>
-                          <button onClick={handleStartPrevMonth} className={styles.calendarNavButton}>
+                          <button type="button" onClick={handleStartPrevMonth} className={styles.calendarNavButton}>
                             {"<"}
                           </button>
                           <span>
@@ -303,7 +303,7 @@ const CreatePackage: FunctionComponent = () => {
                             })}{" "}
                             {startCalendarYear}
                           </span>
-                          <button onClick={handleStartNextMonth} className={styles.calendarNavButton}>
+                          <button type="button" onClick={handleStartNextMonth} className={styles.calendarNavButton}>
                             {">"}
                           </button>
                         </div>
@@ -326,20 +326,20 @@ const CreatePackage: FunctionComponent = () => {
                       value={endDate}
                       readOnly
                       onClick={() => setShowEndCalendar(!showEndCalendar)}
-                      style={{ cursor: "pointer", background: "#fff" }}
                       required
+                      style={{ cursor: "pointer", background: "#fff" }}
                     />
                     {showEndCalendar && (
                       <div className={styles.calendarPopup}>
                         <div className={styles.calendarHeader}>
-                          <button onClick={handleEndPrevMonth} className={styles.calendarNavButton}>
+                          <button type="button" onClick={handleEndPrevMonth} className={styles.calendarNavButton}>
                             {"<"}
                           </button>
                           <span>
                             {new Date(endCalendarYear, endCalendarMonth).toLocaleString("default", { month: "long" })}{" "}
                             {endCalendarYear}
                           </span>
-                          <button onClick={handleEndNextMonth} className={styles.calendarNavButton}>
+                          <button type="button" onClick={handleEndNextMonth} className={styles.calendarNavButton}>
                             {">"}
                           </button>
                         </div>
@@ -397,6 +397,7 @@ const CreatePackage: FunctionComponent = () => {
                   <div className={styles.sectionHeader}>
                     <span className={styles.sectionTitle}>Select Transport</span>
                     <button
+                      type="button"
                       className={styles.skipButton}
                       onClick={() => handleSkip(skipTransport, setSkipTransport, setSelectedTransport)}
                     >
@@ -433,6 +434,7 @@ const CreatePackage: FunctionComponent = () => {
                   <div className={styles.sectionHeader}>
                     <span className={styles.sectionTitle}>Select Hotels</span>
                     <button
+                      type="button"
                       className={styles.skipButton}
                       onClick={() => handleSkip(skipHotel, setSkipHotel, setSelectedHotel)}
                     >
@@ -467,6 +469,7 @@ const CreatePackage: FunctionComponent = () => {
                   <div className={styles.sectionHeader}>
                     <span className={styles.sectionTitle}>Select Vehicle</span>
                     <button
+                      type="button"
                       className={styles.skipButton}
                       onClick={() => handleSkip(skipVehicle, setSkipVehicle, setSelectedVehicle)}
                     >
@@ -501,6 +504,7 @@ const CreatePackage: FunctionComponent = () => {
                   <div className={styles.sectionHeader}>
                     <span className={styles.sectionTitle}>Hire a Guide</span>
                     <button
+                      type="button"
                       className={styles.skipButton}
                       onClick={() => handleSkip(skipGuide, setSkipGuide, setSelectedGuide)}
                     >
@@ -538,6 +542,7 @@ const CreatePackage: FunctionComponent = () => {
                 Review your package details and proceed to create your custom travel package.
               </div>
               <button
+                type="button"
                 className={styles.confirmPackage}
                 onClick={handleCreatePackage}
                 disabled={!isFormValid() || isCreatingPackage}
