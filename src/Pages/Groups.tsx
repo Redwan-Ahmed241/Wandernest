@@ -200,8 +200,8 @@ const Groups: React.FC = () => {
         if (authUser) {
           setCurrentUser({
             id: authUser.id || authUser.email || "unknown",
-            name: authUser.name || authUser.email || "User",
-            avatar: "/default-avatar.png", // Default avatar
+            name: authUser.username || authUser.email || "User",
+            avatar: "", // Default avatar
           })
         }
       }
@@ -473,7 +473,7 @@ const Groups: React.FC = () => {
                   {isJoined && currentUser && (
                     <div className={styles.groupPostInputRow}>
                       <img
-                        src={currentUser.avatar || "/default-avatar.png"}
+                        src={currentUser.avatar || ""}
                         alt="user"
                         className={styles.groupAvatar}
                       />
