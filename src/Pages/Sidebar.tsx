@@ -59,9 +59,29 @@ const Sidebar: FunctionComponent = () => {
           <span className={styles.icon}>●●●</span> My Trips
         </button>
 
-        <button className={styles.navItem} onClick={() => navigate("/visa-assistance")}>
-          <span className={styles.icon}>🛂</span> Visa Assistance
-        </button>
+              <button
+        className={styles.navItem}
+        title="This feature is coming soon!"
+        disabled
+        style={{ cursor: 'not-allowed', opacity: 0.6 }}
+      >
+        <span className={styles.icon}>🛂</span>
+        Visa Assistance
+        <span
+          style={{
+            marginLeft: '8px',
+            backgroundColor: '#ff9800',
+            color: 'white',
+            fontSize: '0.65rem',
+            padding: '2px 6px',
+            borderRadius: '6px',
+            textTransform: 'uppercase'
+          }}
+        >
+          Upcoming
+        </span>
+      </button>
+
 
         <button className={styles.navItem} onClick={() => navigate("/create-packages")}>
           <span className={styles.icon}>N</span> Plan a Trip

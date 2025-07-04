@@ -40,9 +40,22 @@ const Navbar: React.FC = () => {
             <div className={styles.depth4Frame1} onClick={() => navigate("/hotels-rooms")}>
               <div className={styles.destinations}>Hotels</div>
             </div>
-            <div className={styles.depth5Frame2} onClick={() => navigate("/flights")}>
-              <div className={styles.flights}>Flights</div>
-            </div>
+            <div className={styles.depth5Frame2} title="This feature is coming soon!">
+  <div className={styles.flights} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#999', cursor: 'not-allowed' }}>
+    Flights
+    <span style={{
+      backgroundColor: '#ff9800',
+      color: 'white',
+      fontSize: '0.65rem',
+      padding: '2px 6px',
+      borderRadius: '6px',
+      textTransform: 'uppercase'
+    }}>
+      Upcoming
+    </span>
+  </div>
+</div>
+
             <div className={styles.depth4Frame1} onClick={() => navigate("/Packages")}>
               <div className={styles.destinations}>Packages</div>
             </div>
