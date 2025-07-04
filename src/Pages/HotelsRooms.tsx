@@ -76,26 +76,6 @@ const AMENITY_LINKS = [
   },
 ]
 
-const MOCK_REVIEWS: Review[] = [
-  {
-    id: "1",
-    userName: "Ratul",
-    date: "Nov 1, 2025",
-    rating: 5,
-    comment: "Amazing stay with great amenities.",
-    likes: 12,
-    dislikes: 0,
-  },
-  {
-    id: "3",
-    userName: "Anonna",
-    date: "Oct 25, 2025",
-    rating: 4,
-    comment: "Decent experience but room for improvement.",
-    likes: 5,
-    dislikes: 3,
-  },
-]
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
@@ -122,34 +102,127 @@ const checkRatingMatch = (rating: number, filterRating: string): boolean => {
 interface BookingModalProps {
   hotel: Hotel
   onClose: () => void
-  onBook: (bookingData: any) => void
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    checkin: '',
+    name: "",
+    email: "",
+    phone: "",
+    checkin: "",
     guests: 1,
   })
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm(f => ({ ...f, [name]: value }))
+    setForm((f) => ({ ...f, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    if (!form.name.trim()) return "Name is required"
+    if (!form.email.trim()) return "Email is required"
+    if (!form.phone.trim()) return "Phone is required"
+    if (!form.checkin) return "Check-in date is required"
+    if (form.guests < 1) return "At least 1 guest is required"
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(form.email)) return "Please enter a valid email"
+    // Phone validation (basic)
+    if (form.phone.length < 10) return "Please enter a valid phone number"
+    return null
+  }
+
+  const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setError('')
-    if (!form.name || !form.email || !form.phone || !form.checkin) {
-      setError('Please fill all required fields')
+    setError("")
+    // Validate form first
+    const validationError = validateForm()
+    if (validationError) {
+      setError(validationError)
       return
     }
-    onBook({ ...form, hotelId: hotel.id })
+    setIsProcessingPayment(true)
+    try {
+      // Calculate total amount
+      const totalAmount = (hotel?.price || 0) * form.guests
+      // Prepare payment data - try nested object for service_data
+      const paymentData = {
+        service_type: "hotel",
+        service_name: hotel?.name || "Hotel Booking",
+        service_details: `Hotel booking for ${form.guests} guests`,
+        amount: totalAmount,
+        customer_name: form.name.trim(),
+        customer_email: form.email.trim(),
+        customer_phone: form.phone.trim(),
+        service_data: {
+          hotel_id: hotel.id,
+          hotel_name: hotel.name,
+          checkin_date: form.checkin,
+          guests: form.guests,
+          location: hotel.location,
+        },
+      }
+      console.log("Sending payment data:", paymentData)
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/initiate-payment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(paymentData),
+      })
+      console.log("Response status:", response.status)
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
+      // Get response text first to see what we're actually receiving
+      const responseText = await response.text()
+      console.log("Raw response:", responseText)
+      let data
+      try {
+        data = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError)
+        throw new Error("Invalid response format from server")
+      }
+      console.log("Parsed response data:", data)
+      // Handle different response scenarios
+      if (!response.ok) {
+        const errorMessage =
+          data?.detail ||
+          data?.message ||
+          data?.error ||
+          data?.errors?.[0] ||
+          `Server error: ${response.status} ${response.statusText}`
+        throw new Error(errorMessage)
+      }
+      // Check for successful payment initialization
+      if (data.status === "SUCCESS" && data.GatewayPageURL) {
+        console.log("Redirecting to:", data.GatewayPageURL)
+        window.location.href = data.GatewayPageURL
+      } else if (data.GatewayPageURL) {
+        // Sometimes status might not be exactly 'SUCCESS'
+        console.log("Redirecting to gateway:", data.GatewayPageURL)
+        window.location.href = data.GatewayPageURL
+      } else {
+        // Log the full response to understand the structure
+        console.error("Unexpected response structure:", data)
+        throw new Error(data.detail || data.message || "Payment gateway URL not received. Please try again.")
+      }
+    } catch (err: any) {
+      console.error("Payment error details:", err)
+      let errorMessage = "Payment failed. Please try again."
+      if (err.name === "TypeError" && err.message.includes("fetch")) {
+        errorMessage = "Network error. Please check your connection and try again."
+      } else if (err.message.includes("JSON")) {
+        errorMessage = "Server response error. Please try again later."
+      } else if (err.message) {
+        errorMessage = err.message
+      }
+      setError(errorMessage)
+    } finally {
+      setIsProcessingPayment(false)
+    }
   }
 
   return (
@@ -159,7 +232,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) =
           <h2>Book {hotel.name}</h2>
           <button className={styles.modalClose} onClick={onClose}>×</button>
         </div>
-        {error && <div className={styles.errorMessage}>{error}</div>}
         <div className={styles.hotelSummary}>
           <img src={hotel.image_url || 'https://via.placeholder.com/400x200?text=Hotel+Image'} alt={hotel.name} className={styles.modalImage} />
           <div className={styles.hotelInfo}>
@@ -168,7 +240,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) =
             <p className={styles.hotelPrice}>৳{hotel.price}/night</p>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className={styles.bookingForm}>
+        <form onSubmit={handlePayment} className={styles.bookingForm}>
           <div className={styles.formGroup}>
             <label>Full Name *</label>
             <input name="name" value={form.name} onChange={handleChange} required />
@@ -191,11 +263,20 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose, onBook }) =
               <input name="guests" type="number" min={1} value={form.guests} onChange={handleChange} required />
             </div>
           </div>
-          <button type="submit" className={styles.bookButton}>Confirm Booking</button>
+          <div style={{ background: '#f8f9fa', padding: 12, borderRadius: 6, border: '1px solid #dee2e6', marginBottom: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontWeight: 600 }}>Total Amount:</span>
+              <span style={{ color: '#23a36c', fontWeight: 700, fontSize: 18 }}>৳{(hotel?.price || 0) * form.guests}</span>
+            </div>
+            <div style={{ fontSize: 14, color: '#666', marginTop: 4 }}>
+              ৳{hotel?.price || 0} × {form.guests} guests
+            </div>
+          </div>
+          <button type="submit" className={styles.bookButton} disabled={isProcessingPayment}>
+            {isProcessingPayment ? 'Processing Payment...' : `Pay ৳${(hotel?.price || 0) * form.guests} & Book Hotel`}
+          </button>
         </form>
-        {submitted && !error && (
-          <div className={styles.successMessage}>Booking submitted successfully!</div>
-        )}
+        {error && <div className={styles.errorMessage}>{error}</div>}
       </div>
     </div>
   )
@@ -213,7 +294,7 @@ const HotelsRooms: FunctionComponent = () => {
 
   // Data states
   const [hotels, setHotels] = useState<Hotel[]>([])
-  const [reviews] = useState<Review[]>(MOCK_REVIEWS)
+
 
   // Loading states
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
@@ -286,7 +367,9 @@ const HotelsRooms: FunctionComponent = () => {
               : hotel.image
                 ? `${MEDIA_BASE}${hotel.image}`
                 : "/placeholder.svg?height=200&width=300",
-        price: parseFloat(hotel.price) || 0,
+        price: typeof hotel.price === "string" 
+          ? parseFloat(hotel.price.replace(/[^\d.]/g, "")) || 0
+          : Number(hotel.price) || 0,
         star: hotel.star || 0,
         amenities: hotel.amenities || [],
         roomTypes: hotel.roomTypes || (hotel.type ? [hotel.type] : []),
@@ -547,28 +630,6 @@ const HotelsRooms: FunctionComponent = () => {
             onClose={() => {
               setIsBookingModalOpen(false)
               setSelectedHotel(null)
-            }}
-            onBook={(bookingData) => {
-              console.log('Booking data:', bookingData)
-              fetch('https://wander-nest-ad3s.onrender.com/api/bookings/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bookingData),
-              })
-              .then(res => {
-                if (!res.ok) throw new Error('Booking failed')
-                return res.json()
-              })
-              .then(data => {
-                console.log('Booking successful:', data)
-                setIsBookingModalOpen(false)
-                setSelectedHotel(null)
-                alert('Booking submitted successfully!')
-              })
-              .catch(err => {
-                console.error('Booking error:', err)
-                alert('Booking failed. Please try again.')
-              })
             }}
           />
         )}

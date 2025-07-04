@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const Destination01: FunctionComponent = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Destination data
   const destinationData = {
@@ -122,6 +124,54 @@ const Destination01: FunctionComponent = () => {
       reviews: 150
     }
   ];
+
+  // Payment handler for experiences
+  const handleExperiencePayment = async (experience: any) => {
+    setError(null);
+    setIsProcessing(true);
+    try {
+      // Parse price (remove currency symbol if present)
+      const amount = typeof experience.price === 'string'
+        ? parseFloat(experience.price.replace(/[^\d.]/g, '')) || 0
+        : Number(experience.price) || 0;
+      // Prepare payment data
+      const paymentData = {
+        service_type: 'experience',
+        service_name: experience.name,
+        service_details: experience.description,
+        amount,
+        customer_name: 'Guest', // Or prompt for user info if needed
+        customer_email: 'guest@example.com',
+        customer_phone: '0000000000',
+        service_data: JSON.stringify({
+          experience_id: experience.id,
+          experience_name: experience.name,
+          duration: experience.duration,
+        })
+      };
+      const response = await fetch('https://wander-nest-ad3s.onrender.com/initiate-payment/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.detail || data.message || `Payment failed with status ${response.status}`);
+      }
+      if (data.status === 'SUCCESS' && data.GatewayPageURL) {
+        window.location.href = data.GatewayPageURL;
+      } else {
+        setError(data.detail || 'Payment initialization failed. Please try again.');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Payment failed. Please try again.');
+      console.error('Payment error:', err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <Layout>
@@ -279,7 +329,14 @@ const Destination01: FunctionComponent = () => {
                           <span className={styles.ratingText}>{experience.rating} ({experience.reviews} reviews)</span>
                         </div>
                       </div>
-                      <button className={styles.bookButton}>Book Now</button>
+                      <button
+                        className={styles.bookButton}
+                        onClick={() => handleExperiencePayment(experience)}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? 'Processing...' : 'Book Now'}
+                      </button>
+                      {error && <div className={styles.errorMessage}>{error}</div>}
                     </div>
                   </div>
                 ))}
