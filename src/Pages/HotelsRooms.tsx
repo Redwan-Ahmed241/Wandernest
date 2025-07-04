@@ -1,583 +1,644 @@
 "use client"
-
-import { type FunctionComponent, useState, useEffect } from "react"
+import type { FunctionComponent } from "react"
+import { useCallback, useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Styles/HotelsRooms.module.css"
 import Layout from "../App/Layout"
-import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"
-import { useBooking } from "../Context/booking-context"
 
+// Define interfaces
 interface Hotel {
   id: string
   name: string
-  location: string
-  rating: number
-  price: number
-  image: string
-  amenities: string[]
   description: string
-  available: boolean
+  location: string
+  image_url: string
+  price: number
+  star: number
+  amenities: string[]
+  roomTypes: string[]
+}
+
+interface Review {
+  id: string
+  userName: string
+  date: string
+  rating: number
+  comment: string
+  likes: number
+  dislikes: number
+}
+
+interface FilterOptions {
+  price: string
+  rating: string
+  location: string
   roomType: string
-  maxGuests: number
 }
 
-interface BookingFormData {
-  checkInDate: string
-  checkOutDate: string
-  guests: number
-  specialRequests: string
-  contactInfo: {
-    name: string
-    email: string
-    phone: string
-  }
+const FILTER_OPTIONS = {
+  Price: ['All', 'Under 3000৳', '3000–7000৳', '7000+৳'],
+  Rating: ['All', '5 Star', '4 Star', '3 Star'],
+  Location: ['All', 'Dhaka', 'Chittagong', 'Sylhet', 'Cox\'s Bazar', 'Bandarban'],
+  'Room Type': ['All', 'Single', 'Double', 'Suite', 'Family'],
 }
 
-// Mock hotel data
-const MOCK_HOTELS: Hotel[] = [
+type FilterKey = keyof typeof FILTER_OPTIONS
+
+const AMENITY_LINKS = [
   {
-    id: "hotel_1",
-    name: "Ocean View Resort",
-    location: "Cox's Bazar",
-    rating: 4.8,
-    price: 8500,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Pool", "Spa", "Restaurant", "Beach Access"],
-    description: "Luxury beachfront resort with stunning ocean views",
-    available: true,
-    roomType: "Deluxe Ocean View",
-    maxGuests: 4,
+    key: "restaurants",
+    title: "Local Restaurants",
+    description: "Discover popular dining spots",
+    icon: "/Figma_photoes/loc_res.svg",
+    route: "/restaurant",
   },
   {
-    id: "hotel_2",
-    name: "Hill Top Hotel",
-    location: "Bandarban",
-    rating: 4.5,
-    price: 6200,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Mountain View", "Restaurant", "Parking"],
-    description: "Peaceful mountain retreat with panoramic views",
-    available: true,
-    roomType: "Mountain View Suite",
-    maxGuests: 3,
+    key: "attractions",
+    title: "Tourist Attractions",
+    description: "Explore nearby places of interest",
+    icon: "/Figma_photoes/attraction.svg",
+    route: "/things-to-do",
   },
   {
-    id: "hotel_3",
-    name: "Tea Garden Lodge",
-    location: "Srimangal",
-    rating: 4.3,
-    price: 4800,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Garden View", "Tea Tasting", "Breakfast"],
-    description: "Cozy lodge surrounded by lush tea gardens",
-    available: true,
-    roomType: "Garden View Room",
-    maxGuests: 2,
+    key: "transport",
+    title: "Public Transport",
+    description: "Find transport options",
+    icon: "/Figma_photoes/transport.svg",
+    route: "/public-transport",
   },
   {
-    id: "hotel_4",
-    name: "Lake Side Resort",
-    location: "Rangamati",
-    rating: 4.6,
-    price: 7200,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Lake View", "Boat Ride", "Restaurant", "Fishing"],
-    description: "Serene lakeside resort perfect for relaxation",
-    available: true,
-    roomType: "Lake View Cottage",
-    maxGuests: 4,
-  },
-  {
-    id: "hotel_5",
-    name: "City Center Hotel",
-    location: "Dhaka",
-    rating: 4.2,
-    price: 5500,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Business Center", "Gym", "Restaurant", "Airport Shuttle"],
-    description: "Modern hotel in the heart of the city",
-    available: true,
-    roomType: "Executive Room",
-    maxGuests: 2,
-  },
-  {
-    id: "hotel_6",
-    name: "Heritage Palace",
-    location: "Sylhet",
-    rating: 4.7,
-    price: 9200,
-    image: "/placeholder.svg?height=200&width=300",
-    amenities: ["Free WiFi", "Heritage Architecture", "Spa", "Fine Dining", "Cultural Shows"],
-    description: "Historic palace converted into luxury hotel",
-    available: true,
-    roomType: "Royal Suite",
-    maxGuests: 6,
+    key: "shopping",
+    title: "Shopping Centers",
+    description: "Shop at the best locations",
+    icon: "/Figma_photoes/shop.svg",
+    route: "/shopping-centers",
   },
 ]
 
-// Booking Modal Component
-const BookingModal: React.FC<{
-  hotel: Hotel | null
-  isOpen: boolean
-  onClose: () => void
-  onConfirm: (formData: BookingFormData) => void
-  isProcessing: boolean
-  error: string
-}> = ({ hotel, isOpen, onClose, onConfirm, isProcessing, error }) => {
-  const [formData, setFormData] = useState<BookingFormData>({
-    checkInDate: "",
-    checkOutDate: "",
-    guests: 1,
-    specialRequests: "",
-    contactInfo: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  })
 
-  const handleInputChange = (field: string, value: string | number) => {
-    if (field.startsWith("contactInfo.")) {
-      const contactField = field.split(".")[1]
-      setFormData((prev) => ({
-        ...prev,
-        contactInfo: { ...prev.contactInfo, [contactField]: value },
-      }))
-    } else {
-      setFormData((prev) => ({ ...prev, [field]: value }))
-    }
+const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
+
+// Helper functions for filtering
+const checkPriceRange = (price: number, range: string): boolean => {
+  switch (range) {
+    case "Under 3000৳":
+      return price < 3000
+    case "3000–7000৳":
+      return price >= 3000 && price <= 7000
+    case "7000+৳":
+      return price > 7000
+    default:
+      return true
   }
-
-  const calculateNights = () => {
-    if (!formData.checkInDate || !formData.checkOutDate) return 0
-    const checkIn = new Date(formData.checkInDate)
-    const checkOut = new Date(formData.checkOutDate)
-    return Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
-  }
-
-  const totalPrice = hotel ? hotel.price * calculateNights() : 0
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onConfirm(formData)
-  }
-
-  if (!isOpen || !hotel) return null
-
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Book {hotel.name}</h2>
-          <button className={styles.closeButton} onClick={onClose} disabled={isProcessing}>
-            ×
-          </button>
-        </div>
-
-        <div className={styles.modalBody}>
-          {/* Hotel Summary */}
-          <div className={styles.hotelSummary}>
-            <img src={hotel.image || "/placeholder.svg"} alt={hotel.name} className={styles.hotelSummaryImage} />
-            <div className={styles.hotelSummaryInfo}>
-              <h3>{hotel.name}</h3>
-              <p>📍 {hotel.location}</p>
-              <p>⭐ {hotel.rating}/5</p>
-              <p>🏠 {hotel.roomType}</p>
-              <p className={styles.price}>৳{hotel.price.toLocaleString()}/night</p>
-            </div>
-          </div>
-
-          {error && <div className={styles.errorMessage}>{error}</div>}
-
-          <form onSubmit={handleSubmit} className={styles.bookingForm}>
-            <div className={styles.formGrid}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Check-in Date *</label>
-                <input
-                  type="date"
-                  className={styles.formInput}
-                  value={formData.checkInDate}
-                  onChange={(e) => handleInputChange("checkInDate", e.target.value)}
-                  min={new Date().toISOString().split("T")[0]}
-                  required
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Check-out Date *</label>
-                <input
-                  type="date"
-                  className={styles.formInput}
-                  value={formData.checkOutDate}
-                  onChange={(e) => handleInputChange("checkOutDate", e.target.value)}
-                  min={formData.checkInDate || new Date().toISOString().split("T")[0]}
-                  required
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Number of Guests</label>
-                <select
-                  className={styles.formInput}
-                  value={formData.guests}
-                  onChange={(e) => handleInputChange("guests", Number(e.target.value))}
-                >
-                  {Array.from({ length: hotel.maxGuests }, (_, i) => i + 1).map((num) => (
-                    <option key={num} value={num}>
-                      {num} Guest{num > 1 ? "s" : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Full Name *</label>
-                <input
-                  type="text"
-                  className={styles.formInput}
-                  value={formData.contactInfo.name}
-                  onChange={(e) => handleInputChange("contactInfo.name", e.target.value)}
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Email *</label>
-                <input
-                  type="email"
-                  className={styles.formInput}
-                  value={formData.contactInfo.email}
-                  onChange={(e) => handleInputChange("contactInfo.email", e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Phone Number *</label>
-                <input
-                  type="tel"
-                  className={styles.formInput}
-                  value={formData.contactInfo.phone}
-                  onChange={(e) => handleInputChange("contactInfo.phone", e.target.value)}
-                  placeholder="Enter your phone number"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Special Requests (Optional)</label>
-              <textarea
-                className={styles.formTextarea}
-                value={formData.specialRequests}
-                onChange={(e) => handleInputChange("specialRequests", e.target.value)}
-                placeholder="Any special requirements..."
-                rows={3}
-              />
-            </div>
-
-            {/* Booking Summary */}
-            <div className={styles.bookingSummary}>
-              <h4>Booking Summary</h4>
-              <div className={styles.summaryRow}>
-                <span>Check-in:</span>
-                <span>{formData.checkInDate || "Not selected"}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Check-out:</span>
-                <span>{formData.checkOutDate || "Not selected"}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Nights:</span>
-                <span>{calculateNights()} night{calculateNights() !== 1 ? "s" : ""}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>Guests:</span>
-                <span>{formData.guests}</span>
-              </div>
-              <div className={styles.summaryRow + " " + styles.totalRow}>
-                <span>
-                  <strong>Total Amount:</strong>
-                </span>
-                <span>
-                  <strong>৳{totalPrice.toLocaleString()}</strong>
-                </span>
-              </div>
-            </div>
-
-            <div className={styles.modalActions}>
-              <button type="button" className={styles.cancelButton} onClick={onClose} disabled={isProcessing}>
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={styles.confirmButton}
-                disabled={
-                  isProcessing ||
-                  !formData.checkInDate ||
-                  !formData.checkOutDate ||
-                  !formData.contactInfo.name ||
-                  !formData.contactInfo.email ||
-                  !formData.contactInfo.phone
-                }
-              >
-                {isProcessing ? "Processing..." : `Confirm Booking - ৳${totalPrice.toLocaleString()}`}
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  )
 }
 
-const HotelRooms: FunctionComponent = () => {
-  const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading } = useAuth()
-  const { addBooking } = useBooking()
+const checkRatingMatch = (rating: number, filterRating: string): boolean => {
+  const starCount = Number.parseInt(filterRating.charAt(0))
+  return rating >= starCount
+}
 
-  const [hotels, setHotels] = useState<Hotel[]>(MOCK_HOTELS)
-  const [filteredHotels, setFilteredHotels] = useState<Hotel[]>(MOCK_HOTELS)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedLocation, setSelectedLocation] = useState("All")
-  const [priceRange, setPriceRange] = useState("All")
-  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null)
-  const [showBookingModal, setShowBookingModal] = useState(false)
+// Booking Modal Component
+interface BookingModalProps {
+  hotel: Hotel
+  onClose: () => void
+}
+
+const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    checkin: "",
+    guests: 1,
+  })
+  const [error, setError] = useState("")
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
-  const [paymentError, setPaymentError] = useState("")
 
-  // Filter hotels based on search and filters
-  useEffect(() => {
-    let filtered = hotels
-
-    // Search filter
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (hotel) =>
-          hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          hotel.location.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    }
-
-    // Location filter
-    if (selectedLocation !== "All") {
-      filtered = filtered.filter((hotel) => hotel.location === selectedLocation)
-    }
-
-    // Price filter
-    if (priceRange !== "All") {
-      filtered = filtered.filter((hotel) => {
-        if (priceRange === "< 5000") return hotel.price < 5000
-        if (priceRange === "5000-8000") return hotel.price >= 5000 && hotel.price <= 8000
-        if (priceRange === "> 8000") return hotel.price > 8000
-        return true
-      })
-    }
-
-    setFilteredHotels(filtered)
-  }, [hotels, searchQuery, selectedLocation, priceRange])
-
-  const handleBookNow = (hotel: Hotel) => {
-    if (!isAuthenticated) {
-      navigate("/login")
-      return
-    }
-    setSelectedHotel(hotel)
-    setShowBookingModal(true)
-    setPaymentError("")
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setForm((f) => ({ ...f, [name]: value }))
   }
 
-  const handleConfirmBooking = async (formData: BookingFormData) => {
-    if (!selectedHotel) return
+  const validateForm = () => {
+    if (!form.name.trim()) return "Name is required"
+    if (!form.email.trim()) return "Email is required"
+    if (!form.phone.trim()) return "Phone is required"
+    if (!form.checkin) return "Check-in date is required"
+    if (form.guests < 1) return "At least 1 guest is required"
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(form.email)) return "Please enter a valid email"
+    // Phone validation (basic)
+    if (form.phone.length < 10) return "Please enter a valid phone number"
+    return null
+  }
 
+  const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    // Validate form first
+    const validationError = validateForm()
+    if (validationError) {
+      setError(validationError)
+      return
+    }
     setIsProcessingPayment(true)
-    setPaymentError("")
-
     try {
-      // Simulate payment processing
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Calculate total amount
+      const totalAmount = (hotel?.price || 0) * form.guests
+      // Prepare payment data - try nested object for service_data
+      const paymentData = {
+        service_type: "hotel",
+        service_name: hotel?.name || "Hotel Booking",
+        service_details: `Hotel booking for ${form.guests} guests`,
+        amount: totalAmount,
+        customer_name: form.name.trim(),
+        customer_email: form.email.trim(),
+        customer_phone: form.phone.trim(),
+        service_data: {
+          hotel_id: hotel.id,
+          hotel_name: hotel.name,
+          checkin_date: form.checkin,
+          guests: form.guests,
+          location: hotel.location,
+        },
+      }
+      console.log("Sending payment data:", paymentData)
+      const token = localStorage.getItem("token"); // or get it from your auth context
 
-      const nights = Math.ceil(
-        (new Date(formData.checkOutDate).getTime() - new Date(formData.checkInDate).getTime()) / (1000 * 60 * 60 * 24)
-      )
-
-      // Add booking to context (immediate update)
-      addBooking({
-        type: "hotel",
-        title: selectedHotel.name,
-        location: selectedHotel.location,
-        startDate: formData.checkInDate,
-        endDate: formData.checkOutDate,
-        price: selectedHotel.price * nights,
-        status: "confirmed",
-        travelers: formData.guests,
-        image: selectedHotel.image,
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/initiate-payment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify(paymentData),
       })
-
-      // Close modal and reset
-      setShowBookingModal(false)
-      setSelectedHotel(null)
-
-      // Navigate to dashboard to see the update
-      navigate("/dashboard")
-    } catch (error) {
-      console.error("Payment failed:", error)
-      setPaymentError("Payment failed. Please try again.")
+      console.log("Response status:", response.status)
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
+      // Get response text first to see what we're actually receiving
+      const responseText = await response.text()
+      console.log("Raw response:", responseText)
+      let data
+      try {
+        data = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError)
+        throw new Error("Invalid response format from server")
+      }
+      console.log("Parsed response data:", data)
+      // Handle different response scenarios
+      if (!response.ok) {
+        const errorMessage =
+          data?.detail ||
+          data?.message ||
+          data?.error ||
+          data?.errors?.[0] ||
+          `Server error: ${response.status} ${response.statusText}`
+        throw new Error(errorMessage)
+      }
+      // Check for successful payment initialization
+      if (data.status === "SUCCESS" && data.GatewayPageURL) {
+        console.log("Redirecting to:", data.GatewayPageURL)
+        window.location.href = data.GatewayPageURL
+      } else if (data.GatewayPageURL) {
+        // Sometimes status might not be exactly 'SUCCESS'
+        console.log("Redirecting to gateway:", data.GatewayPageURL)
+        window.location.href = data.GatewayPageURL
+      } else {
+        // Log the full response to understand the structure
+        console.error("Unexpected response structure:", data)
+        throw new Error(data.detail || data.message || "Payment gateway URL not received. Please try again.")
+      }
+    } catch (err: any) {
+      console.error("Payment error details:", err)
+      let errorMessage = "Payment failed. Please try again."
+      if (err.name === "TypeError" && err.message.includes("fetch")) {
+        errorMessage = "Network error. Please check your connection and try again."
+      } else if (err.message.includes("JSON")) {
+        errorMessage = "Server response error. Please try again later."
+      } else if (err.message) {
+        errorMessage = err.message
+      }
+      setError(errorMessage)
     } finally {
       setIsProcessingPayment(false)
     }
   }
 
-  const locations = ["All", ...Array.from(new Set(hotels.map((hotel) => hotel.location)))]
-
-  // Show loading while auth is loading
-  if (authLoading) {
-    return (
-      <Layout>
-        <div style={{ display: "flex" }}>
-          <Sidebar />
-          <div style={{ flex: 1, padding: "40px", textAlign: "center" }}>
-            <div>Loading...</div>
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h2>Book {hotel.name}</h2>
+          <button className={styles.modalClose} onClick={onClose}>×</button>
+        </div>
+        <div className={styles.hotelSummary}>
+          <img src={hotel.image_url || 'https://via.placeholder.com/400x200?text=Hotel+Image'} alt={hotel.name} className={styles.modalImage} />
+          <div className={styles.hotelInfo}>
+            <h3>{hotel.name}</h3>
+            <p>{hotel.location}</p>
+            <p className={styles.hotelPrice}>৳{hotel.price}/night</p>
           </div>
         </div>
-      </Layout>
-    )
+        <form onSubmit={handlePayment} className={styles.bookingForm}>
+          <div className={styles.formGroup}>
+            <label>Full Name *</label>
+            <input name="name" value={form.name} onChange={handleChange} required />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Email *</label>
+            <input name="email" type="email" value={form.email} onChange={handleChange} required />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Phone *</label>
+            <input name="phone" value={form.phone} onChange={handleChange} required />
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label>Check-in Date *</label>
+              <input name="checkin" type="date" value={form.checkin} onChange={handleChange} min={new Date().toISOString().split('T')[0]} required />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Guests</label>
+              <input name="guests" type="number" min={1} value={form.guests} onChange={handleChange} required />
+            </div>
+          </div>
+          <div style={{ background: '#f8f9fa', padding: 12, borderRadius: 6, border: '1px solid #dee2e6', marginBottom: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontWeight: 600 }}>Total Amount:</span>
+              <span style={{ color: '#23a36c', fontWeight: 700, fontSize: 18 }}>৳{(hotel?.price || 0) * form.guests}</span>
+            </div>
+            <div style={{ fontSize: 14, color: '#666', marginTop: 4 }}>
+              ৳{hotel?.price || 0} × {form.guests} guests
+            </div>
+          </div>
+          <button type="submit" className={styles.bookButton} disabled={isProcessingPayment}>
+            {isProcessingPayment ? 'Processing Payment...' : `Pay ৳${(hotel?.price || 0) * form.guests} & Book Hotel`}
+          </button>
+        </form>
+        {error && <div className={styles.errorMessage}>{error}</div>}
+      </div>
+    </div>
+  )
+}
+
+const HotelsRooms: FunctionComponent = () => {
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
+
+  // Search and filter states
+  const [search, setSearch] = useState('')
+  const [openFilter, setOpenFilter] = useState<FilterKey | null>(null)
+  const [selectedFilters, setSelectedFilters] = useState<{ [key in FilterKey]?: string }>({})
+  const filterDropdownRef = useRef<HTMLDivElement>(null)
+
+  // Data states
+  const [hotels, setHotels] = useState<Hotel[]>([])
+
+
+  // Loading states
+  const [isLoadingHotels, setIsLoadingHotels] = useState(true)
+  const [searchError, setSearchError] = useState("")
+
+  // Modal states
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null)
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+
+  // Load hotels on component mount
+  useEffect(() => {
+    fetchHotels()
+  }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        filterDropdownRef.current &&
+        !filterDropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenFilter(null)
+      }
+    }
+    if (openFilter) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [openFilter])
+
+  // Fetch hotels from API
+  const fetchHotels = async () => {
+    setIsLoadingHotels(true)
+    setSearchError("")
+    try {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/hotels/")
+      if (!response.ok) throw new Error("Failed to fetch hotels")
+
+      const data = await response.json()
+      console.log("API Response:", data) // Debug log
+      let hotelsData = []
+      if (Array.isArray(data)) {
+        hotelsData = data
+      } else if (Array.isArray(data?.results)) {
+        hotelsData = data.results
+      } else if (Array.isArray(data?.data)) {
+        hotelsData = data.data
+      } else if (Array.isArray(data?.hotels)) {
+        hotelsData = data.hotels
+      } else {
+        throw new Error("Unexpected response structure")
+      }
+
+      // Transform API data
+      const transformedHotels: Hotel[] = hotelsData.map((hotel: any) => ({
+        id: hotel.id || hotel._id || "unknown-id", // Use consistent ID
+        name: hotel.name || "Unknown Hotel",
+        description: hotel.description || "No description available",
+        location: hotel.location || "Unknown Location",
+        image_url: hotel.image_url && hotel.image_url.startsWith('http')
+          ? hotel.image_url
+          : hotel.image_url
+            ? `${MEDIA_BASE}${hotel.image_url}`
+            : hotel.image && hotel.image.startsWith('http')
+              ? hotel.image
+              : hotel.image
+                ? `${MEDIA_BASE}${hotel.image}`
+                : "/placeholder.svg?height=200&width=300",
+        price: typeof hotel.price === "string" 
+          ? parseFloat(hotel.price.replace(/[^\d.]/g, "")) || 0
+          : Number(hotel.price) || 0,
+        star: hotel.star || 0,
+        amenities: hotel.amenities || [],
+        roomTypes: hotel.roomTypes || (hotel.type ? [hotel.type] : []),
+      }))
+      console.log("Transformed hotels:", transformedHotels) // Debug log
+      setHotels(transformedHotels)
+    } catch (err) {
+      setSearchError("Failed to fetch hotels. Please try again.")
+      setHotels([])
+      console.error("Hotel fetch error:", err)
+    } finally {
+      setIsLoadingHotels(false)
+    }
+  }
+
+  // Filter functions
+  const handleFilterClick = (filter: FilterKey) => {
+    setOpenFilter(openFilter === filter ? null : filter)
+  }
+
+  const handleOptionSelect = (filter: FilterKey, option: string) => {
+    if (option === 'All') {
+      // Remove the filter for this category
+      const { [filter]: _, ...rest } = selectedFilters
+      setSelectedFilters(rest)
+    } else {
+      setSelectedFilters({ ...selectedFilters, [filter]: option })
+    }
+    setOpenFilter(null)
+  }
+
+  // Extract main city/area from location (first word or comma-separated part)
+  const extractCity = (location: string) => {
+    if (!location) return ''
+    // Try to get the first comma-separated part, or first word
+    return location.split(',')[0].trim()
+  }
+
+  // Filter hotels by search and selected filters
+  const filteredHotels = hotels.filter((hotel) => {
+    const query = search.toLowerCase()
+    const matchesSearch =
+      !query ||
+      hotel.name.toLowerCase().includes(query) ||
+      hotel.description.toLowerCase().includes(query) ||
+      hotel.location.toLowerCase().includes(query)
+
+    const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
+      if (filter === 'Price') {
+        return checkPriceRange(hotel.price, value)
+      }
+      if (filter === 'Rating') {
+        return checkRatingMatch(hotel.star, value)
+      }
+      if (filter === 'Location') {
+        return extractCity(hotel.location).toLowerCase() === value.toLowerCase()
+      }
+      if (filter === 'Room Type') {
+        let hotelRoomTypes: string[] = []
+        if (Array.isArray(hotel.roomTypes)) {
+          hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) => rt.trim())
+        } else if (typeof (hotel.roomTypes as any) === 'string') {
+          hotelRoomTypes = [(hotel.roomTypes as string).trim()]
+        }
+        return hotelRoomTypes.some(rt => rt.toLowerCase() === value.toLowerCase())
+      }
+      return true
+    })
+
+    return matchesSearch && matchesFilters
+  })
+
+  // Navigation functions
+  const onHotelClick = useCallback(
+    (hotelId: string) => {
+      // navigate(`/hotel/${hotelId}`)
+    },
+    [],
+  )
+
+  const onViewAllClick = useCallback(() => {
+    // navigate("/hotels")
+  }, [])
+
+  // Handle booking
+  const handleBookHotel = (hotel: Hotel) => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    setSelectedHotel(hotel)
+    setIsBookingModalOpen(true)
   }
 
   return (
     <Layout>
-      <div style={{ display: "flex" }}>
-        <Sidebar />
-        <div className={styles.hotelRooms}>
-          <div className={styles.container}>
-            {/* Header */}
-            <div className={styles.header}>
-              <h1 className={styles.pageTitle}>Hotel Rooms</h1>
-              <p className={styles.subtitle}>Find and book the perfect accommodation for your stay</p>
-            </div>
+      <div className={styles.hotelsContainer}>
+        {/* Header Section */}
+        <div className={styles.groupParent}>
+          <div className={styles.tourPackages2}>Hotels & Rooms</div>
+        </div>
 
-            {/* Search and Filters */}
-            <div className={styles.searchSection}>
-              <div className={styles.searchBar}>
-                <input
-                  type="text"
-                  className={styles.searchInput}
-                  placeholder="Search hotels by name or location..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.filters}>
-                <select
-                  className={styles.filterSelect}
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                >
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location === "All" ? "All Locations" : location}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  className={styles.filterSelect}
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                >
-                  <option value="All">All Prices</option>
-                  <option value="< 5000">Under ৳5,000</option>
-                  <option value="5000-8000">৳5,000 - ৳8,000</option>
-                  <option value="> 8000">Above ৳8,000</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Results Count */}
-            <div className={styles.resultsCount}>
-              {filteredHotels.length} hotel{filteredHotels.length !== 1 ? "s" : ""} found
-            </div>
-
-            {/* Hotels Grid */}
-            <div className={styles.hotelsGrid}>
-              {filteredHotels.length === 0 ? (
-                <div className={styles.emptyState}>
-                  <div className={styles.emptyIcon}>🏨</div>
-                  <h3>No hotels found</h3>
-                  <p>Try adjusting your search criteria</p>
-                </div>
-              ) : (
-                filteredHotels.map((hotel) => (
-                  <div key={hotel.id} className={styles.hotelCard}>
-                    <div className={styles.hotelImage}>
-                      <img src={hotel.image || "/placeholder.svg"} alt={hotel.name} />
-                      <div className={styles.ratingBadge}>⭐ {hotel.rating}</div>
-                    </div>
-
-                    <div className={styles.hotelInfo}>
-                      <div className={styles.hotelHeader}>
-                        <h3 className={styles.hotelName}>{hotel.name}</h3>
-                        <div className={styles.hotelLocation}>📍 {hotel.location}</div>
-                      </div>
-
-                      <div className={styles.roomType}>{hotel.roomType}</div>
-                      <div className={styles.hotelDescription}>{hotel.description}</div>
-
-                      <div className={styles.amenities}>
-                        {hotel.amenities.slice(0, 3).map((amenity, index) => (
-                          <span key={index} className={styles.amenityTag}>
-                            {amenity}
-                          </span>
-                        ))}
-                        {hotel.amenities.length > 3 && (
-                          <span className={styles.amenityTag}>+{hotel.amenities.length - 3} more</span>
-                        )}
-                      </div>
-
-                      <div className={styles.hotelFooter}>
-                        <div className={styles.priceSection}>
-                          <div className={styles.price}>৳{hotel.price.toLocaleString()}</div>
-                          <div className={styles.priceUnit}>per night</div>
-                        </div>
-
-                        <button
-                          className={styles.bookButton}
-                          onClick={() => handleBookNow(hotel)}
-                          disabled={!hotel.available}
-                        >
-                          {hotel.available ? "Book Now" : "Not Available"}
-                        </button>
-                      </div>
-
-                      <div className={styles.guestInfo}>Max {hotel.maxGuests} guests</div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Booking Modal */}
-          <BookingModal
-            hotel={selectedHotel}
-            isOpen={showBookingModal}
-            onClose={() => {
-              setShowBookingModal(false)
-              setSelectedHotel(null)
-              setPaymentError("")
-            }}
-            onConfirm={handleConfirmBooking}
-            isProcessing={isProcessingPayment}
-            error={paymentError}
+        {/* Search Bar */}
+        <div className={styles.searchBarContainer}>
+          <img
+            src="/Figma_photoes/search.svg"
+            alt="search"
+            className={styles.searchIconInside}
+          />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search hotels, locations..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
         </div>
+
+        {/* Filters and Hotels Grid */}
+        <div className={styles.tourPackagesWrapper}>
+          <div className={styles.tourPackages}>
+            <div className={styles.tourPackages1}>
+              <div className={styles.depth0Frame0}>
+                <div className={styles.depth1Frame0}>
+                  <div className={styles.depth2Frame1}>
+                    <div className={styles.depth3Frame01}>
+                      {/* Filters */}
+                      <div className={styles.depth4Frame2} ref={filterDropdownRef}>
+                        {Object.keys(FILTER_OPTIONS).map(filter => (
+                          <div key={filter} className={styles.depth5Frame03}>
+                            <div
+                              className={
+                                styles.depth6Frame03 +
+                                (selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All' ? ' ' + styles.selected : '')
+                              }
+                              onClick={() => handleFilterClick(filter as FilterKey)}
+                              style={{ cursor: 'pointer', position: 'relative' }}
+                            >
+                              <div className={styles.destinations}>
+                                {selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All'
+                                  ? selectedFilters[filter as FilterKey]
+                                  : filter}
+                              </div>
+                              <img
+                                className={
+                                  styles.depth6Frame1 +
+                                  (openFilter === (filter as FilterKey) ? ' ' + styles.arrowOpen : '')
+                                }
+                                alt=""
+                                src="/Figma_photoes/darrow.svg"
+                              />
+                              {openFilter === (filter as FilterKey) && (
+                                <div className={styles.filterDropdown}>
+                                  {(FILTER_OPTIONS[filter as FilterKey] as string[]).map((option: string) => (
+                                    <div
+                                      key={option}
+                                      className={
+                                        styles.filterDropdownOption +
+                                        (selectedFilters[filter as FilterKey] === option || (!selectedFilters[filter as FilterKey] && option === 'All') ? ' ' + styles.selected : '')
+                                      }
+                                      onClick={() => handleOptionSelect(filter as FilterKey, option)}
+                                    >
+                                      {option}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Hotels Grid */}
+                      <div className={styles.depth4Frame3}>
+                        <div className={styles.depth5Frame04}>
+                          {isLoadingHotels && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                              Loading hotels...
+                            </div>
+                          )}
+                          {searchError && (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                              {searchError}
+                            </div>
+                          )}
+                          {!isLoadingHotels && !searchError && filteredHotels.map(hotel => (
+                            <div
+                              className={styles.depth6Frame07}
+                              key={hotel.id}
+                              onClick={() => onHotelClick(hotel.id)}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              <img className={styles.depth7Frame01} alt="" src={hotel.image_url} />
+                              <div className={styles.depth7Frame11}>
+                                <div className={styles.depth7Frame11}>
+                                  <div className={styles.sundarbansWildlifeExpedition}>{hotel.name}</div>
+                                </div>
+                                <div className={styles.depth8Frame1}>
+                                  <div className={styles.exploreTheWorlds}>{hotel.description}</div>
+                                </div>
+                                <div className={styles.hotelMeta}>
+                                  <span className={styles.hotelLocation}>{hotel.location}</span>
+                                  {hotel.star > 0 && (
+                                    <span className={styles.hotelRating}>
+                                      {'⭐'.repeat(hotel.star)} {hotel.star} Star
+                                    </span>
+                                  )}
+                                </div>
+                                <div className={styles.cardPrice}>৳{hotel.price.toLocaleString()}/night</div>
+                                <button
+                                  className={styles.createCustomPackage}
+                                  type="button"
+                                  onClick={e => {
+                                    e.stopPropagation()
+                                    handleBookHotel(hotel)
+                                  }}
+                                >
+                                  Book Now
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {!isLoadingHotels && !searchError && filteredHotels.length === 0 && (
+                          <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                            No hotels found matching your criteria.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Local Amenities */}
+        <div className={styles.amenitiesSection}>
+          <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
+          <div className={styles.amenitiesGrid}>
+            {AMENITY_LINKS.map((amenity) => (
+              <div key={amenity.key} className={styles.amenityCard} onClick={() => navigate(amenity.route)}>
+                <img src={amenity.icon || "/placeholder.svg"} alt={amenity.title} className={styles.amenityIcon} />
+                <div className={styles.amenityInfo}>
+                  <h3 className={styles.amenityTitle}>{amenity.title}</h3>
+                  <p className={styles.amenityDescription}>{amenity.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Booking Modal */}
+        {isBookingModalOpen && selectedHotel && (
+          <BookingModal
+            hotel={selectedHotel}
+            onClose={() => {
+              setIsBookingModalOpen(false)
+              setSelectedHotel(null)
+            }}
+          />
+        )}
       </div>
     </Layout>
   )
 }
 
-export default HotelRooms
+export default HotelsRooms
