@@ -11,7 +11,7 @@ import { useAuth } from "../Authentication/auth-context"
 interface User {
   id: string
   name: string
-  avatar: string
+  avatar?: string
   role?: "admin" | "member"
 }
 
@@ -135,6 +135,10 @@ class GroupAPI {
       return null
     }
   }
+
+  static async getCurrentUser(): Promise<User> {
+    return this.request(`/user/profile`)
+  }
 }
 
 const TABS = [
@@ -165,13 +169,14 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const Groups: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user: authUser } = useAuth()
 
   // State
   const [group, setGroup] = useState<Group | null>(null)
   const [posts, setPosts] = useState<Post[]>([])
   const [pendingPosts, setPendingPosts] = useState<Post[]>([])
   const [membership, setMembership] = useState<GroupMembership | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [activeTab, setActiveTab] = useState("Discussion")
   const [postInput, setPostInput] = useState("")
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
@@ -182,6 +187,30 @@ const Groups: React.FC = () => {
   // Computed values
   const isJoined = !!membership
   const isAdmin = membership?.role === "admin"
+
+  // Load user profile
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const userProfile = await GroupAPI.getCurrentUser()
+        setCurrentUser(userProfile)
+      } catch (err) {
+        console.error("Error loading user profile:", err)
+        // Fallback to auth user data
+        if (authUser) {
+          setCurrentUser({
+            id: authUser.id || authUser.email || "unknown",
+            name: authUser.name || authUser.email || "User",
+            avatar: "/default-avatar.png", // Default avatar
+          })
+        }
+      }
+    }
+
+    if (authUser) {
+      loadUserProfile()
+    }
+  }, [authUser])
 
   // Load group data
   useEffect(() => {
@@ -441,9 +470,13 @@ const Groups: React.FC = () => {
               {activeTab === "Discussion" && (
                 <>
                   {/* Post input (joined users only) */}
-                  {isJoined && (
+                  {isJoined && currentUser && (
                     <div className={styles.groupPostInputRow}>
-                      <img src={user?.avatar || "/default-avatar.png"} alt="user" className={styles.groupAvatar} />
+                      <img
+                        src={currentUser.avatar || "/default-avatar.png"}
+                        alt="user"
+                        className={styles.groupAvatar}
+                      />
                       <span style={{ fontSize: "1.2rem", marginRight: 6 }}>✏️</span>
                       <input
                         className={styles.groupPostInput}
