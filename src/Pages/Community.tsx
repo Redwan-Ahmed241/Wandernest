@@ -7,138 +7,129 @@ import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"
 import styles from "../Styles/Community.module.css"
-import { communityAPI, type BlogPost, type TravelGroup, type CommunitySearchResults } from "../App/api"
 
-// Additional types for reviews/discussions
+interface Blog {
+  id: string
+  title: string
+  content: string
+  author: {
+    first_name: string
+    last_name: string
+    profile_image?: string
+  }
+  created_at: string
+  image?: string
+  excerpt?: string
+  likes_count: number
+  comments_count: number
+}
+
+interface Group {
+  id: string
+  name: string
+  description: string
+  member_count: number
+  image?: string
+  is_member?: boolean
+}
+
 interface Review {
   id: string
   user: {
-    name: string
-    avatar: string
+    first_name: string
+    last_name: string
+    profile_image?: string
   }
-  date: string
+  location: string
   rating: number
   content: string
-  likes: number
-  comments: number
+  images?: string[]
+  likes_count: number
+  comments_count: number
+  created_at: string
 }
 
-// Mock reviews data (you can replace with real API later)
-const mockReviews: Review[] = [
-  {
-    id: "1",
-    user: {
-      name: "Sophia",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    date: "2023-01-14",
-    rating: 5,
-    content: "The CHT were breathtaking! Highly recommend visiting in winter.",
-    likes: 12,
-    comments: 3,
-  },
-  {
-    id: "2",
-    user: {
-      name: "Liam",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    date: "2023-02-22",
-    rating: 5,
-    content: "Loved the food in Khulna! The Chijhaal was unforgettable.",
-    likes: 8,
-    comments: 1,
-  },
-  {
-    id: "3",
-    user: {
-      name: "Aiko",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    date: "2023-03-18",
-    rating: 5,
-    content: "Netrokona's Birishiri lakes is a must-visit for adventure lovers.",
-    likes: 15,
-    comments: 2,
-  },
-]
+// API Service
+class CommunityAPI {
+  private static baseURL = "https://wander-nest-ad3s.onrender.com/api"
 
-// Debounce hook
-function useDebounce(value: string, delay: number) {
-  const [debouncedValue, setDebouncedValue] = useState(value)
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay)
-    return () => clearTimeout(handler)
-  }, [value, delay])
-  return debouncedValue
+  private static async request(endpoint: string, options: RequestInit = {}) {
+    const token = localStorage.getItem("authToken")
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+        ...options.headers,
+      },
+      ...options,
+    })
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  static async getBlogs(page = 1, limit = 12): Promise<Blog[]> {
+    const data = await this.request(`/blogs/?page=${page}&limit=${limit}`)
+    return data.results || data
+  }
+
+  static async getGroups(page = 1, limit = 20): Promise<Group[]> {
+    const data = await this.request(`/groups/?page=${page}&limit=${limit}`)
+    return data.results || data
+  }
+
+  static async getUserGroups(): Promise<Group[]> {
+    const data = await this.request(`/user/groups/`)
+    return data.results || data
+  }
+
+  static async getReviews(page = 1, limit = 10): Promise<Review[]> {
+    const data = await this.request(`/reviews/?page=${page}&limit=${limit}`)
+    return data.results || data
+  }
+
+  static async likeReview(reviewId: string): Promise<void> {
+    return this.request(`/reviews/${reviewId}/like/`, {
+      method: "POST",
+    })
+  }
+
+  static async joinGroup(groupId: string): Promise<void> {
+    return this.request(`/groups/${groupId}/join/`, {
+      method: "POST",
+    })
+  }
 }
 
 const Community: React.FC = () => {
   const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading, user } = useAuth()
+  const { isAuthenticated, loading: authLoading } = useAuth()
 
-  // State management
-  const [blogs, setBlogs] = useState<BlogPost[]>([])
-  const [allGroups, setAllGroups] = useState<TravelGroup[]>([])
-  const [userGroups, setUserGroups] = useState<TravelGroup[]>([])
-  const [reviews, setReviews] = useState<Review[]>(mockReviews)
+  const [blogs, setBlogs] = useState<Blog[]>([])
+  const [groups, setGroups] = useState<Group[]>([])
+  const [userGroups, setUserGroups] = useState<Group[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [searchResults, setSearchResults] = useState<CommunitySearchResults | null>(null)
-  const [joinedGroups, setJoinedGroups] = useState<Set<string>>(new Set())
 
-  // Loading states
   const [isLoadingBlogs, setIsLoadingBlogs] = useState(true)
   const [isLoadingGroups, setIsLoadingGroups] = useState(true)
   const [isLoadingUserGroups, setIsLoadingUserGroups] = useState(true)
-  const [isSearching, setIsSearching] = useState(false)
+  const [isLoadingReviews, setIsLoadingReviews] = useState(true)
 
-  // Error states
   const [blogsError, setBlogsError] = useState<string | null>(null)
   const [groupsError, setGroupsError] = useState<string | null>(null)
-  const [searchError, setSearchError] = useState<string | null>(null)
-
-  const debouncedSearch = useDebounce(searchQuery, 300)
-
-  // Fetch initial data
-  useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      fetchBlogs()
-      fetchGroups()
-      fetchUserGroups()
-    }
-  }, [authLoading, isAuthenticated])
-
-  // Search effect
-  useEffect(() => {
-    if (!debouncedSearch.trim()) {
-      setSearchResults(null)
-      setSearchError(null)
-      return
-    }
-
-    const performSearch = async () => {
-      try {
-        setIsSearching(true)
-        setSearchError(null)
-        const results = await communityAPI.searchCommunity(debouncedSearch)
-        setSearchResults(results)
-      } catch (error) {
-        console.error("Search error:", error)
-        setSearchError("Failed to search community content")
-      } finally {
-        setIsSearching(false)
-      }
-    }
-
-    performSearch()
-  }, [debouncedSearch])
+  const [userGroupsError, setUserGroupsError] = useState<string | null>(null)
+  const [reviewsError, setReviewsError] = useState<string | null>(null)
 
   const fetchBlogs = async () => {
     try {
       setIsLoadingBlogs(true)
       setBlogsError(null)
-      const data = await communityAPI.getBlogs(1, 12)
-      setBlogs(data.results || data)
+      const data = await CommunityAPI.getBlogs(1, 12)
+      setBlogs(data)
     } catch (error) {
       console.error("Error fetching blogs:", error)
       setBlogsError("Failed to load travel blogs")
@@ -151,8 +142,8 @@ const Community: React.FC = () => {
     try {
       setIsLoadingGroups(true)
       setGroupsError(null)
-      const data = await communityAPI.getGroups(1, 20)
-      setAllGroups(data.results || data)
+      const data = await CommunityAPI.getGroups(1, 20)
+      setGroups(data)
     } catch (error) {
       console.error("Error fetching groups:", error)
       setGroupsError("Failed to load travel groups")
@@ -164,17 +155,39 @@ const Community: React.FC = () => {
   const fetchUserGroups = async () => {
     try {
       setIsLoadingUserGroups(true)
-      const data = await communityAPI.getUserGroups()
-      setUserGroups(data.results || data)
-      // Update joined groups set
-      const joinedIds = new Set<string>((data.results || data).map((group: TravelGroup) => group.id))
-      setJoinedGroups(joinedIds)
+      setUserGroupsError(null)
+      const data = await CommunityAPI.getUserGroups()
+      setUserGroups(data)
     } catch (error) {
       console.error("Error fetching user groups:", error)
+      setUserGroupsError("Failed to load user groups")
     } finally {
       setIsLoadingUserGroups(false)
     }
   }
+
+  const fetchReviews = async () => {
+    try {
+      setIsLoadingReviews(true)
+      setReviewsError(null)
+      const data = await CommunityAPI.getReviews(1, 10)
+      setReviews(data)
+    } catch (error) {
+      console.error("Error fetching reviews:", error)
+      setReviewsError("Failed to load reviews")
+    } finally {
+      setIsLoadingReviews(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      fetchBlogs()
+      fetchGroups()
+      fetchUserGroups()
+      fetchReviews()
+    }
+  }, [authLoading, isAuthenticated])
 
   const handleBlogClick = useCallback(
     (blogId: string) => {
@@ -186,28 +199,24 @@ const Community: React.FC = () => {
   const handleGroupJoin = useCallback(
     async (groupId: string) => {
       try {
-        await communityAPI.joinGroup(groupId)
-
+        await CommunityAPI.joinGroup(groupId)
         // Update local state
-        const joinedGroup = allGroups.find((g) => g.id === groupId)
+        const joinedGroup = groups.find((g) => g.id === groupId)
         if (joinedGroup) {
           setUserGroups((prev) => [...prev, { ...joinedGroup, is_member: true }])
-          setAllGroups((prev) =>
+          setGroups((prev) =>
             prev.map((group) =>
               group.id === groupId ? { ...group, member_count: group.member_count + 1, is_member: true } : group,
             ),
           )
-          setJoinedGroups((prev) => new Set([...Array.from(prev), groupId]))
         }
-
-        // Show success message
         alert(`Successfully joined ${joinedGroup?.name}!`)
       } catch (error) {
         console.error("Error joining group:", error)
         alert("Failed to join group. Please try again.")
       }
     },
-    [allGroups],
+    [groups],
   )
 
   const handleGroupView = useCallback(
@@ -217,15 +226,15 @@ const Community: React.FC = () => {
     [navigate],
   )
 
-  const handleLikeReview = useCallback((reviewId: string) => {
-    setReviews((prev) =>
-      prev.map((review) => (review.id === reviewId ? { ...review, likes: review.likes + 1 } : review)),
-    )
-  }, [])
-
-  const handleSearchKeyPress = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      // Search is handled automatically by debounced effect
+  const handleLikeReview = useCallback(async (reviewId: string) => {
+    try {
+      await CommunityAPI.likeReview(reviewId)
+      setReviews((prev) =>
+        prev.map((review) => (review.id === reviewId ? { ...review, likes_count: review.likes_count + 1 } : review)),
+      )
+    } catch (error) {
+      console.error("Error liking review:", error)
+      alert("Failed to like review. Please try again.")
     }
   }, [])
 
@@ -249,27 +258,6 @@ const Community: React.FC = () => {
     return null
   }
 
-  // Loading state
-  if (isLoadingBlogs && isLoadingGroups) {
-    return (
-      <Layout>
-        <div style={{ display: "flex" }}>
-          <Sidebar />
-          <div className={styles.community}>
-            <div className={styles.communityWrapper}>
-              <div className={styles.loadingSpinner}>Loading community data...</div>
-            </div>
-          </div>
-        </div>
-      </Layout>
-    )
-  }
-
-  // Determine which content to show
-  const displayBlogs = searchResults ? searchResults.blogs : blogs
-  const displayGroups = searchResults ? searchResults.groups : allGroups
-  const suggestedGroups = displayGroups.filter((group) => !group.is_member)
-
   return (
     <Layout>
       <div style={{ display: "flex" }}>
@@ -281,7 +269,7 @@ const Community: React.FC = () => {
                 <div className={styles.depth1Frame0}>
                   <div className={styles.depth2Frame1}>
                     <div className={styles.depth3Frame02}>
-                      {/* Hero Section with Modern Styling */}
+                      {/* Hero Section */}
                       <div className={styles.heroSection}>
                         <div className={styles.depth4Frame02}>
                           <div className={styles.depth5Frame03}>
@@ -300,8 +288,7 @@ const Community: React.FC = () => {
                             </div>
                           </div>
                         </div>
-
-                        {/* Enhanced Search Section */}
+                        {/* Search Section */}
                         <div className={styles.searchBarWrapper}>
                           <input
                             className={styles.searchBarResponsive}
@@ -309,14 +296,11 @@ const Community: React.FC = () => {
                             placeholder="Search travel blogs, groups, or discussions..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyPress={handleSearchKeyPress}
                           />
-                          {isSearching && <div className={styles.searchSpinner}>🔍</div>}
                         </div>
-                        {searchError && <div className={styles.errorMessage}>{searchError}</div>}
                       </div>
 
-                      
+                      {/* Latest Travel Blogs */}
                       <div className={styles.section}>
                         <h2 className={styles.sectionTitle}>
                           <span role="img" aria-label="blog">
@@ -333,13 +317,13 @@ const Community: React.FC = () => {
                               Try Again
                             </button>
                           </div>
-                        ) : displayBlogs.length === 0 ? (
+                        ) : blogs.length === 0 ? (
                           <div className={styles.emptyState}>
                             <p>No travel blogs found.</p>
                           </div>
                         ) : (
                           <div className={styles.blogsGrid}>
-                            {displayBlogs.slice(0, 6).map((blog) => (
+                            {blogs.slice(0, 6).map((blog) => (
                               <div key={blog.id} className={styles.blogCard} onClick={() => handleBlogClick(blog.id)}>
                                 <img
                                   src={blog.image || "/placeholder.svg?height=99&width=176"}
@@ -377,8 +361,57 @@ const Community: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Join Travel Groups */}
-                     
+                      {/* Travel Groups */}
+                      <div className={styles.section}>
+                        <h2 className={styles.sectionTitle}>
+                          <span role="img" aria-label="groups">
+                            👥
+                          </span>{" "}
+                          Join Travel Groups
+                        </h2>
+                        {isLoadingGroups ? (
+                          <div className={styles.loadingSpinner}>Loading travel groups...</div>
+                        ) : groupsError ? (
+                          <div className={styles.errorMessage}>
+                            {groupsError}
+                            <button onClick={fetchGroups} className={styles.retryButton}>
+                              Try Again
+                            </button>
+                          </div>
+                        ) : groups.length === 0 ? (
+                          <div className={styles.emptyState}>
+                            <p>No travel groups found.</p>
+                          </div>
+                        ) : (
+                          <div className={styles.groupsGrid}>
+                            {groups
+                              .filter((group) => !group.is_member)
+                              .slice(0, 4)
+                              .map((group) => (
+                                <div key={group.id} className={styles.groupCard}>
+                                  <img
+                                    src={group.image || "/placeholder.svg?height=176&width=200"}
+                                    alt={group.name}
+                                    className={styles.groupImage}
+                                  />
+                                  <div className={styles.groupInfo}>
+                                    <div className={styles.groupName}>{group.name}</div>
+                                    <div className={styles.groupDesc}>{group.description}</div>
+                                    <div className={styles.groupMembers}>
+                                      {group.member_count.toLocaleString()} members
+                                    </div>
+                                    <button
+                                      className={`${styles.joinButton} ${styles.responsiveButton}`}
+                                      onClick={() => handleGroupJoin(group.id)}
+                                    >
+                                      Join
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                      </div>
 
                       {/* Your Groups */}
                       {userGroups.length > 0 && (
@@ -424,49 +457,72 @@ const Community: React.FC = () => {
                           </span>{" "}
                           Discussions & Reviews
                         </h2>
-                        <div className={styles.reviewsContainer}>
-                          {reviews.map((review) => (
-                            <div key={review.id} className={styles.reviewCard}>
-                              <div className={styles.reviewHeader}>
-                                <img
-                                  src={review.user.avatar || "/placeholder.svg?height=40&width=40"}
-                                  alt={review.user.name}
-                                  className={styles.reviewAvatar}
-                                />
-                                <div className={styles.reviewUserInfo}>
-                                  <div className={styles.reviewUserName}>{review.user.name}</div>
-                                  <div className={styles.reviewDate}>{new Date(review.date).toLocaleDateString()}</div>
+                        {isLoadingReviews ? (
+                          <div className={styles.loadingSpinner}>Loading reviews...</div>
+                        ) : reviewsError ? (
+                          <div className={styles.errorMessage}>
+                            {reviewsError}
+                            <button onClick={fetchReviews} className={styles.retryButton}>
+                              Try Again
+                            </button>
+                          </div>
+                        ) : reviews.length === 0 ? (
+                          <div className={styles.emptyState}>
+                            <p>No reviews found.</p>
+                          </div>
+                        ) : (
+                          <div className={styles.reviewsContainer}>
+                            {reviews.map((review) => (
+                              <div key={review.id} className={styles.reviewCard}>
+                                <div className={styles.reviewHeader}>
+                                  <img
+                                    src={review.user.profile_image || "/placeholder.svg?height=40&width=40"}
+                                    alt={`${review.user.first_name} ${review.user.last_name}`}
+                                    className={styles.reviewAvatar}
+                                  />
+                                  <div className={styles.reviewUserInfo}>
+                                    <div className={styles.reviewUserName}>
+                                      {review.user.first_name} {review.user.last_name}
+                                    </div>
+                                    <div className={styles.reviewDate}>
+                                      {new Date(review.created_at).toLocaleDateString()}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className={styles.reviewLocation}>📍 {review.location}</div>
+                                <div className={styles.reviewRating}>
+                                  {Array.from({ length: 5 }).map((_, i) => (
+                                    <span key={i} className={i < review.rating ? styles.starFilled : styles.starEmpty}>
+                                      ⭐
+                                    </span>
+                                  ))}
+                                </div>
+                                <div className={styles.reviewContent}>{review.content}</div>
+                                {review.images && review.images.length > 0 && (
+                                  <div className={styles.reviewImages}>
+                                    {review.images.slice(0, 3).map((image, index) => (
+                                      <img
+                                        key={index}
+                                        src={image || "/placeholder.svg"}
+                                        alt={`Review image ${index + 1}`}
+                                        className={styles.reviewImage}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
+                                <div className={styles.reviewActions}>
+                                  <button className={styles.reviewAction} onClick={() => handleLikeReview(review.id)}>
+                                    ❤️ {review.likes_count}
+                                  </button>
+                                  {review.comments_count > 0 && (
+                                    <button className={styles.reviewAction}>💬 {review.comments_count}</button>
+                                  )}
                                 </div>
                               </div>
-                              <div className={styles.reviewRating}>
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <span key={i} className={i < review.rating ? styles.starFilled : styles.starEmpty}>
-                                    ⭐
-                                  </span>
-                                ))}
-                              </div>
-                              <div className={styles.reviewContent}>{review.content}</div>
-                              <div className={styles.reviewActions}>
-                                <button className={styles.reviewAction} onClick={() => handleLikeReview(review.id)}>
-                                  ❤️ {review.likes}
-                                </button>
-                                {review.comments > 0 && (
-                                  <button className={styles.reviewAction}>💬 {review.comments}</button>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Search Results Summary */}
-                      {searchResults && (
-                        <div className={styles.section}>
-                          <div className={styles.searchSummary}>
-                            Found {searchResults.total_results} results for "{searchQuery}"
+                            ))}
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
