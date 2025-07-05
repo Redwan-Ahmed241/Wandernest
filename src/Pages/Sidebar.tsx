@@ -1,47 +1,58 @@
 "use client"
 
-import type { FunctionComponent } from "react"
+import React, { FunctionComponent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Styles/Sidebar.module.css"
 import { useAuth } from "../Authentication/auth-context" // Using your auth context
-
-
-
-
+import { userAPI } from "../App/api"
 
 const Sidebar: FunctionComponent = () => {
   const navigate = useNavigate()
   const { user, isAuthenticated, loading } = useAuth()
+
+  const getInitial = () => {
+    if (user?.first_name && user?.first_name.length > 0) {
+      return user.first_name[0].toUpperCase();
+    }
+    return user?.username?.[0]?.toUpperCase() || "U";
+  }
 
   // Don't render sidebar if not authenticated
   if (!isAuthenticated && !loading) {
     return null
   }
 
+  // Debug user object
+  console.log("Sidebar user:", user);
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.profileSection}>
-        {loading ? (
-          // Loading state
-          <div className={styles.loadingProfile}>
-            <div className={styles.avatarSkeleton}></div>
-            <div>
-              <div className={styles.loadingText}></div>
-              <div className={styles.userSubtitle}>Loading...</div>
-            </div>
+        <div
+          className={styles.avatar}
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            background: "#4285f4",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 700,
+            fontSize: 32,
+            userSelect: "none",
+            border: "2px solid #a1824a"
+          }}
+        >
+          {getInitial()}
+        </div>
+        <div>
+          <div className={styles.userName}>
+            {user?.first_name || user?.username}
           </div>
-        ) : (
-          // Authenticated user - using real data
-          <>
-            <img className={styles.avatar} src="/placeholder.svg?height=50&width=50" alt="User Avatar" />
-            <div>
-              <div className={styles.userName}>
-                {user?.first_name} {user?.last_name}
-              </div>
-              <div className={styles.userSubtitle}>Plan your next adventure</div>
-            </div>
-          </>
-        )}
+          <div className={styles.userSubtitle}>Plan your next adventure</div>
+        </div>
       </div>
 
       <nav className={styles.navMenu}>
