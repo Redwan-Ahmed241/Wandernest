@@ -10,12 +10,13 @@ import "react-datepicker/dist/react-datepicker.css"
 
 interface UserProfile {
   id: string
-  phonenumber?: string
-  name?: string
+  phone: string
+  country: string
+  age: number | null
+  passport_no: string | null
+  date_of_birth: string | null
+  profile_image: string | null
   email: string
-  passportNumber?: string
-  dateOfBirth?: string
-  profile_image?: string
 }
 
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"
@@ -175,20 +176,8 @@ const ProfileSettings: React.FC = () => {
         </div>
         <div className={styles.profileInfoSection}>
           <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Username:</label>
-            <span className={styles.fieldValue}>{profile.user?.username || "-"}</span>
-          </div>
-          <div className={styles.fieldGroup}>
             <label className={styles.fieldLabel}>Email:</label>
-            <span className={styles.fieldValue}>{profile.user?.email || "-"}</span>
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>First Name:</label>
-            <span className={styles.fieldValue}>{profile.user?.first_name || "-"}</span>
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Last Name:</label>
-            <span className={styles.fieldValue}>{profile.user?.last_name || "-"}</span>
+            <span className={styles.fieldValue}>{profile.email || "-"}</span>
           </div>
           <div className={styles.fieldGroup}>
             <label className={styles.fieldLabel}>Phone:</label>
