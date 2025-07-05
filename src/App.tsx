@@ -41,7 +41,7 @@ import ProfileSettings from './Pages/ProfileSettings'
 import "./global.css"
 import ConfirmBook from "./Pages/confirm_book"
 import FPass from "./Pages/fpass"
-import HotelBook from "./Pages/HotelBook"
+
 import ResetPassword from "./Pages/reset-password"
 
 
@@ -144,7 +144,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/fpass" element={<FPass />} />
 
       {/* New Route */}
-      <Route path="/hotel-book" element={<HotelBook />} />
+      
 
       {/* New Route for password reset confirmation */}
       <Route path="/reset-password/:uidb64/:token/" element={<ResetPassword />} />
