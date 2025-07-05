@@ -79,8 +79,9 @@ const ProfileSettings: React.FC = () => {
       const token = localStorage.getItem("token")
       let profile_image_url = form.profile_image
 
-      // If a new picture is selected, upload it first
+      // If a new picture is selected, upload it first (if your backend supports file upload)
       if (picFile) {
+        // Example: upload to /api/user/profile/upload-image/
         const imgForm = new FormData()
         imgForm.append("image", picFile)
         const imgRes = await fetch(API_URL + "upload-image/", {
@@ -92,10 +93,10 @@ const ProfileSettings: React.FC = () => {
         })
         if (!imgRes.ok) throw new Error("Failed to upload image")
         const imgData = await imgRes.json()
-        profile_image_url = imgData.url
+        profile_image_url = imgData.url // Adjust according to your backend response
       }
 
-      // Use PATCH method with proper field mapping
+      // Use PATCH method with the exact format your backend mate specified
       const response = await fetch(API_URL, {
         method: "PATCH",
         headers: {
@@ -103,15 +104,26 @@ const ProfileSettings: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: form.name,
           email: form.email,
-          phone_number: form.phonenumber, // Map phonenumber to phone_number for backend
           passport_no: form.passportNumber, // Map passportNumber to passport_no
           date_of_birth: form.dateOfBirth, // Map dateOfBirth to date_of_birth
+           // Include name if it's part of your form
           profile_image: profile_image_url, // Include profile image if updated
         }),
       })
 
+      if (!response.ok) throw new Error("Failed to update profile")
+      const updated = await response.json()
+      setProfile(updated)
+      setForm(updated)
+      setEditMode(false)
+      setPicFile(null)
+    } catch (err: any) {
+      setError(err.message || "Could not save profile.")
+    } finally {
+      setSaving(false)
+    }
+  }
 
   if (!profile)
     return (
