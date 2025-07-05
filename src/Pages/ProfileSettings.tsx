@@ -10,7 +10,6 @@ interface UserProfile {
   passportNumber?: string;
   dateOfBirth?: string;
   profile_image?: string;
-  socialLinks: string[];
 }
 
 const MOCK_PROFILE: UserProfile = {
@@ -20,7 +19,6 @@ const MOCK_PROFILE: UserProfile = {
   passportNumber: 'A1234567',
   dateOfBirth: '1990-01-01',
   profile_image: '',
-  socialLinks: ['https://twitter.com/johndoe', '', ''],
 };
 
 const ProfileSettings: React.FC = () => {
@@ -39,15 +37,9 @@ const ProfileSettings: React.FC = () => {
     setForm(MOCK_PROFILE);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, idx?: number) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name.startsWith('socialLinks')) {
-      const links = form.socialLinks ? [...form.socialLinks] : ['', '', ''];
-      if (typeof idx === 'number') links[idx] = value;
-      setForm({ ...form, socialLinks: links });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm({ ...form, [name]: value });
   };
 
   const handlePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,22 +140,6 @@ const ProfileSettings: React.FC = () => {
               <span className={styles.fieldValue}>{profile.dateOfBirth || '-'}</span>
             )}
           </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Social Media Links:</label>
-            <div className={styles.socialLinks}>
-              {[0, 1, 2].map(idx => (
-                <input
-                  key={idx}
-                  name={`socialLinks${idx}`}
-                  placeholder={`Social link ${idx + 1}`}
-                  value={form.socialLinks && form.socialLinks[idx] ? form.socialLinks[idx] : ''}
-                  onChange={e => handleChange(e, idx)}
-                  disabled={!editMode}
-                  className={styles.inputField}
-                />
-              ))}
-            </div>
-          </div>
         </div>
       </div>
       <div className={styles.buttonGroup}>
@@ -197,4 +173,4 @@ const ProfileSettings: React.FC = () => {
   );
 };
 
-export default ProfileSettings; 
+export default ProfileSettings;
