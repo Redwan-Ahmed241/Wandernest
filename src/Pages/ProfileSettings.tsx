@@ -14,7 +14,7 @@ interface UserProfile {
   profile_image?: string;
 }
 
-const API_URL = " https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"; // <-- Replace with your actual API endpoint
+const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"; // <-- Replace with your actual API endpoint
 
 const ProfileSettings: React.FC = () => {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
