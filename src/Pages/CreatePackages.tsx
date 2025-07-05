@@ -95,9 +95,9 @@ const CreatePackage: FunctionComponent = () => {
 
       // Updated to use your actual API endpoints
       const [transport, hotels, guides] = await Promise.all([
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/api/packages/transport-options/", { headers }),
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/api/packages/create/hotel-options/", { headers }),
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/api/packages/guide-options/", { headers }),
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/transport-options/", { headers }),
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/create/hotel-options/", { headers }),
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/guide-options/", { headers }),
       ])
 
       const transportData = await transport.json()
@@ -261,7 +261,7 @@ const CreatePackage: FunctionComponent = () => {
       }
 
       // Updated to use your actual create endpoint
-      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/packages/api/packages/create/", {
+      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/packages/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
