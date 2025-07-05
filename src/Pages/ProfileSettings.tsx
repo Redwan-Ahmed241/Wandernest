@@ -16,6 +16,7 @@ interface UserProfile {
   passport_no: string | null
   date_of_birth: string | null
   profile_image: string | null
+  phonenumber: string | null
   email: string
 }
 
@@ -122,8 +123,8 @@ const ProfileSettings: React.FC = () => {
         },
         body: JSON.stringify({
           email: form.email,
-          passport_no: form.passportNumber, // Map passportNumber to passport_no
-          date_of_birth: form.dateOfBirth, // Map dateOfBirth to date_of_birth
+          passport_no: form.passport_no, // Map passportNumber to passport_no
+          date_of_birth: form.date_of_birth, // Map dateOfBirth to date_of_birth
           phone_number: form.phonenumber, // Add phone number to API request
           profile_image: profile_image_url, // Include profile image if updated
         }),
