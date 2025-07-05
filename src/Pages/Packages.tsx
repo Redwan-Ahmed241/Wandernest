@@ -5,18 +5,22 @@ import Layout from '../App/Layout';
 import { useAuth } from "../Authentication/auth-context";
 
 const FILTER_OPTIONS = {
-  Destination: ['All', 'Sundarbans', "Cox's Bazar", 'Srimangal', 'Rangamati', 'Bandarban'],
+  // Destination will be generated dynamically
   Budget: ['All', '< 4000৳', '4000–6000৳', '6000+৳'],
 };
 
-type FilterKey = keyof typeof FILTER_OPTIONS;
+type FilterKey = 'Destination' | 'Budget';
 
 interface Package {
   id: number;
   title: string;
-  pic: string;
+  subtitle: string;
+  pic?: string;
   price: string;
   image_url: string;
+  destination: string;
+  source: string;
+  days: number;
 }
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
@@ -86,6 +90,23 @@ const BookNowModal = ({ open, onClose, pkg, onConfirm, loading }: any) => {
   );
 };
 
+// Helper to extract place name from package title
+function extractPlaceName(title: string): string {
+  // Try to extract the first part before a special character or the first 2 words
+  // e.g. "Cox's Bazar Beach Retreat" => "Cox's Bazar"
+  if (!title) return '';
+  // Try to match known patterns
+  const knownPlaces = [
+    "Cox's Bazar", 'Chittagong', 'Dhaka', 'St. Martin', 'Sundarbans', 'Sylhet', 'Rangamati', 'Bandarban', 'Srimangal', 'Panchagarh', 'Khulna', 'Rajshahi', 'Barisal', 'Mymensingh', 'Comilla', 'Jessore', 'Dinajpur', 'Bogra', 'Pabna', 'Noakhali', 'Tangail', 'Jamalpur', 'Narayanganj', 'Gazipur', 'Narsingdi', 'Kushtia', 'Faridpur', 'Satkhira', 'Bhola', 'Patuakhali', 'Bagerhat', 'Meherpur', 'Lalmonirhat', 'Kurigram', 'Sherpur', 'Habiganj', 'Netrokona', 'Sunamganj', 'Moulvibazar', 'Chuadanga', 'Magura', 'Jhalokathi', 'Pirojpur', 'Narail', 'Shariatpur', 'Madaripur', 'Gopalganj', 'Munshiganj', 'Manikganj', 'Rajbari', 'Nilphamari', 'Gaibandha', 'Thakurgaon', 'Joypurhat', 'Naogaon', 'Chapainawabganj', 'Sirajganj', 'Kishoreganj', 'Brahmanbaria', 'Lakshmipur', 'Chandpur', 'Feni', 'Laxmipur', 'Shatkhira', 'Bhola', 'Patuakhali', 'Bagerhat', 'Meherpur', 'Lalmonirhat', 'Kurigram', 'Sherpur', 'Habiganj', 'Netrokona', 'Sunamganj', 'Moulvibazar', 'Chuadanga', 'Magura', 'Jhalokathi', 'Pirojpur', 'Narail', 'Shariatpur', 'Madaripur', 'Gopalganj', 'Munshiganj', 'Manikganj', 'Rajbari', 'Nilphamari', 'Gaibandha', 'Thakurgaon', 'Joypurhat', 'Naogaon', 'Chapainawabganj', 'Sirajganj', 'Kishoreganj', 'Brahmanbaria', 'Lakshmipur', 'Chandpur', 'Feni', 'Laxmipur'];
+  for (const place of knownPlaces) {
+    if (title.toLowerCase().includes(place.toLowerCase())) {
+      return place;
+    }
+  }
+  // Fallback: take the first 2 words
+  return title.split(' ').slice(0, 2).join(' ');
+}
+
 const Packages: FunctionComponent = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -109,7 +130,9 @@ const Packages: FunctionComponent = () => {
       try {
         const response = await fetch('https://wander-nest-ad3s.onrender.com/api/packages/all/');
         const data = await response.json();
-        setPackages(Array.isArray(data) ? data : []);
+        // Handle paginated response structure
+        const packagesData = data.results || (Array.isArray(data) ? data : []);
+        setPackages(packagesData);
       } catch (err) {
         setError('Failed to fetch packages');
         setPackages([]);
@@ -160,7 +183,7 @@ const Packages: FunctionComponent = () => {
     const matchesSearch = pkg.title.toLowerCase().includes(search.toLowerCase());
     const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
       if (filter === 'Destination') {
-        return pkg.title === value || value === 'All';
+        return extractPlaceName(pkg.title) === value || value === 'All';
       }
       if (filter === 'Budget') {
         const price = Number(pkg.price);
@@ -198,6 +221,12 @@ const Packages: FunctionComponent = () => {
     }
   };
 
+  // Dynamic Destination options (place names only)
+  const destinationOptions = [
+    'All',
+    ...Array.from(new Set(packages.map(pkg => extractPlaceName(pkg.title)))).sort(),
+  ];
+
   return (
     <Layout>
       <div className={styles.packages}>
@@ -232,41 +261,75 @@ const Packages: FunctionComponent = () => {
                   <div className={styles.depth2Frame1}>
                     <div className={styles.depth3Frame01}>
                       <div className={styles.depth4Frame2} ref={filterDropdownRef}>
-                        {Object.keys(FILTER_OPTIONS).map(filter => (
-                          <div key={filter} className={styles.depth5Frame03}>
-                            <div
-                              className={
-                                styles.depth6Frame03 +
-                                (selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All' ? ' ' + styles.selected : '')
-                              }
-                              onClick={() => handleFilterClick(filter as FilterKey)}
-                              style={{ cursor: 'pointer', position: 'relative' }}
-                            >
-                              <div className={styles.destinations}>
-                                {selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== 'All'
-                                  ? selectedFilters[filter as FilterKey]
-                                  : filter}
-                              </div>
-                              <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
-                              {openFilter === (filter as FilterKey) && (
-                                <div className={styles.filterDropdown}>
-                                  {(FILTER_OPTIONS[filter as FilterKey] as string[]).map((option: string) => (
-                                    <div
-                                      key={option}
-                                      className={
-                                        styles.filterDropdownOption +
-                                        (selectedFilters[filter as FilterKey] === option || (!selectedFilters[filter as FilterKey] && option === 'All') ? ' ' + styles.selected : '')
-                                      }
-                                      onClick={() => handleOptionSelect(filter as FilterKey, option)}
-                                    >
-                                      {option}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
+                        {/* Render Destination and Budget filters */}
+                        {/* Destination filter (dynamic) */}
+                        <div className={styles.depth5Frame03}>
+                          <div
+                            className={
+                              styles.depth6Frame03 +
+                              (selectedFilters['Destination'] && selectedFilters['Destination'] !== 'All' ? ' ' + styles.selected : '')
+                            }
+                            onClick={() => handleFilterClick('Destination')}
+                            style={{ cursor: 'pointer', position: 'relative' }}
+                          >
+                            <div className={styles.destinations}>
+                              {selectedFilters['Destination'] && selectedFilters['Destination'] !== 'All'
+                                ? selectedFilters['Destination']
+                                : 'Destination'}
                             </div>
+                            <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
+                            {openFilter === 'Destination' && (
+                              <div className={styles.filterDropdown}>
+                                {destinationOptions.map(option => (
+                                  <div
+                                    key={option}
+                                    className={
+                                      styles.filterDropdownOption +
+                                      (selectedFilters['Destination'] === option || (!selectedFilters['Destination'] && option === 'All') ? ' ' + styles.selected : '')
+                                    }
+                                    onClick={() => handleOptionSelect('Destination', option)}
+                                  >
+                                    {option}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                        ))}
+                        </div>
+                        {/* Budget filter (static) */}
+                        <div className={styles.depth5Frame03}>
+                          <div
+                            className={
+                              styles.depth6Frame03 +
+                              (selectedFilters['Budget'] && selectedFilters['Budget'] !== 'All' ? ' ' + styles.selected : '')
+                            }
+                            onClick={() => handleFilterClick('Budget')}
+                            style={{ cursor: 'pointer', position: 'relative' }}
+                          >
+                            <div className={styles.destinations}>
+                              {selectedFilters['Budget'] && selectedFilters['Budget'] !== 'All'
+                                ? selectedFilters['Budget']
+                                : 'Budget'}
+                            </div>
+                            <img className={styles.depth6Frame1} alt="" src="/Figma_photoes/darrow.svg" />
+                            {openFilter === 'Budget' && (
+                              <div className={styles.filterDropdown}>
+                                {FILTER_OPTIONS.Budget.map(option => (
+                                  <div
+                                    key={option}
+                                    className={
+                                      styles.filterDropdownOption +
+                                      (selectedFilters['Budget'] === option || (!selectedFilters['Budget'] && option === 'All') ? ' ' + styles.selected : '')
+                                    }
+                                    onClick={() => handleOptionSelect('Budget', option)}
+                                  >
+                                    {option}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                       <div className={styles.depth4Frame3}>
                         <div className={styles.depth5Frame04}>
@@ -293,7 +356,7 @@ const Packages: FunctionComponent = () => {
                                   <div className={styles.sundarbansWildlifeExpedition}>{pkg.title}</div>
                                 </div>
                                 <div className={styles.depth8Frame1}>
-                                  <div className={styles.exploreTheWorlds}>Experience the beauty of {pkg.title}</div>
+                                  <div className={styles.exploreTheWorlds}>{pkg.subtitle}</div>
                                 </div>
                                 <div className={styles.cardPrice}>৳{Number(pkg.price).toLocaleString()}</div>
                                 <button

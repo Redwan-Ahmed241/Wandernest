@@ -6,7 +6,7 @@ import styles from '../Styles/ConfirmBook.module.css';
 import Layout from '../App/Layout';
 import { getHotels, Hotel } from '../App/api-services';
 
-const optionOrder = ["transport", "hotel", "vehicle", "guide"] as const
+const optionOrder = ["transport", "hotel", "guide"] as const
 type OptionKey = typeof optionOrder[number];
 
 const ConfirmBook: React.FC = () => {
@@ -25,7 +25,6 @@ const ConfirmBook: React.FC = () => {
   // Skip states for options
   const [skipTransport, setSkipTransport] = useState(true);
   const [skipHotel, setSkipHotel] = useState(false);
-  const [skipVehicle, setSkipVehicle] = useState(true);
   const [skipGuide, setSkipGuide] = useState(true);
 
   // Focus state for option rows
@@ -33,14 +32,12 @@ const ConfirmBook: React.FC = () => {
   const optionRefs: Record<OptionKey, React.RefObject<HTMLDivElement>> = {
     transport: React.useRef<HTMLDivElement>(null),
     hotel: React.useRef<HTMLDivElement>(null),
-    vehicle: React.useRef<HTMLDivElement>(null),
     guide: React.useRef<HTMLDivElement>(null),
   };
 
   // Placeholder states for options (to be replaced with API data)
   const [transport, setTransport] = useState<string>('Not selected');
   const [hotel, setHotel] = useState<string>('Not selected');
-  const [vehicle, setVehicle] = useState<string>('Not selected');
   const [guide, setGuide] = useState<string>('Not selected');
 
   const [warning, setWarning] = useState('');
@@ -57,6 +54,17 @@ const ConfirmBook: React.FC = () => {
   const [hotelsLoading, setHotelsLoading] = useState(false);
   const [hotelsError, setHotelsError] = useState('');
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+
+  // Add transport and guide selection state
+  const [transportOptions, setTransportOptions] = useState<any[]>([]);
+  const [transportLoading, setTransportLoading] = useState(false);
+  const [transportError, setTransportError] = useState('');
+  const [selectedTransportId, setSelectedTransportId] = useState<string | null>(null);
+
+  const [guideOptions, setGuideOptions] = useState<any[]>([]);
+  const [guideLoading, setGuideLoading] = useState(false);
+  const [guideError, setGuideError] = useState('');
+  const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
 
   // Helper to get correct field regardless of casing
   const getField = (obj: any, key: string) => obj?.[key] || obj?.[key.toLowerCase()] || obj?.[key.charAt(0).toUpperCase() + key.slice(1)] || '';
@@ -118,12 +126,31 @@ const ConfirmBook: React.FC = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
+      console.log('Package data received:', pkg); // Debug log
+      
       if (pkg?.id) {
         try {
           setLoading(true);
+          setError('');
+          
+          console.log('Fetching package with ID:', pkg.id); // Debug log
+          
           const response = await fetch('https://wander-nest-ad3s.onrender.com/api/packages/all/');
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
           const data = await response.json();
-          const found = Array.isArray(data) ? data.find((p: any) => p.id === pkg.id) : null;
+          console.log('API response:', data); // Debug log
+          
+          // Handle paginated response structure
+          const packagesData = data.results || (Array.isArray(data) ? data : []);
+          console.log('Packages data:', packagesData); // Debug log
+          
+          const found = packagesData.find((p: any) => p.id === pkg.id);
+          console.log('Found package:', found); // Debug log
+          
           if (found) {
             setPackageDetails(found);
             setStartDate('');
@@ -131,23 +158,23 @@ const ConfirmBook: React.FC = () => {
             setTotalPrice(found.price || found.budget || '');
             setTransport('Not selected');
             setHotel('Not selected');
-            setVehicle('Not selected');
             setGuide('Not selected');
             setSkipTransport(true);
             setSkipHotel(false);
-            setSkipVehicle(true);
             setSkipGuide(true);
             setActiveOption('transport');
           } else {
-            setError('Package not found.');
+            setError(`Package with ID ${pkg.id} not found in the API response.`);
           }
         } catch (err) {
-          setError('Failed to fetch package details.');
+          console.error('Error fetching package details:', err); // Debug log
+          setError(`Failed to fetch package details: ${err instanceof Error ? err.message : 'Unknown error'}`);
         } finally {
           setLoading(false);
         }
       } else {
-        setError('No package selected.');
+        console.log('No package ID found in:', pkg); // Debug log
+        setError('No package selected or package data is incomplete.');
         setLoading(false);
       }
     };
@@ -164,7 +191,7 @@ const ConfirmBook: React.FC = () => {
   // Recalculate end date if packageDetails or startDate changes
   useEffect(() => {
     if (packageDetails && startDate) {
-      const days = parseInt(getField(packageDetails, 'Days'), 10);
+      const days = parseInt(getField(packageDetails, 'days'), 10);
       if (!isNaN(days)) {
         const start = new Date(startDate);
         const end = new Date(start);
@@ -181,25 +208,76 @@ const ConfirmBook: React.FC = () => {
     }
   }, [packageDetails, startDate]);
 
+  // Fetch all options when needed
+  const fetchAllOptions = async () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Token ${token}` }),
+    };
+
+    try {
+      // Fetch all options in parallel
+      const [transportRes, hotelsRes, guidesRes] = await Promise.all([
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/transport-options/", { headers }),
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/create/hotel-options/", { headers }),
+        fetch("https://wander-nest-ad3s.onrender.com/api/packages/guide-options/", { headers }),
+      ]);
+
+      const transportData = await transportRes.json();
+      const hotelsData = await hotelsRes.json();
+      const guidesData = await guidesRes.json();
+
+      setTransportOptions(transportData.results || transportData);
+      console.log('Transport options:', transportData.results || transportData);
+      setHotels(hotelsData.results || hotelsData);
+      console.log('Hotel options:', hotelsData.results || hotelsData);
+      setGuideOptions(guidesData.results || guidesData);
+      console.log('Guide options:', guidesData.results || guidesData);
+    } catch (error) {
+      console.error("Error fetching options:", error);
+      setHotelsError('Failed to fetch options.');
+    }
+  };
+
   // Fetch hotels when hotel selection is not skipped
   useEffect(() => {
     if (!skipHotel) {
       setHotelsLoading(true);
       setHotelsError('');
-      getHotels()
-        .then((hotels) => {
-          setHotels(hotels);
-          setHotelsLoading(false);
-        })
-        .catch((err) => {
-          setHotelsError('Failed to fetch hotels.');
-          setHotels([]);
-          setHotelsLoading(false);
-        });
+      fetchAllOptions().finally(() => {
+        setHotelsLoading(false);
+      });
     } else {
       setHotels([]);
     }
   }, [skipHotel]);
+
+  // Fetch transport when transport selection is not skipped
+  useEffect(() => {
+    if (!skipTransport) {
+      setTransportLoading(true);
+      setTransportError('');
+      fetchAllOptions().finally(() => {
+        setTransportLoading(false);
+      });
+    } else {
+      setTransportOptions([]);
+    }
+  }, [skipTransport]);
+
+  // Fetch guides when guide selection is not skipped
+  useEffect(() => {
+    if (!skipGuide) {
+      setGuideLoading(true);
+      setGuideError('');
+      fetchAllOptions().finally(() => {
+        setGuideLoading(false);
+      });
+    } else {
+      setGuideOptions([]);
+    }
+  }, [skipGuide]);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
@@ -239,13 +317,7 @@ const ConfirmBook: React.FC = () => {
           return !prev;
         });
         break;
-      case 'vehicle':
-        setSkipVehicle((prev) => {
-          if (!prev) setActiveOption('vehicle');
-          else focusNextOption('vehicle');
-          return !prev;
-        });
-        break;
+
       case 'guide':
         setSkipGuide((prev) => {
           if (!prev) setActiveOption('guide');
@@ -259,12 +331,12 @@ const ConfirmBook: React.FC = () => {
 
   const handleConfirmBooking = () => {
     // Validation: required fields
-    if (!packageDetails.from_location || !packageDetails.title || !startDate || !packageDetails.end_date || !travelers) {
+    if (!packageDetails.source || !packageDetails.title || !startDate || !endDate || !travelers) {
       setWarning('Please fill in all traveler details.');
       return;
     }
     // Validation: at least one customize option included
-    if (skipTransport && skipHotel && skipVehicle && skipGuide) {
+    if (skipTransport && skipHotel && skipGuide) {
       setWarning('Please include at least one package customization option.');
       return;
     }
@@ -293,11 +365,11 @@ const ConfirmBook: React.FC = () => {
             <div className={styles.formRow}>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>From</label>
-                <input className={styles.inputField} type="text" value={getField(packageDetails, 'Source')} readOnly />
+                <input className={styles.inputField} type="text" value={getField(packageDetails, 'source')} readOnly />
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>To</label>
-                <input className={styles.inputField} type="text" value={getField(packageDetails, 'Destination')} readOnly />
+                <input className={styles.inputField} type="text" value={getField(packageDetails, 'destination')} readOnly />
               </div>
             </div>
             <div className={styles.formRow}>
@@ -405,19 +477,7 @@ const ConfirmBook: React.FC = () => {
                       {hotelsLoading && <p>Loading hotels...</p>}
                       {hotelsError && <p style={{ color: 'red' }}>{hotelsError}</p>}
                       {hotels.length > 0 ? (
-                        hotels
-                          .filter(hotel => {
-                            if (!packageDetails) return true;
-                            const pkgDest = extractMainLocation(
-                              packageDetails.destination || 
-                              packageDetails.city || 
-                              packageDetails.title || 
-                              ''
-                            );
-                            const hotelLoc = extractMainLocation(hotel.location || '');
-                            return pkgDest && hotelLoc && hotelLoc.includes(pkgDest);
-                          })
-                          .map((hotel) => {
+                        hotels.map((hotel) => {
                             const isSelected = selectedHotelId === hotel.id;
                             return (
                               <div
@@ -478,17 +538,93 @@ const ConfirmBook: React.FC = () => {
                 </div>
               )}
             </div>
-            {/* Vehicle */}
-            <div ref={optionRefs.vehicle} className={`${styles.optionRow} ${activeOption === 'vehicle' ? 'active' : ''}`.trim()}>
-              <span className={styles.optionLabel}>Select Vehicle</span>
+
+                        {/* Transport */}
+            <div ref={optionRefs.transport} className={`${styles.optionRow} ${activeOption === 'transport' ? 'active' : ''}`.trim()}>
+              <span className={styles.optionLabel}>Select Transport</span>
               <button
                 type="button"
                 className={styles.skipToggleBtn}
-                onClick={() => handleSkipToggle('vehicle')}
+                onClick={() => handleSkipToggle('transport')}
               >
-                {skipVehicle ? 'Include' : 'Skip'}
+                {skipTransport ? 'Include' : 'Skip'}
               </button>
-              {!skipVehicle && <div className={styles.optionCard}>Vehicle options go here</div>}
+              {!skipTransport && (
+                <div style={{ width: '100%', marginTop: 24 }}>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: 24,
+                        overflowX: 'auto',
+                        scrollBehavior: 'smooth',
+                        paddingBottom: 8,
+                      }}
+                    >
+                      {transportLoading && <p>Loading transport options...</p>}
+                      {transportError && <p style={{ color: 'red' }}>{transportError}</p>}
+                      {transportOptions.length > 0 ? (
+                        transportOptions.map((transport) => {
+                          const isSelected = selectedTransportId === transport.id;
+                          return (
+                            <div
+                              key={transport.id}
+                              onClick={() => setSelectedTransportId(isSelected ? null : transport.id)}
+                              style={{
+                                cursor: 'pointer',
+                                borderRadius: 14,
+                                border: isSelected ? '2.5px solid #4e944f' : '2.5px solid transparent',
+                                boxShadow: isSelected ? '0 4px 24px rgba(76,177,106,0.15)' : '0 2px 8px rgba(0,0,0,0.06)',
+                                overflow: 'hidden',
+                                background: '#fff',
+                                minWidth: 220,
+                                maxWidth: 240,
+                                flex: '0 0 220px',
+                                transition: 'border 0.2s, box-shadow 0.2s',
+                                position: 'relative',
+                              }}
+                            >
+                              {/* Checkmark for selected */}
+                              {isSelected && (
+                                <div style={{
+                                  position: 'absolute',
+                                  top: 8,
+                                  right: 8,
+                                  background: '#4e944f',
+                                  borderRadius: '50%',
+                                  width: 28,
+                                  height: 28,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  boxShadow: '0 2px 8px rgba(76,177,106,0.18)',
+                                }}>
+                                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="10" fill="#4e944f"/>
+                                    <path d="M6 10.5L9 13.5L14 8.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                                  </svg>
+                                </div>
+                              )}
+                              <img
+                                src={transport.image || transport.image_url}
+                                alt={transport.name}
+                                style={{ width: '100%', height: 120, objectFit: 'cover', display: 'block' }}
+                              />
+                              <div style={{ padding: '12px 12px 8px 12px' }}>
+                                <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{transport.name}</div>
+                                <div style={{ color: '#8a8a8a', fontSize: 13, marginBottom: 2 }}>{transport.description}</div>
+                                <div style={{ fontWeight: 600, color: '#4e944f', fontSize: 14 }}>৳{transport.price}</div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        !transportLoading && <p>No transport options found.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             {/* Guide */}
             <div ref={optionRefs.guide} className={`${styles.optionRow} ${activeOption === 'guide' ? 'active' : ''}`.trim()}>
@@ -500,7 +636,82 @@ const ConfirmBook: React.FC = () => {
               >
                 {skipGuide ? 'Include' : 'Skip'}
               </button>
-              {!skipGuide && <div className={styles.optionCard}>Guide options go here</div>}
+              {!skipGuide && (
+                <div style={{ width: '100%', marginTop: 24 }}>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: 24,
+                        overflowX: 'auto',
+                        scrollBehavior: 'smooth',
+                        paddingBottom: 8,
+                      }}
+                    >
+                      {guideLoading && <p>Loading guide options...</p>}
+                      {guideError && <p style={{ color: 'red' }}>{guideError}</p>}
+                      {guideOptions.length > 0 ? (
+                        guideOptions.map((guide) => {
+                          const isSelected = selectedGuideId === guide.id;
+                          return (
+                            <div
+                              key={guide.id}
+                              onClick={() => setSelectedGuideId(isSelected ? null : guide.id)}
+                              style={{
+                                cursor: 'pointer',
+                                borderRadius: 14,
+                                border: isSelected ? '2.5px solid #4e944f' : '2.5px solid transparent',
+                                boxShadow: isSelected ? '0 4px 24px rgba(76,177,106,0.15)' : '0 2px 8px rgba(0,0,0,0.06)',
+                                overflow: 'hidden',
+                                background: '#fff',
+                                minWidth: 220,
+                                maxWidth: 240,
+                                flex: '0 0 220px',
+                                transition: 'border 0.2s, box-shadow 0.2s',
+                                position: 'relative',
+                              }}
+                            >
+                              {/* Checkmark for selected */}
+                              {isSelected && (
+                                <div style={{
+                                  position: 'absolute',
+                                  top: 8,
+                                  right: 8,
+                                  background: '#4e944f',
+                                  borderRadius: '50%',
+                                  width: 28,
+                                  height: 28,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  boxShadow: '0 2px 8px rgba(76,177,106,0.18)',
+                                }}>
+                                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="10" fill="#4e944f"/>
+                                    <path d="M6 10.5L9 13.5L14 8.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                                  </svg>
+                                </div>
+                              )}
+                              <img
+                                src={guide.image}
+                                alt={guide.name}
+                                style={{ width: '100%', height: 120, objectFit: 'cover', display: 'block' }}
+                              />
+                              <div style={{ padding: '12px 12px 8px 12px' }}>
+                                <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{guide.name}</div>
+                                <div style={{ color: '#8a8a8a', fontSize: 13, marginBottom: 2 }}>{guide.description}</div>
+                                <div style={{ fontWeight: 600, color: '#4e944f', fontSize: 14 }}>৳{guide.price}</div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        !guideLoading && <p>No guide options found.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
