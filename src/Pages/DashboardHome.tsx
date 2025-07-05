@@ -107,7 +107,7 @@ const DashboardHome: FunctionComponent = () => {
                           <div className={styles.depth5Frame03}>
                             <div className={styles.depth6Frame02}>
                               <div className={styles.welcomeBack}>
-                                Welcome back, {user?.email || "Traveler"}! 👋
+                                Welcome back, {user?.first_name || user?.username || "Traveler"}! 👋
                               </div>
                             </div>
                             <div className={styles.depth6Frame11}>
