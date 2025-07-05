@@ -10,18 +10,12 @@ import "react-datepicker/dist/react-datepicker.css"
 
 interface UserProfile {
   id: string
-  user: {
-    username: string
-    email: string
-    first_name: string
-    last_name: string
-  }
-  phone: string
-  country: string
-  age: number | null
-  passport_no: string | null
-  date_of_birth: string | null
-  profile_image: string | null
+  phonenumber?: string
+  name?: string
+  email: string
+  passportNumber?: string
+  dateOfBirth?: string
+  profile_image?: string
 }
 
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"
