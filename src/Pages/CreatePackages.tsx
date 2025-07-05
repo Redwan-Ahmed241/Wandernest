@@ -138,7 +138,7 @@ const CreatePackages: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(packageData),
       })
