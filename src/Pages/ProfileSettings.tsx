@@ -106,7 +106,7 @@ const ProfileSettings: React.FC = () => {
           email: form.email,
           passport_no: form.passportNumber, // Map passportNumber to passport_no
           date_of_birth: form.dateOfBirth, // Map dateOfBirth to date_of_birth
-          name: form.name, // Include name if it's part of your form
+           // Include name if it's part of your form
           profile_image: profile_image_url, // Include profile image if updated
         }),
       })
