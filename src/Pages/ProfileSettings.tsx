@@ -10,15 +10,16 @@ import "react-datepicker/dist/react-datepicker.css"
 
 interface UserProfile {
   id: string
-  phonenumber?: string
-  name?: string
+  phone: string
+  country: string
+  age: number | null
+  passport_no: string | null
+  date_of_birth: string | null
+  profile_image: string | null
   email: string
-  passportNumber?: string
-  dateOfBirth?: string
-  profile_image?: string
 }
 
-const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/" // Updated to match your backend mate's URL
+const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"
 
 const ProfileSettings: React.FC = () => {
   const { user, isAuthenticated, loading: authLoading } = useAuth()
@@ -37,19 +38,23 @@ const ProfileSettings: React.FC = () => {
       try {
         setError(null)
         const token = localStorage.getItem("token")
+        console.log("Token:", token)
         const response = await fetch(API_URL, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,
           },
         })
-        if (!response.ok) throw new Error("Failed to fetch profile")
+        console.log("Profile fetch status:", response.status)
         const data = await response.json()
+        console.log("Profile fetch data:", data)
+        if (!response.ok) throw new Error("Failed to fetch profile")
         setProfile(data)
         setForm(data)
-        if (data.dateOfBirth) setDobPicker(new Date(data.dateOfBirth))
+        if (data.date_of_birth) setDobPicker(new Date(data.date_of_birth))
       } catch (err: any) {
         setError(err.message || "Could not load profile.")
+        console.error("Profile fetch error:", err)
       }
     }
     fetchProfile()
@@ -68,10 +73,10 @@ const ProfileSettings: React.FC = () => {
 
   const handleDateChange = (date: Date | null) => {
     setDobPicker(date)
-    setForm({ ...form, dateOfBirth: date ? date.toISOString().slice(0, 10) : "" })
+    setForm({ ...form, date_of_birth: date ? date.toISOString().slice(0, 10) : "" })
   }
 
-  // Save profile to API using PATCH method as requested by backend mate
+  // Save profile to API using PATCH method
   const handleSave = async () => {
     setSaving(true)
     setError(null)
@@ -79,13 +84,12 @@ const ProfileSettings: React.FC = () => {
       const token = localStorage.getItem("token")
       let profile_image_url = form.profile_image
 
-      // If a new picture is selected, upload it first (if your backend supports file upload)
+      // If a new picture is selected, upload it first
       if (picFile) {
-        // Example: upload to /api/user/profile/upload-image/
         const imgForm = new FormData()
-        imgForm.append("image", picFile)
-        const imgRes = await fetch(API_URL + "upload-image/", {
-          method: "POST",
+        imgForm.append("profile_image", picFile)
+        const imgRes = await fetch(API_URL, {
+          method: "PATCH",
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -93,14 +97,27 @@ const ProfileSettings: React.FC = () => {
         })
         if (!imgRes.ok) throw new Error("Failed to upload image")
         const imgData = await imgRes.json()
-        profile_image_url = imgData.url // Adjust according to your backend response
+        profile_image_url = imgData.profile_image
       }
 
-      // Use PATCH method with the exact format your backend mate specified
+      // Prepare the data according to your Django model
+      const updateData: any = {
+        phone: form.phone,
+        country: form.country,
+        age: form.age ? parseInt(form.age.toString()) : null,
+        passport_no: form.passport_no,
+        date_of_birth: form.date_of_birth,
+      }
+
+      // Only include profile_image if it was updated
+      if (profile_image_url) {
+        updateData.profile_image = profile_image_url
+      }
+
       const response = await fetch(API_URL, {
         method: "PATCH",
         headers: {
-          Authorization: "Token " + token,
+          Authorization: `Token ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -161,20 +178,44 @@ const ProfileSettings: React.FC = () => {
         </div>
         <div className={styles.profileInfoSection}>
           <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Name:</label>
+            <label className={styles.fieldLabel}>Email:</label>
+            <span className={styles.fieldValue}>{profile.email || "-"}</span>
+          </div>
+          <div className={styles.fieldGroup}>
+            <label className={styles.fieldLabel}>Phone:</label>
             {editMode ? (
-              <input name="name" value={form.name || ""} onChange={handleChange} className={styles.inputField} />
+              <input
+                name="phone"
+                value={form.phone || ""}
+                onChange={handleChange}
+                className={styles.inputField}
+                placeholder="Enter phone number"
+              />
             ) : (
-              <span className={styles.fieldValue}>{profile.name}</span>
+              <span className={styles.fieldValue}>{profile.phone || "-"}</span>
             )}
           </div>
           <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Email:</label>
+            <label className={styles.fieldLabel}>Country:</label>
             {editMode ? (
               <input
-                name="email"
-                type="email"
-                value={form.email || ""}
+                name="country"
+                value={form.country || ""}
+                onChange={handleChange}
+                className={styles.inputField}
+                placeholder="Enter country"
+              />
+            ) : (
+              <span className={styles.fieldValue}>{profile.country || "-"}</span>
+            )}
+          </div>
+          <div className={styles.fieldGroup}>
+            <label className={styles.fieldLabel}>Age:</label>
+            {editMode ? (
+              <input
+                name="age"
+                type="number"
+                value={form.age || ""}
                 onChange={handleChange}
                 className={styles.inputField}
               />
@@ -201,13 +242,14 @@ const ProfileSettings: React.FC = () => {
             <label className={styles.fieldLabel}>Passport Number:</label>
             {editMode ? (
               <input
-                name="passportNumber"
-                value={form.passportNumber || ""}
+                name="passport_no"
+                value={form.passport_no || ""}
                 onChange={handleChange}
                 className={styles.inputField}
+                placeholder="Enter passport number"
               />
             ) : (
-              <span className={styles.fieldValue}>{profile.passportNumber || "-"}</span>
+              <span className={styles.fieldValue}>{profile.passport_no || "-"}</span>
             )}
           </div>
           <div className={styles.fieldGroup}>
@@ -223,12 +265,12 @@ const ProfileSettings: React.FC = () => {
                 yearDropdownItemNumber={100}
                 placeholderText="Select date"
                 className={styles.inputField}
-                name="dateOfBirth"
-                id="dateOfBirth"
+                name="date_of_birth"
+                id="date_of_birth"
                 autoComplete="off"
               />
             ) : (
-              <span className={styles.fieldValue}>{profile.dateOfBirth || "-"}</span>
+              <span className={styles.fieldValue}>{profile.date_of_birth || "-"}</span>
             )}
           </div>
         </div>
