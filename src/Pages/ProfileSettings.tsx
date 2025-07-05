@@ -107,7 +107,7 @@ const ProfileSettings: React.FC = () => {
           email: form.email,
           passport_no: form.passportNumber, // Map passportNumber to passport_no
           date_of_birth: form.dateOfBirth, // Map dateOfBirth to date_of_birth
-           // Include name if it's part of your form
+          phone_number: form.phonenumber, // Add phone number to API request
           profile_image: profile_image_url, // Include profile image if updated
         }),
       })
@@ -180,6 +180,21 @@ const ProfileSettings: React.FC = () => {
               />
             ) : (
               <span className={styles.fieldValue}>{profile.email}</span>
+            )}
+          </div>
+          <div className={styles.fieldGroup}>
+            <label className={styles.fieldLabel}>Phone Number:</label>
+            {editMode ? (
+              <input
+                name="phonenumber"
+                type="tel"
+                value={form.phonenumber || ""}
+                onChange={handleChange}
+                placeholder="+1234567890"
+                className={styles.inputField}
+              />
+            ) : (
+              <span className={styles.fieldValue}>{profile.phonenumber || "-"}</span>
             )}
           </div>
           <div className={styles.fieldGroup}>
