@@ -276,14 +276,15 @@
 }
 
 .depth6Frame07 {
-  width: 100% !important;
-  height: auto !important;
-  padding: 0 !important;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure all cards are the same height */
+  min-height: 420px; /* Adjust as needed for your design */
   background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(16,185,129,0.08);
+  overflow: hidden;
+  padding: 0;
 }
 
 .depth6Frame07:hover {
@@ -298,7 +299,18 @@
 }
 
 .depth7Frame11 {
-  padding: 16px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 24px;
+}
+
+.cardPrice {
+  margin-top: 12px;
+  font-size: 1.2rem;
+  color: #10b981;
+  font-weight: 700;
 }
 
 .sundarbansWildlifeExpedition {
