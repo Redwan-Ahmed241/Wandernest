@@ -298,6 +298,9 @@ const HotelsRooms: FunctionComponent = () => {
   // Data states
   const [hotels, setHotels] = useState<Hotel[]>([])
 
+  // Dynamic filter options
+  const [locationOptions, setLocationOptions] = useState<string[]>(['All'])
+  const [ratingOptions, setRatingOptions] = useState<string[]>(['All'])
 
   // Loading states
   const [isLoadingHotels, setIsLoadingHotels] = useState(true)
@@ -311,6 +314,18 @@ const HotelsRooms: FunctionComponent = () => {
   useEffect(() => {
     fetchHotels()
   }, [])
+
+  // Update dynamic filter options when hotels change
+  useEffect(() => {
+    if (hotels.length > 0) {
+      // Unique locations
+      const locs = Array.from(new Set(hotels.map(h => h.location && h.location.trim() ? h.location.split(',')[0].trim() : "Unknown Location")))
+      setLocationOptions(['All', ...locs.filter(l => l && l !== 'All')])
+      // Unique star ratings (descending)
+      const stars = Array.from(new Set(hotels.map(h => h.star).filter(s => typeof s === 'number' && s > 0))).sort((a, b) => b - a)
+      setRatingOptions(['All', ...stars.map(s => `${s} Star`)]);
+    }
+  }, [hotels])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -411,6 +426,14 @@ const HotelsRooms: FunctionComponent = () => {
     return location.split(',')[0].trim()
   }
 
+  // Use dynamic filter options
+  const dynamicFilterOptions = {
+    Price: FILTER_OPTIONS.Price,
+    Rating: ratingOptions,
+    Location: locationOptions,
+    'Room Type': FILTER_OPTIONS['Room Type'],
+  };
+
   // Filter hotels by search and selected filters
   const filteredHotels = hotels.filter((hotel) => {
     const query = search.toLowerCase()
@@ -425,7 +448,9 @@ const HotelsRooms: FunctionComponent = () => {
         return checkPriceRange(hotel.price, value)
       }
       if (filter === 'Rating') {
-        return checkRatingMatch(hotel.star, value)
+        if (value === 'All') return true;
+        const selectedStar = parseInt(value);
+        return hotel.star === selectedStar;
       }
       if (filter === 'Location') {
         return extractCity(hotel.location).toLowerCase() === value.toLowerCase()
@@ -501,7 +526,7 @@ const HotelsRooms: FunctionComponent = () => {
                     <div className={styles.depth3Frame01}>
                       {/* Filters */}
                       <div className={styles.depth4Frame2} ref={filterDropdownRef}>
-                        {Object.keys(FILTER_OPTIONS).map(filter => (
+                        {Object.keys(dynamicFilterOptions).map(filter => (
                           <div key={filter} className={styles.depth5Frame03}>
                             <div
                               className={
@@ -526,7 +551,7 @@ const HotelsRooms: FunctionComponent = () => {
                               />
                               {openFilter === (filter as FilterKey) && (
                                 <div className={styles.filterDropdown}>
-                                  {(FILTER_OPTIONS[filter as FilterKey] as string[]).map((option: string) => (
+                                  {(dynamicFilterOptions[filter as FilterKey] as string[]).map((option: string) => (
                                     <div
                                       key={option}
                                       className={
