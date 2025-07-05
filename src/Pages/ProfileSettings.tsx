@@ -1,137 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../Styles/ProfileSettings.module.css';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Authentication/auth-context';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+"use client"
+
+import type React from "react"
+import { useEffect, useState } from "react"
+import styles from "../Styles/ProfileSettings.module.css"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../Authentication/auth-context"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 interface UserProfile {
-  id: string;
-  name?: string;
-  email: string;
-  passportNumber?: string;
-  dateOfBirth?: string;
-  profile_image?: string;
+  id: string
+  name?: string
+  email: string
+  passportNumber?: string
+  dateOfBirth?: string
+  profile_image?: string
 }
 
-const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"; // <-- Replace with your actual API endpoint
+const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/" // Updated to match your backend mate's URL
 
 const ProfileSettings: React.FC = () => {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState<Partial<UserProfile>>({});
-  const [picFile, setPicFile] = useState<File | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [dobPicker, setDobPicker] = useState<Date | null>(null);
-  const navigate = useNavigate();
+  const { user, isAuthenticated, loading: authLoading } = useAuth()
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [editMode, setEditMode] = useState(false)
+  const [form, setForm] = useState<Partial<UserProfile>>({})
+  const [picFile, setPicFile] = useState<File | null>(null)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [dobPicker, setDobPicker] = useState<Date | null>(null)
+  const navigate = useNavigate()
 
   // Fetch user profile from API
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        setError(null);
-        const token = localStorage.getItem("token");
+        setError(null)
+        const token = localStorage.getItem("token")
         const response = await fetch(API_URL, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Token ${token}`,
+            Authorization: `Token ${token}`,
           },
-        });
-        if (!response.ok) throw new Error("Failed to fetch profile");
-        const data = await response.json();
-        setProfile(data);
-        setForm(data);
-        if (data.dateOfBirth) setDobPicker(new Date(data.dateOfBirth));
+        })
+        if (!response.ok) throw new Error("Failed to fetch profile")
+        const data = await response.json()
+        setProfile(data)
+        setForm(data)
+        if (data.dateOfBirth) setDobPicker(new Date(data.dateOfBirth))
       } catch (err: any) {
-        setError(err.message || "Could not load profile.");
+        setError(err.message || "Could not load profile.")
       }
-    };
-    fetchProfile();
-  }, []);
+    }
+    fetchProfile()
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
+  }
 
   const handlePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setPicFile(e.target.files[0]);
+      setPicFile(e.target.files[0])
     }
-  };
+  }
 
   const handleDateChange = (date: Date | null) => {
-    setDobPicker(date);
-    setForm({ ...form, dateOfBirth: date ? date.toISOString().slice(0, 10) : "" });
-  };
+    setDobPicker(date)
+    setForm({ ...form, dateOfBirth: date ? date.toISOString().slice(0, 10) : "" })
+  }
 
-  // Save profile to API
+  // Save profile to API using PATCH method as requested by backend mate
   const handleSave = async () => {
-    setSaving(true);
-    setError(null);
+    setSaving(true)
+    setError(null)
     try {
-      const token = localStorage.getItem("token");
-      let profile_image_url = form.profile_image;
+      const token = localStorage.getItem("token")
+      let profile_image_url = form.profile_image
 
       // If a new picture is selected, upload it first (if your backend supports file upload)
       if (picFile) {
         // Example: upload to /api/user/profile/upload-image/
-        const imgForm = new FormData();
-        imgForm.append("image", picFile);
+        const imgForm = new FormData()
+        imgForm.append("image", picFile)
         const imgRes = await fetch(API_URL + "upload-image/", {
           method: "POST",
           headers: {
-            "Authorization": `Token ${token}`,
+            Authorization: `Token ${token}`,
           },
           body: imgForm,
-        });
-        if (!imgRes.ok) throw new Error("Failed to upload image");
-        const imgData = await imgRes.json();
-        profile_image_url = imgData.url; // Adjust according to your backend response
+        })
+        if (!imgRes.ok) throw new Error("Failed to upload image")
+        const imgData = await imgRes.json()
+        profile_image_url = imgData.url // Adjust according to your backend response
       }
 
-      // Prepare profile update payload
-      const payload = {
-        ...form,
-        profile_image: profile_image_url,
-      };
-
+      // Use PATCH method with the exact format your backend mate specified
       const response = await fetch(API_URL, {
-        method: "PUT", // or PATCH if your backend prefers
+        method: "PATCH",
         headers: {
+          Authorization: "Token " + token,
           "Content-Type": "application/json",
-          "Authorization": `Token ${token}`,
         },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify({
+          email: form.email,
+          passport_no: form.passportNumber, // Map passportNumber to passport_no
+          date_of_birth: form.dateOfBirth, // Map dateOfBirth to date_of_birth
+          name: form.name, // Include name if it's part of your form
+          profile_image: profile_image_url, // Include profile image if updated
+        }),
+      })
 
-      if (!response.ok) throw new Error("Failed to update profile");
-      const updated = await response.json();
-      setProfile(updated);
-      setForm(updated);
-      setEditMode(false);
-      setPicFile(null);
+      if (!response.ok) throw new Error("Failed to update profile")
+      const updated = await response.json()
+      setProfile(updated)
+      setForm(updated)
+      setEditMode(false)
+      setPicFile(null)
     } catch (err: any) {
-      setError(err.message || "Could not save profile.");
+      setError(err.message || "Could not save profile.")
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
-  };
+  }
 
-  if (!profile) return (
-    <div className={styles.profileSettingsWrapper}>
-      <div className={styles.skeletonProfile}>
-        <div className={styles.skeletonPic} />
-        <div className={styles.skeletonFields}>
-          <div className={styles.skeletonField} />
-          <div className={styles.skeletonField} />
-          <div className={styles.skeletonField} />
+  if (!profile)
+    return (
+      <div className={styles.profileSettingsWrapper}>
+        <div className={styles.skeletonProfile}>
+          <div className={styles.skeletonPic} />
+          <div className={styles.skeletonFields}>
+            <div className={styles.skeletonField} />
+            <div className={styles.skeletonField} />
+            <div className={styles.skeletonField} />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    )
 
   return (
     <div className={styles.profileSettingsWrapper}>
@@ -141,18 +146,13 @@ const ProfileSettings: React.FC = () => {
         <div className={styles.profilePicSection}>
           <div className={styles.profilePicWrapper}>
             <img
-              src={picFile ? URL.createObjectURL(picFile) : profile.profile_image || '/Figma_photoes/wandernest.svg'}
+              src={picFile ? URL.createObjectURL(picFile) : profile.profile_image || "/Figma_photoes/wandernest.svg"}
               alt="Profile"
               className={styles.profilePic}
             />
             {editMode && (
               <label className={styles.profilePicOverlay} title="Change Photo">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePicChange}
-                  className={styles.fileInput}
-                />
+                <input type="file" accept="image/*" onChange={handlePicChange} className={styles.fileInput} />
                 <span className={styles.cameraIcon}>📷</span>
               </label>
             )}
@@ -162,12 +162,7 @@ const ProfileSettings: React.FC = () => {
           <div className={styles.fieldGroup}>
             <label className={styles.fieldLabel}>Name:</label>
             {editMode ? (
-              <input
-                name="name"
-                value={form.name || ''}
-                onChange={handleChange}
-                className={styles.inputField}
-              />
+              <input name="name" value={form.name || ""} onChange={handleChange} className={styles.inputField} />
             ) : (
               <span className={styles.fieldValue}>{profile.name}</span>
             )}
@@ -178,7 +173,7 @@ const ProfileSettings: React.FC = () => {
               <input
                 name="email"
                 type="email"
-                value={form.email || ''}
+                value={form.email || ""}
                 onChange={handleChange}
                 className={styles.inputField}
               />
@@ -191,12 +186,12 @@ const ProfileSettings: React.FC = () => {
             {editMode ? (
               <input
                 name="passportNumber"
-                value={form.passportNumber || ''}
+                value={form.passportNumber || ""}
                 onChange={handleChange}
                 className={styles.inputField}
               />
             ) : (
-              <span className={styles.fieldValue}>{profile.passportNumber || '-'}</span>
+              <span className={styles.fieldValue}>{profile.passportNumber || "-"}</span>
             )}
           </div>
           <div className={styles.fieldGroup}>
@@ -217,7 +212,7 @@ const ProfileSettings: React.FC = () => {
                 autoComplete="off"
               />
             ) : (
-              <span className={styles.fieldValue}>{profile.dateOfBirth || '-'}</span>
+              <span className={styles.fieldValue}>{profile.dateOfBirth || "-"}</span>
             )}
           </div>
         </div>
@@ -225,12 +220,8 @@ const ProfileSettings: React.FC = () => {
       <div className={styles.buttonGroup}>
         {editMode ? (
           <>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className={`${styles.button} ${styles.saveButton}`}
-            >
-              {saving ? 'Saving...' : 'Save Changes'}
+            <button onClick={handleSave} disabled={saving} className={`${styles.button} ${styles.saveButton}`}>
+              {saving ? "Saving..." : "Save Changes"}
             </button>
             <button
               onClick={() => setEditMode(false)}
@@ -241,16 +232,13 @@ const ProfileSettings: React.FC = () => {
             </button>
           </>
         ) : (
-          <button
-            onClick={() => setEditMode(true)}
-            className={`${styles.button} ${styles.editButton}`}
-          >
+          <button onClick={() => setEditMode(true)} className={`${styles.button} ${styles.editButton}`}>
             Edit Profile
           </button>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProfileSettings;
+export default ProfileSettings
