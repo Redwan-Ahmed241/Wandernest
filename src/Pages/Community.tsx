@@ -110,18 +110,18 @@ const Community: React.FC = () => {
 
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [groups, setGroups] = useState<Group[]>([])
-  const [userGroups, setUserGroups] = useState<Group[]>([])
+  const [, setUserGroups] = useState<Group[]>([])
   const [reviews, setReviews] = useState<Review[]>([])
   const [searchQuery, setSearchQuery] = useState("")
 
   const [isLoadingBlogs, setIsLoadingBlogs] = useState(true)
-  const [isLoadingGroups, setIsLoadingGroups] = useState(true)
-  const [isLoadingUserGroups, setIsLoadingUserGroups] = useState(true)
+  const [, setIsLoadingGroups] = useState(true)
+  const [, setIsLoadingUserGroups] = useState(true)
   const [isLoadingReviews, setIsLoadingReviews] = useState(true)
 
   const [blogsError, setBlogsError] = useState<string | null>(null)
-  const [groupsError, setGroupsError] = useState<string | null>(null)
-  const [userGroupsError, setUserGroupsError] = useState<string | null>(null)
+  const [, setGroupsError] = useState<string | null>(null)
+  const [, setUserGroupsError] = useState<string | null>(null)
   const [reviewsError, setReviewsError] = useState<string | null>(null)
 
   const fetchBlogs = async () => {
@@ -196,7 +196,7 @@ const Community: React.FC = () => {
     [navigate],
   )
 
-  const handleGroupJoin = useCallback(
+  const _handleGroupJoin = useCallback(
     async (groupId: string) => {
       try {
         await CommunityAPI.joinGroup(groupId)
@@ -219,7 +219,7 @@ const Community: React.FC = () => {
     [groups],
   )
 
-  const handleGroupView = useCallback(
+  const _handleGroupView = useCallback(
     (groupId: string) => {
       navigate(`/community/group/${groupId}`)
     },
@@ -417,7 +417,7 @@ const Community: React.FC = () => {
                                       <img
                                         key={index}
                                         src={image || "/placeholder.svg"}
-                                        alt={`Review photo ${index + 1} for ${review.location}`}
+                                        alt={`Review photo ${index + 1}`}
                                         className={styles.reviewImage}
                                       />
                                     ))}

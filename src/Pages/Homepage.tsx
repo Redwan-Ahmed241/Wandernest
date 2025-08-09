@@ -6,7 +6,7 @@ import styles from "../Styles/Homepage.module.css"
 import Layout from "../App/Layout"
 
 const FEATURED_API_URL = "https://wander-nest-ad3s.onrender.com/api/home/destinations/"
-const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
+const _MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
 const HomePage: FunctionComponent = () => {
   const [destinations, setDestinations] = useState<any[]>([])

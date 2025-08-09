@@ -1,10 +1,10 @@
 "use client"
 
-import React, { FunctionComponent, useEffect, useState } from "react"
+import React, { FunctionComponent } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Styles/Sidebar.module.css"
 import { useAuth } from "../Authentication/auth-context" // Using your auth context
-import { userAPI } from "../App/api"
+
 
 const Sidebar: FunctionComponent = () => {
   const navigate = useNavigate()

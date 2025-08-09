@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from '../Styles/Group.module.css';
 import Footer from '../Components/Footer';
 import Navbar from '../Components/Navbar';

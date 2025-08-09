@@ -1,10 +1,18 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../Styles/ConfirmBook.module.css';
 import Layout from '../App/Layout';
-import { getHotels, Hotel } from '../App/api-services';
+
+interface Hotel {
+  id: string;
+  name: string;
+  price: number;
+  rating: number;
+  location: string;
+}
+
 
 const optionOrder = ["transport", "hotel", "vehicle", "guide"] as const
 type OptionKey = typeof optionOrder[number];
@@ -29,7 +37,7 @@ const ConfirmBook: React.FC = () => {
   const [skipGuide, setSkipGuide] = useState(true);
 
   // Focus state for option rows
-  const [activeOption, setActiveOption] = useState<OptionKey>('transport');
+  const [, setActiveOption] = useState<OptionKey>('transport');
   const optionRefs: Record<OptionKey, React.RefObject<HTMLDivElement>> = {
     transport: React.useRef<HTMLDivElement>(null),
     hotel: React.useRef<HTMLDivElement>(null),
@@ -38,25 +46,25 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Placeholder states for options (to be replaced with API data)
-  const [transport, setTransport] = useState<string>('Not selected');
-  const [hotel, setHotel] = useState<string>('Not selected');
+  const [, setTransport] = useState<string>('Not selected');
+  const [, setHotel] = useState<string>('Not selected');
   const [vehicle, setVehicle] = useState<string>('Not selected');
-  const [guide, setGuide] = useState<string>('Not selected');
+  const [, setGuide] = useState<string>('Not selected');
 
   const [warning, setWarning] = useState('');
 
   const navigate = useNavigate();
 
-  const [startDateFocused, setStartDateFocused] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [, setStartDateFocused] = useState(false);
+  const [, setShowDatePicker] = useState(false);
 
   const dateInputRef = React.useRef<HTMLInputElement>(null);
 
   // Add hotel selection state
-  const [hotels, setHotels] = useState<Hotel[]>([]);
-  const [hotelsLoading, setHotelsLoading] = useState(false);
-  const [hotelsError, setHotelsError] = useState('');
-  const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+  const [, setHotels] = useState<Hotel[]>([]);
+  const [, setHotelsLoading] = useState(false);
+  const [, setHotelsError] = useState('');
+  const [, setSelectedHotelId] = useState<string | null>(null);
 
   // Helper to get correct field regardless of casing
   const getField = (obj: any, key: string) => obj?.[key] || obj?.[key.toLowerCase()] || obj?.[key.charAt(0).toUpperCase() + key.slice(1)] || '';
@@ -73,7 +81,7 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Helper to convert yyyy-mm-dd to dd-mm-yyyy
-  const toDisplayDate = (dateStr: string) => {
+  const _toDisplayDate = (dateStr: string) => {
     if (!dateStr) return '';
     const [yyyy, mm, dd] = dateStr.split('-');
     if (!yyyy || !mm || !dd) return '';
@@ -81,7 +89,7 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Helper to convert dd-mm-yyyy to yyyy-mm-dd
-  const toInputDateValue = (dateStr: string) => {
+  const _toInputDateValue = (dateStr: string) => {
     if (!dateStr) return '';
     const [dd, mm, yyyy] = dateStr.split('-');
     if (!dd || !mm || !yyyy) return '';
@@ -99,10 +107,10 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Add this at the top of the component
-  const hotelScrollRef = React.useRef<HTMLDivElement>(null);
+  const _hotelScrollRef = React.useRef<HTMLDivElement>(null);
 
   // Add this helper at the top of the component (after imports)
-  const extractMainLocation = (str: string): string => {
+  const _extractMainLocation = (str: string): string => {
     if (!str) return '';
     // Remove any text in parentheses
     let cleanStr = str.replace(/\(.*?\)/g, '').trim();
@@ -181,27 +189,27 @@ const ConfirmBook: React.FC = () => {
     }
   }, [packageDetails, startDate]);
 
-  // Fetch hotels when hotel selection is not skipped
-  useEffect(() => {
-    if (!skipHotel) {
-      setHotelsLoading(true);
-      setHotelsError('');
-      getHotels()
-        .then((hotels) => {
-          setHotels(hotels);
-          setHotelsLoading(false);
-        })
-        .catch((err) => {
-          setHotelsError('Failed to fetch hotels.');
-          setHotels([]);
-          setHotelsLoading(false);
-        });
-    } else {
-      setHotels([]);
-    }
-  }, [skipHotel]);
+  // Fetch hotels when hotel selection is not skipped - commented out as unused
+  // useEffect(() => {
+  //   if (!skipHotel) {
+  //     setHotelsLoading(true);
+  //     setHotelsError('');
+  //     getHotels()
+  //       .then((hotels) => {
+  //         setHotels(hotels);
+  //         setHotelsLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         setHotelsError('Failed to fetch hotels.');
+  //         setHotels([]);
+  //         setHotelsLoading(false);
+  //       });
+  //   } else {
+  //     setHotels([]);
+  //   }
+  // }, [skipHotel]);
 
-  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const _handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
   };
 
@@ -223,7 +231,7 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Toggle skip/unskip handlers
-  const handleSkipToggle = (option: OptionKey) => {
+  const _handleSkipToggle = (option: OptionKey) => {
     switch (option) {
       case 'transport':
         setSkipTransport((prev) => {
@@ -356,13 +364,13 @@ const ConfirmBook: React.FC = () => {
             {/* Hotel */}
             <div 
               ref={optionRefs.hotel} 
-              className={`${styles.optionRow} ${activeOption === 'hotel' ? 'active' : ''}`.trim()}
+              className={styles.optionRow}
             >
               <span className={styles.optionLabel}>Select Hotel</span>
               <button
                 type="button"
                 className={styles.skipToggleBtn}
-                onClick={() => handleSkipToggle('hotel')}
+                onClick={() => _handleSkipToggle('hotel')}
               >
                 {skipHotel ? 'Include' : 'Skip'}
               </button>
@@ -392,7 +400,7 @@ const ConfirmBook: React.FC = () => {
                       {/* Left arrow icon */}
                     </button>
                     <div
-                      ref={hotelScrollRef}
+                      ref={_hotelScrollRef}
                       style={{
                         display: 'flex',
                         gap: 24,
@@ -402,101 +410,31 @@ const ConfirmBook: React.FC = () => {
                         margin: '0 48px',
                       }}
                     >
-                      {hotelsLoading && <p>Loading hotels...</p>}
-                      {hotelsError && <p style={{ color: 'red' }}>{hotelsError}</p>}
-                      {hotels.length > 0 ? (
-                        hotels
-                          .filter(hotel => {
-                            if (!packageDetails) return true;
-                            const pkgDest = extractMainLocation(
-                              packageDetails.destination || 
-                              packageDetails.city || 
-                              packageDetails.title || 
-                              ''
-                            );
-                            const hotelLoc = extractMainLocation(hotel.location || '');
-                            return pkgDest && hotelLoc && hotelLoc.includes(pkgDest);
-                          })
-                          .map((hotel) => {
-                            const isSelected = selectedHotelId === hotel.id;
-                            return (
-                              <div
-                                key={hotel.id}
-                                onClick={() => setSelectedHotelId(isSelected ? null : hotel.id)}
-                                style={{
-                                  cursor: 'pointer',
-                                  borderRadius: 14,
-                                  border: isSelected ? '2.5px solid #4e944f' : '2.5px solid transparent',
-                                  boxShadow: isSelected ? '0 4px 24px rgba(76,177,106,0.15)' : '0 2px 8px rgba(0,0,0,0.06)',
-                                  overflow: 'hidden',
-                                  background: '#fff',
-                                  minWidth: 220,
-                                  maxWidth: 240,
-                                  flex: '0 0 220px',
-                                  transition: 'border 0.2s, box-shadow 0.2s',
-                                  position: 'relative',
-                                }}
-                              >
-                                {/* Checkmark for selected */}
-                                {isSelected && (
-                                  <div style={{
-                                    position: 'absolute',
-                                    top: 8,
-                                    right: 8,
-                                    background: '#4e944f',
-                                    borderRadius: '50%',
-                                    width: 28,
-                                    height: 28,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    boxShadow: '0 2px 8px rgba(76,177,106,0.18)',
-                                  }}>
-                                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                                      <circle cx="10" cy="10" r="10" fill="#4e944f"/>
-                                      <path d="M6 10.5L9 13.5L14 8.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                  </div>
-                                )}
-                                <img
-                                  src={hotel.image_url}
-                                  alt={hotel.name}
-                                  style={{ width: '100%', height: 120, objectFit: 'cover', display: 'block' }}
-                                />
-                                <div style={{ padding: '12px 12px 8px 12px' }}>
-                                  <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{hotel.name}</div>
-                                  <div style={{ color: '#8a8a8a', fontSize: 13, marginBottom: 2 }}>{hotel.description}</div>
-                                </div>
-                              </div>
-                            );
-                          })
-                      ) : (
-                        !hotelsLoading && <p>No hotels found.</p>
-                      )}
+                      <p>Hotel selection feature coming soon...</p>
                     </div>
                   </div>
                 </div>
               )}
             </div>
             {/* Vehicle */}
-            <div ref={optionRefs.vehicle} className={`${styles.optionRow} ${activeOption === 'vehicle' ? 'active' : ''}`.trim()}>
+            <div ref={optionRefs.vehicle} className={styles.optionRow}>
               <span className={styles.optionLabel}>Select Vehicle</span>
               <button
                 type="button"
                 className={styles.skipToggleBtn}
-                onClick={() => handleSkipToggle('vehicle')}
+                onClick={() => _handleSkipToggle('vehicle')}
               >
                 {skipVehicle ? 'Include' : 'Skip'}
               </button>
               {!skipVehicle && <div className={styles.optionCard}>Vehicle options go here</div>}
             </div>
             {/* Guide */}
-            <div ref={optionRefs.guide} className={`${styles.optionRow} ${activeOption === 'guide' ? 'active' : ''}`.trim()}>
+            <div ref={optionRefs.guide} className={styles.optionRow}>
               <span className={styles.optionLabel}>Hire a Guide</span>
               <button
                 type="button"
                 className={styles.skipToggleBtn}
-                onClick={() => handleSkipToggle('guide')}
+                onClick={() => _handleSkipToggle('guide')}
               >
                 {skipGuide ? 'Include' : 'Skip'}
               </button>

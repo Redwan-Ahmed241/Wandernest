@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../Authentication/auth-context"
 import ProfileDropdown from "./profile-dropdown"
 import styles from "../Styles/Navbar.module.css"
-import { Bell, User } from 'react-feather'
+import { Bell } from 'react-feather'
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate()
   const { isAuthenticated, loading } = useAuth()
-  const [showNotifications, setShowNotifications] = useState(false)
-  const notifications = [
+  const [,] = useState(false)
+  const _notifications = [
     { id: 1, text: "Your booking is confirmed!" },
     { id: 2, text: "New travel package available." },
     { id: 3, text: "Your visa application was approved." },

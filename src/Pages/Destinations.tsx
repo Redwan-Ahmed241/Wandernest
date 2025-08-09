@@ -23,7 +23,7 @@ const Destinations: FunctionComponent = () => {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
 
-	const onHomeClick = useCallback(() => {
+	const _onHomeClick = useCallback(() => {
 		navigate("/")
 	}, [navigate])
 

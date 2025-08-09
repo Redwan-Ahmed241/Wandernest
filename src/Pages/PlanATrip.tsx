@@ -40,10 +40,10 @@ const PlanATrip: React.FC = () => {
   // Search state
   const [search, setSearch] = useState('');
   // Active nav
-  const [activeNav, setActiveNav] = useState(0);
+  const [, setActiveNav] = useState(0);
 
   // Sidebar navigation (dummy)
-  const navItems = [
+  const _navItems = [
     { label: 'Home', icon: '/Figma_photoes/homebg.jpg' },
     { label: 'My Trips', icon: '/Figma_photoes/plan.svg' },
     { label: 'Explore', icon: '/Figma_photoes/explore.svg' },
@@ -73,8 +73,8 @@ const PlanATrip: React.FC = () => {
   };
 
   // Sidebar toggle handler
-  const handleSidebarToggle = () => setSidebarOpen(!sidebarOpen);
-  const handleNavClick = (idx: number) => setActiveNav(idx);
+  const _handleSidebarToggle = () => setSidebarOpen(!sidebarOpen);
+  const _handleNavClick = (idx: number) => setActiveNav(idx);
 
   return (
     <Layout>

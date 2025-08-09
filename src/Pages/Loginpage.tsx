@@ -151,7 +151,7 @@ export default function TravelLogin() {
     }
   }
 
-  const handleLogout = () => {
+  const _handleLogout = () => {
     // This function is no longer needed since we're using auth context
   }
 

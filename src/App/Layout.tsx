@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import ProfileSettings from '../Pages/ProfileSettings'; 
+ 
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

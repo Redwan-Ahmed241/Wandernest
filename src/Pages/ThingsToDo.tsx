@@ -4,9 +4,9 @@ import { FunctionComponent } from 'react';
 import styles from '../Styles/ThingsToDo.module.css';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Components/Footer';
-import { AuthProvider, useAuth } from '../Authentication/auth-context';
+import { useAuth } from '../Authentication/auth-context';
 import ProfileDropdown from "../Components/profile-dropdown";
-import { Bell, User } from 'react-feather'
+import { Bell } from 'react-feather'
 import Layout from '../App/Layout';
 
 

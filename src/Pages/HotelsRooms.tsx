@@ -19,7 +19,7 @@ interface Hotel {
   roomTypes: string[]
 }
 
-interface Review {
+interface _Review {
   id: string
   userName: string
   date: string
@@ -29,7 +29,7 @@ interface Review {
   dislikes: number
 }
 
-interface FilterOptions {
+interface _FilterOptions {
   price: string
   rating: string
   location: string
@@ -93,7 +93,7 @@ const checkPriceRange = (price: number, range: string): boolean => {
   }
 }
 
-const checkRatingMatch = (rating: number, filterRating: string): boolean => {
+const _checkRatingMatch = (rating: number, filterRating: string): boolean => {
   const starCount = Number.parseInt(filterRating.charAt(0))
   return rating >= starCount
 }
@@ -478,7 +478,7 @@ const HotelsRooms: FunctionComponent = () => {
     [],
   )
 
-  const onViewAllClick = useCallback(() => {
+  const _onViewAllClick = useCallback(() => {
     // navigate("/hotels")
   }, [])
 

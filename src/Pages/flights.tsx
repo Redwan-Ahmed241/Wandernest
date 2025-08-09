@@ -912,7 +912,7 @@ const BookingModal: React.FC<{
 
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading, user } = useAuth()
+  const { isAuthenticated, loading: authLoading } = useAuth()
 
   // Form states - Updated to use airport codes
   const [fromAirport, setFromAirport] = useState("")
@@ -966,6 +966,7 @@ const Flights: FunctionComponent = () => {
     fetchWeatherForCities(defaultCities)
     fetchCurrencyRates()
     loadAirports()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Load airports for search
@@ -1028,7 +1029,7 @@ const Flights: FunctionComponent = () => {
   // Update currency rates when active currencies change
   useEffect(() => {
     fetchCurrencyRates()
-  }, [activeCurrencies])
+  }, [activeCurrencies, fetchCurrencyRates])
 
   const handleSearchFlights = async () => {
     // Check if required fields are filled
@@ -1183,7 +1184,7 @@ const Flights: FunctionComponent = () => {
     }
   }
 
-  const onFlightsTextClick = useCallback(() => {
+  const _onFlightsTextClick = useCallback(() => {
     navigate("/")
   }, [navigate])
 
@@ -1203,6 +1204,7 @@ const Flights: FunctionComponent = () => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
   return (

@@ -19,7 +19,7 @@ interface Package {
   image_url: string;
 }
 
-const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
+const _MEDIA_BASE = "https://wander-nest-ad3s.onrender.com"
 
 // Modal component for booking (full form)
 const BookNowModal = ({ open, onClose, pkg, onConfirm, loading }: any) => {
@@ -98,7 +98,7 @@ const Packages: FunctionComponent = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [confirmError, setConfirmError] = useState('');
+  const [, setConfirmError] = useState('');
   const { isAuthenticated } = useAuth();
 
   // Fetch packages from API
@@ -175,7 +175,7 @@ const Packages: FunctionComponent = () => {
   });
 
   // Handler for Book Now
-  const handleBookNow = (pkg: Package) => {
+  const _handleBookNow = (pkg: Package) => {
     setSelectedPackage(pkg);
     setModalOpen(true);
     setConfirmError('');

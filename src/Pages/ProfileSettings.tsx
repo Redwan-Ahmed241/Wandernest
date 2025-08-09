@@ -23,7 +23,7 @@ interface UserProfile {
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/"
 
 const ProfileSettings: React.FC = () => {
-  const { user, isAuthenticated, loading: authLoading } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [editMode, setEditMode] = useState(false)
   const [form, setForm] = useState<Partial<UserProfile>>({})
@@ -31,7 +31,7 @@ const ProfileSettings: React.FC = () => {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dobPicker, setDobPicker] = useState<Date | null>(null)
-  const navigate = useNavigate()
+  const _navigate = useNavigate()
 
   // Fetch user profile from API
   useEffect(() => {

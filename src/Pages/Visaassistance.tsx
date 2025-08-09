@@ -28,7 +28,7 @@ const VisaAssistance: FunctionComponent = () => {
   const [isLoadingRates, setIsLoadingRates] = useState(true)
 
   // Error states
-  const [error, setError] = useState<string | null>(null)
+  const [, setError] = useState<string | null>(null)
 
   // Fetch initial data
   useEffect(() => {
