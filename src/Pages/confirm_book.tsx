@@ -4,17 +4,30 @@ import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../Styles/ConfirmBook.module.css';
 import Layout from '../App/Layout';
+import { useAuth } from "../Authentication/auth-context"
+import { useBooking } from "../Context/booking-context"
+import { getHotels } from "../App/api-services"
 
 interface Hotel {
   id: string;
   name: string;
+  description: string;
+  image_url: string;
   price: number;
   rating: number;
   location: string;
 }
 
+interface PackageOption {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image?: string;
+}
 
-const optionOrder = ["transport", "hotel", "guide"] as const
+
+const optionOrder = ["transport", "hotel", "vehicle", "guide"] as const
 type OptionKey = typeof optionOrder[number];
 
 const ConfirmBook: React.FC = () => {
@@ -33,27 +46,26 @@ const ConfirmBook: React.FC = () => {
   // Skip states for options
   const [skipTransport, setSkipTransport] = useState(true);
   const [skipHotel, setSkipHotel] = useState(false);
+  const [skipVehicle, setSkipVehicle] = useState(true);
   const [skipGuide, setSkipGuide] = useState(true);
 
   // Focus state for option rows
-  const [, setActiveOption] = useState<OptionKey>('transport');
+  const [activeOption, setActiveOption] = useState<OptionKey>('transport');
   const optionRefs: Record<OptionKey, React.RefObject<HTMLDivElement>> = {
     transport: React.useRef<HTMLDivElement>(null),
     hotel: React.useRef<HTMLDivElement>(null),
+    vehicle: React.useRef<HTMLDivElement>(null),
     guide: React.useRef<HTMLDivElement>(null),
   };
 
   // Placeholder states for options (to be replaced with API data)
-  const [transport, setTransport] = useState<string>('Not selected');
-  const [hotel, setHotel] = useState<string>('Not selected');
-  const [guide, setGuide] = useState<string>('Not selected');
+  const [, setTransport] = useState<string>('Not selected');
+  const [, setHotel] = useState<string>('Not selected');
+  const [, setGuide] = useState<string>('Not selected');
 
   const [warning, setWarning] = useState('');
 
   const navigate = useNavigate();
-
-  const [, setStartDateFocused] = useState(false);
-  const [, setShowDatePicker] = useState(false);
 
   const dateInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -62,6 +74,10 @@ const ConfirmBook: React.FC = () => {
   const [hotelsLoading, setHotelsLoading] = useState(false);
   const [hotelsError, setHotelsError] = useState('');
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+
+  // Add state for transport and guide options
+  const [transportOptions, setTransportOptions] = useState<PackageOption[]>([]);
+  const [guideOptions, setGuideOptions] = useState<PackageOption[]>([]);
 
   // Helper to get correct field regardless of casing
   const getField = (obj: any, key: string) => obj?.[key] || obj?.[key.toLowerCase()] || obj?.[key.charAt(0).toUpperCase() + key.slice(1)] || '';
@@ -77,37 +93,8 @@ const ConfirmBook: React.FC = () => {
     return `${dd}-${mm}-${yyyy}`;
   };
 
-  // Helper to convert yyyy-mm-dd to dd-mm-yyyy
-  const _toDisplayDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const [yyyy, mm, dd] = dateStr.split('-');
-    if (!yyyy || !mm || !dd) return '';
-    return `${dd}-${mm}-${yyyy}`;
-  };
-
-  // Helper to convert dd-mm-yyyy to yyyy-mm-dd
-  const _toInputDateValue = (dateStr: string) => {
-    if (!dateStr) return '';
-    const [dd, mm, yyyy] = dateStr.split('-');
-    if (!dd || !mm || !yyyy) return '';
-    return `${yyyy}-${mm}-${dd}`;
-  };
-
-  // Helper to get tomorrow's date in yyyy-mm-dd format
-  const getTomorrow = () => {
-    const t = new Date();
-    t.setDate(t.getDate() + 1);
-    const yyyy = t.getFullYear();
-    const mm = String(t.getMonth() + 1).padStart(2, '0');
-    const dd = String(t.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  };
-
-  // Add this at the top of the component
-  const _hotelScrollRef = React.useRef<HTMLDivElement>(null);
-
-  // Add this helper at the top of the component (after imports)
-  const _extractMainLocation = (str: string): string => {
+  // Helper to extract main location
+  const extractMainLocation = (str: string): string => {
     if (!str) return '';
     // Remove any text in parentheses
     let cleanStr = str.replace(/\(.*?\)/g, '').trim();
@@ -121,13 +108,23 @@ const ConfirmBook: React.FC = () => {
       .toLowerCase();
   };
 
+  // Helper to get tomorrow's date in yyyy-mm-dd format
+  const getTomorrow = () => {
+    const t = new Date();
+    t.setDate(t.getDate() + 1);
+    const yyyy = t.getFullYear();
+    const mm = String(t.getMonth() + 1).padStart(2, '0');
+    const dd = String(t.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
   // Add state for customer info
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerName] = useState("");
+  const [customerEmail] = useState("");
+  const [customerPhone] = useState("");
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -214,7 +211,7 @@ const ConfirmBook: React.FC = () => {
   }, [packageDetails, startDate]);
 
   // Fetch all options when needed
-  const fetchAllOptions = async () => {
+  const _fetchAllOptions = async () => {
     const token = localStorage.getItem("token");
     const headers = {
       "Content-Type": "application/json",
@@ -251,11 +248,11 @@ const ConfirmBook: React.FC = () => {
       setHotelsLoading(true);
       setHotelsError('');
       getHotels()
-        .then((hotels) => {
+        .then((hotels: Hotel[]) => {
           setHotels(hotels);
           setHotelsLoading(false);
         })
-        .catch((err) => {
+        .catch((_err: any) => {
           setHotelsError('Failed to fetch hotels.');
           setHotels([]);
           setHotelsLoading(false);
@@ -264,10 +261,6 @@ const ConfirmBook: React.FC = () => {
       setHotels([]);
     }
   }, [skipHotel]);
-
-  const _handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
-  };
 
   const handleTravelersChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = Math.max(1, parseInt(e.target.value) || 1);
@@ -287,7 +280,7 @@ const ConfirmBook: React.FC = () => {
   };
 
   // Toggle skip/unskip handlers
-  const _handleSkipToggle = (option: OptionKey) => {
+  const handleSkipToggle = (option: OptionKey) => {
     switch (option) {
       case 'transport':
         setSkipTransport((prev) => {
@@ -303,7 +296,13 @@ const ConfirmBook: React.FC = () => {
           return !prev;
         });
         break;
-
+      case 'vehicle':
+        setSkipVehicle((prev) => {
+          if (!prev) setActiveOption('vehicle');
+          else focusNextOption('vehicle');
+          return !prev;
+        });
+        break;
       case 'guide':
         setSkipGuide((prev) => {
           if (!prev) setActiveOption('guide');
@@ -528,7 +527,6 @@ const ConfirmBook: React.FC = () => {
                       {/* Left arrow icon */}
                     </button>
                     <div
-                      ref={hotelScrollRef}
                       style={{
                         display: 'flex',
                         gap: 24,
@@ -595,13 +593,13 @@ const ConfirmBook: React.FC = () => {
                                   </div>
                                 )}
                                 <img
-                                  src={hotel.image_url}
+                                  src={hotel.image_url || "/placeholder.svg?height=120&width=200"}
                                   alt={hotel.name}
                                   style={{ width: '100%', height: 120, objectFit: 'cover', display: 'block' }}
                                 />
                                 <div style={{ padding: '12px 12px 8px 12px' }}>
                                   <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{hotel.name}</div>
-                                  <div style={{ color: '#8a8a8a', fontSize: 13, marginBottom: 2 }}>{hotel.description}</div>
+                                  <div style={{ color: '#8a8a8a', fontSize: 13, marginBottom: 2 }}>{hotel.description || 'Hotel description'}</div>
                                 </div>
                               </div>
                             );
