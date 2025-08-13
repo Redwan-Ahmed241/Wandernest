@@ -7,16 +7,7 @@ import Layout from '../App/Layout';
 import { useAuth } from "../Authentication/auth-context"
 import { useBooking } from "../Context/booking-context"
 import { getHotels } from "../App/api-services"
-
-interface Hotel {
-  id: string;
-  name: string;
-  description: string;
-  image_url: string;
-  price: number;
-  rating: number;
-  location: string;
-}
+import type { Hotel } from "../App/api-services"
 
 interface PackageOption {
   id: string;
@@ -248,7 +239,7 @@ const ConfirmBook: React.FC = () => {
       setHotelsLoading(true);
       setHotelsError('');
       getHotels()
-        .then((hotels: Hotel[]) => {
+        .then((hotels) => {
           setHotels(hotels);
           setHotelsLoading(false);
         })
